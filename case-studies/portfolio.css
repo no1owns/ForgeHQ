@@ -19,10 +19,12 @@
   --text-muted:   #55557a;
   --border:       rgba(255,255,255,0.07);
   --border-lit:   rgba(91,140,255,0.28);
-  --glass:        rgba(255,255,255,0.05);
-  --glass-border: rgba(255,255,255,0.13);
-  --glass-hi:     inset 0 1px 0 rgba(255,255,255,0.1);
-  --glass-shadow: 0 4px 28px rgba(0,0,0,0.55);
+  --glass-bg:     linear-gradient(160deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.03) 100%);
+  --glass-border: rgba(255,255,255,0.07);
+  --glass-top:    rgba(255,255,255,0.22);
+  --glass-blur:   blur(40px) saturate(180%);
+  --glass-shadow: 0 16px 48px rgba(0,0,0,0.45), 0 4px 12px rgba(0,0,0,0.3);
+  --glass-hi:     inset 0 1px 0 rgba(255,255,255,0.16);
   --glow:         0 0 40px rgba(91,140,255,0.1);
   --glow-lg:      0 0 60px rgba(91,140,255,0.16);
   --tr-fast:      0.18s ease;
@@ -421,11 +423,12 @@ ul { list-style: none; }
   bottom: -14px;
   right: -14px;
   padding: 12px 18px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-hi), 0 8px 32px rgba(0,0,0,0.4);
+  border-top-color: var(--glass-top);
+  box-shadow: var(--glass-hi), var(--glass-shadow);
   border-radius: var(--radius);
   font-size: 0.85rem;
   font-weight: 600;
@@ -444,11 +447,12 @@ ul { list-style: none; }
 .about-edu {
   margin-top: 1.75rem;
   padding: 1.25rem;
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-hi);
+  border-top-color: var(--glass-top);
+  box-shadow: var(--glass-hi), var(--glass-shadow);
   border-radius: var(--radius);
 }
 .about-edu h4 {
@@ -493,13 +497,15 @@ ul { list-style: none; }
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-hi);
+  border-top-color: var(--glass-top);
+  box-shadow: var(--glass-hi), var(--glass-shadow);
 }
 .stat-cell {
   padding: 2rem 1.5rem;
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-top-color: var(--glass-top);
   box-shadow: var(--glass-hi);
   text-align: center;
 }
@@ -532,7 +538,11 @@ ul { list-style: none; }
 /* ── Projects ── */
 .projects-section {
   padding: 100px 0;
-  background: linear-gradient(to bottom, transparent, rgba(91,140,255,0.03), transparent);
+  position: relative;
+  background:
+    radial-gradient(ellipse 55% 60% at 15% 40%, rgba(91,140,255,0.13) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 55% at 85% 65%, rgba(155,109,255,0.1) 0%, transparent 55%),
+    radial-gradient(ellipse 30% 40% at 50% 10%, rgba(0,212,170,0.05) 0%, transparent 50%);
 }
 .filter-row {
   display: flex;
@@ -566,10 +576,11 @@ ul { list-style: none; }
 .proj-card {
   border-radius: var(--radius);
   overflow: hidden;
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
+  border-top-color: var(--glass-top);
   box-shadow: var(--glass-hi), var(--glass-shadow);
   transition: border-color var(--tr-med), box-shadow var(--tr-med), transform var(--tr-med), opacity var(--tr-med);
   transform-style: preserve-3d;
@@ -751,7 +762,12 @@ ul { list-style: none; }
 }
 
 /* ── Skills full ── */
-.skills-section { padding: 100px 0; background: linear-gradient(to bottom, transparent, rgba(155,109,255,0.03), transparent); }
+.skills-section {
+  padding: 100px 0;
+  background:
+    radial-gradient(ellipse 60% 70% at 80% 50%, rgba(155,109,255,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 20% 70%, rgba(91,140,255,0.09) 0%, transparent 55%);
+}
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -759,10 +775,11 @@ ul { list-style: none; }
 }
 .skill-group {
   padding: 1.5rem;
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
+  border-top-color: var(--glass-top);
   box-shadow: var(--glass-hi), var(--glass-shadow);
   border-radius: var(--radius);
   transition: border-color var(--tr-med), transform var(--tr-med), box-shadow var(--tr-med);
