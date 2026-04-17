@@ -2,24 +2,30 @@
    case-study.css — shared styles for all case study pages
    ========================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
 :root {
-  --bg-deep:     #07070f;
-  --bg-dark:     #0d0d1a;
-  --bg-card:     #111122;
-  --bg-elevated: #181830;
-  --accent:      #5b8cff;
-  --accent-2:    #9b6dff;
-  --gradient:    linear-gradient(135deg, #5b8cff 0%, #9b6dff 100%);
-  --text-primary:#f2f2fa;
-  --text-sub:    #9090b8;
-  --text-muted:  #55557a;
-  --border:      rgba(255,255,255,0.07);
-  --border-lit:  rgba(91,140,255,0.3);
-  --tr:          0.3s ease;
-  --font-head:   'Space Grotesk', sans-serif;
-  --font-body:   'Inter', sans-serif;
-  --radius:      12px;
-  --max-w:       1040px;
+  --bg-deep:      #07070f;
+  --bg-dark:      #0c0c18;
+  --bg-card:      #111122;
+  --bg-elevated:  #181830;
+  --accent:       #5b8cff;
+  --accent-2:     #9b6dff;
+  --gradient:     linear-gradient(135deg, #5b8cff 0%, #9b6dff 100%);
+  --text-primary: #ede9e4;
+  --text-sub:     #8e8ea8;
+  --text-muted:   #55557a;
+  --border:       rgba(255,255,255,0.07);
+  --border-lit:   rgba(91,140,255,0.28);
+  --glass:        rgba(255,255,255,0.025);
+  --glass-border: rgba(255,255,255,0.09);
+  --glass-hi:     inset 0 1px 0 rgba(255,255,255,0.07);
+  --tr:           0.3s ease;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-head:    'Space Grotesk', sans-serif;
+  --font-body:    'Inter', sans-serif;
+  --radius:       12px;
+  --max-w:        1040px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -127,11 +133,11 @@ ul { list-style: none; }
   color: var(--accent);
 }
 .cs-title {
-  font-family: var(--font-head);
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 8vw, 7rem);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.0;
   margin-bottom: 1.25rem;
 }
 .g-text {
@@ -152,14 +158,17 @@ ul { list-style: none; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: var(--border);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  background: var(--glass-border);
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
   margin-bottom: 80px;
 }
 .cs-meta-cell {
   padding: 1.5rem 1.25rem;
-  background: var(--bg-card);
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--glass-hi);
 }
 .cs-meta-label {
   font-size: 0.68rem;
@@ -189,11 +198,12 @@ ul { list-style: none; }
   margin-bottom: 0.75rem;
 }
 .cs-section-title {
-  font-family: var(--font-head);
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 400;
   margin-bottom: 1rem;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 .cs-section-text {
   font-size: 1rem;
@@ -254,15 +264,18 @@ ul { list-style: none; }
 }
 .cs-result-card {
   padding: 1.75rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-hi);
   border-radius: var(--radius);
   text-align: center;
 }
 .cs-result-num {
-  font-family: var(--font-head);
-  font-size: 2.4rem;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  font-weight: 300;
   background: var(--gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -293,9 +306,9 @@ ul { list-style: none; }
   margin-bottom: 0.5rem;
 }
 .cs-next-title {
-  font-family: var(--font-head);
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 400;
   color: var(--text-primary);
   transition: color var(--tr);
 }

@@ -2,9 +2,11 @@
    portfolio.css — Ayodeji Akintilo Portfolio
    ========================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
 :root {
   --bg-deep:      #07070f;
-  --bg-dark:      #0d0d1a;
+  --bg-dark:      #0c0c18;
   --bg-card:      #111122;
   --bg-elevated:  #181830;
   --accent:       #5b8cff;
@@ -12,16 +14,20 @@
   --accent-3:     #00d4aa;
   --gradient:     linear-gradient(135deg, #5b8cff 0%, #9b6dff 100%);
   --gradient-warm:linear-gradient(135deg, #ff6b6b 0%, #ffa552 100%);
-  --text-primary: #f2f2fa;
-  --text-sub:     #9090b8;
+  --text-primary: #ede9e4;
+  --text-sub:     #8e8ea8;
   --text-muted:   #55557a;
-  --border:       rgba(255,255,255,0.06);
-  --border-lit:   rgba(91,140,255,0.3);
-  --glow:         0 0 40px rgba(91,140,255,0.18);
-  --glow-lg:      0 0 60px rgba(91,140,255,0.28);
+  --border:       rgba(255,255,255,0.07);
+  --border-lit:   rgba(91,140,255,0.28);
+  --glass:        rgba(255,255,255,0.025);
+  --glass-border: rgba(255,255,255,0.09);
+  --glass-hi:     inset 0 1px 0 rgba(255,255,255,0.07);
+  --glow:         0 0 40px rgba(91,140,255,0.15);
+  --glow-lg:      0 0 60px rgba(91,140,255,0.24);
   --tr-fast:      0.18s ease;
   --tr-med:       0.4s ease;
   --tr-slow:      0.72s cubic-bezier(0.16,1,0.3,1);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-head:    'Space Grotesk', sans-serif;
   --font-body:    'Inter', sans-serif;
   --radius:       14px;
@@ -242,12 +248,12 @@ ul { list-style: none; }
   50%       { opacity: 0.5; transform: scale(0.6); }
 }
 .hero-name {
-  font-family: var(--font-head);
-  font-size: clamp(3rem, 8vw, 6.5rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  margin-bottom: 1.25rem;
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 13vw, 10rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
   animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.15s both;
 }
 .hero-sub {
@@ -347,11 +353,11 @@ ul { list-style: none; }
   margin-bottom: 0.9rem;
 }
 .section-title {
-  font-family: var(--font-head);
-  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
   margin-bottom: 0.9rem;
 }
 .section-body {
@@ -418,15 +424,17 @@ ul { list-style: none; }
   bottom: -14px;
   right: -14px;
   padding: 12px 18px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-hi), 0 8px 32px rgba(0,0,0,0.4);
   border-radius: var(--radius);
   font-size: 0.85rem;
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: var(--glow);
 }
 .badge-ic {
   width: 32px; height: 32px;
@@ -439,8 +447,11 @@ ul { list-style: none; }
 .about-edu {
   margin-top: 1.75rem;
   padding: 1.25rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-hi);
   border-radius: var(--radius);
 }
 .about-edu h4 {
@@ -481,14 +492,18 @@ ul { list-style: none; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: var(--border);
+  background: var(--glass-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-hi);
 }
 .stat-cell {
   padding: 2rem 1.5rem;
-  background: var(--bg-card);
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--glass-hi);
   text-align: center;
 }
 .stat-val {
@@ -498,9 +513,9 @@ ul { list-style: none; }
   gap: 1px;
 }
 .stat-n {
-  font-family: var(--font-head);
-  font-size: 2.6rem;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  font-weight: 300;
   background: var(--gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -508,9 +523,9 @@ ul { list-style: none; }
   line-height: 1;
 }
 .stat-plus {
-  font-family: var(--font-head);
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 300;
   background: var(--gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -559,15 +574,18 @@ ul { list-style: none; }
 .proj-card {
   border-radius: var(--radius);
   overflow: hidden;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-hi), 0 8px 32px rgba(0,0,0,0.25);
   transition: border-color var(--tr-med), box-shadow var(--tr-med), transform var(--tr-med), opacity var(--tr-med);
   transform-style: preserve-3d;
   will-change: transform;
 }
 .proj-card:hover {
-  border-color: var(--border-lit);
-  box-shadow: var(--glow);
+  border-color: rgba(91,140,255,0.22);
+  box-shadow: var(--glass-hi), var(--glow), 0 16px 48px rgba(0,0,0,0.3);
 }
 .proj-card.faded {
   opacity: 0.2;
@@ -722,9 +740,11 @@ ul { list-style: none; }
   color: var(--text-muted);
   white-space: nowrap;
   padding: 3px 8px;
-  background: var(--bg-card);
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: 100px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-border);
 }
 .tl-company {
   font-size: 0.85rem;
@@ -747,13 +767,17 @@ ul { list-style: none; }
 }
 .skill-group {
   padding: 1.5rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-hi);
   border-radius: var(--radius);
-  transition: border-color var(--tr-med), transform var(--tr-med);
+  transition: border-color var(--tr-med), transform var(--tr-med), box-shadow var(--tr-med);
 }
 .skill-group:hover {
-  border-color: var(--border-lit);
+  border-color: rgba(91,140,255,0.22);
+  box-shadow: var(--glass-hi), var(--glow);
   transform: translateY(-4px);
 }
 .sg-icon {
