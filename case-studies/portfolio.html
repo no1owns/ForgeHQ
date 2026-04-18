@@ -53,7 +53,8 @@
       Available for new projects
     </div>
     <h1 class="hero-name">
-      <span class="g-text">Ayodeji</span><br>Akintilo
+      <span class="hero-name-line"><span class="hero-name-inner"><span class="g-text">Ayodeji</span></span></span>
+      <span class="hero-name-line"><span class="hero-name-inner delay-2">Akintilo</span></span>
     </h1>
     <p class="hero-sub">Creative Systems Leader &nbsp;·&nbsp; UX/UI Storyteller &nbsp;·&nbsp; Brand Architect</p>
     <p class="hero-typewriter">
@@ -78,9 +79,10 @@
 
       <!-- Image -->
       <div class="about-img-wrap reveal-l">
-        <div class="about-img-frame">
+        <div class="about-img-frame parallax-frame">
           <img src="../images/Filmmakers+Therapy+Couch+Website+intro+(3).gif"
                alt="Ayodeji Akintilo"
+               class="parallax-img"
                onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#111122,#1a1a35)'">
           <div class="about-img-accent"></div>
         </div>
@@ -171,7 +173,7 @@
     <div class="proj-grid">
 
       <!-- MongoDB IPO -->
-      <div class="proj-card reveal d1" data-cat="technical">
+      <div class="proj-card img-rise d1" data-cat="technical">
         <div class="proj-thumb">
           <div class="proj-thumb-bg" style="background:linear-gradient(135deg,#001E2B 0%,#023430 100%);">
             MDB
@@ -199,7 +201,7 @@
       </div>
 
       <!-- MongoDB Events -->
-      <div class="proj-card reveal d2" data-cat="event-brand">
+      <div class="proj-card img-rise d2" data-cat="event-brand">
         <div class="proj-thumb">
           <div class="proj-thumb-bg" style="background:linear-gradient(135deg,#001a25 0%,#012e1e 100%);">
             MDB<br>WORLD
@@ -227,7 +229,7 @@
       </div>
 
       <!-- DocuSign Ads -->
-      <div class="proj-card reveal d3" data-cat="campaign">
+      <div class="proj-card img-rise d3" data-cat="campaign">
         <div class="proj-thumb">
           <div class="proj-thumb-bg" style="background:linear-gradient(135deg,#0a1628 0%,#0d2649 100%);">
             DOCU
@@ -255,7 +257,7 @@
       </div>
 
       <!-- DocuSign Momentum -->
-      <div class="proj-card reveal d4" data-cat="event-brand">
+      <div class="proj-card img-rise d4" data-cat="event-brand">
         <div class="proj-thumb">
           <div class="proj-thumb-bg" style="background:linear-gradient(135deg,#0a1220 0%,#0e1f3d 100%);">
             MNTM
@@ -283,7 +285,7 @@
       </div>
 
       <!-- BetterUp -->
-      <div class="proj-card reveal d5" data-cat="presentation">
+      <div class="proj-card img-rise d5" data-cat="presentation">
         <div class="proj-thumb">
           <div class="proj-thumb-bg" style="background:linear-gradient(135deg,#0c0c2a 0%,#16104a 100%);">
             BU
@@ -311,7 +313,7 @@
       </div>
 
       <!-- Filmmakers Therapy Couch -->
-      <div class="proj-card reveal d6" data-cat="culture">
+      <div class="proj-card img-rise d6" data-cat="culture">
         <div class="proj-thumb">
           <img src="../images/filmmakers_therapy_couch.png" alt="Filmmakers Therapy Couch">
           <div class="proj-overlay">
@@ -577,6 +579,9 @@
           heroContent.style.opacity   = Math.max(0, 1 - p * 1.4);
         }
 
+        // Image parallax
+        runParallax();
+
         ticking = false;
       });
       ticking = true;
@@ -598,12 +603,39 @@
   navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-  /* ── Reveal observer ── */
+  /* ── Reveal observer (sections, text blocks) ── */
   const revObs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
   }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
-
   document.querySelectorAll('.reveal, .reveal-l, .reveal-r, .reveal-s').forEach(el => revObs.observe(el));
+
+  /* ── Image slide-up + scale ── */
+  const riseEls = document.querySelectorAll('.img-rise');
+  const riseObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = [...riseEls].indexOf(e.target);
+        setTimeout(() => e.target.classList.add('in-view'), (idx % 3) * 110);
+        riseObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -60px 0px' });
+  riseEls.forEach(el => riseObs.observe(el));
+
+  /* ── Parallax ── */
+  function runParallax() {
+    document.querySelectorAll('.parallax-frame').forEach(frame => {
+      const img = frame.querySelector('.parallax-img');
+      if (!img) return;
+      const rect = frame.getBoundingClientRect();
+      const winH  = window.innerHeight;
+      if (rect.bottom < 0 || rect.top > winH) return;
+      const progress = (winH - rect.top) / (winH + rect.height);
+      const shift = (progress - 0.5) * 70;
+      img.style.transform = `scale(1.14) translateY(${shift}px)`;
+    });
+  }
+  runParallax();
 
   /* ── Active nav link ── */
   const sections   = document.querySelectorAll('section[id]');
