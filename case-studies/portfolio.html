@@ -739,6 +739,40 @@
     requestAnimationFrame(draw);
   })();
 
+  /* ── Heading line-mask reveal ── */
+  (function () {
+    function splitReveal(selector) {
+      document.querySelectorAll(selector).forEach(el => {
+        el.classList.add('heading-reveal');
+        const nodes = [...el.childNodes];
+        const lines = [[]];
+        nodes.forEach(node => {
+          if (node.nodeName === 'BR') lines.push([]);
+          else lines[lines.length - 1].push(node.cloneNode(true));
+        });
+        el.innerHTML = '';
+        lines.forEach((lineNodes, i) => {
+          if (!lineNodes.length) return;
+          const wrap  = document.createElement('span');
+          wrap.className = 'h-line';
+          const inner = document.createElement('span');
+          inner.className = 'h-line-inner';
+          inner.style.transitionDelay = (i * 85) + 'ms';
+          lineNodes.forEach(n => inner.appendChild(n));
+          wrap.appendChild(inner);
+          el.appendChild(wrap);
+        });
+      });
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+      document.querySelectorAll('.heading-reveal').forEach(el => obs.observe(el));
+    }
+    splitReveal('.section-title');
+  })();
+
   /* ── Card 3D tilt ── */
   document.querySelectorAll('.proj-card').forEach(card => {
     card.addEventListener('mousemove', e => {

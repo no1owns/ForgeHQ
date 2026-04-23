@@ -248,17 +248,50 @@
 
 <script>
 (function() {
+  /* Bento card entrance */
   const cards = [...document.querySelectorAll('.bento-card')];
-  const obs = new IntersectionObserver(entries => {
+  const bentoObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         const idx = cards.indexOf(e.target);
         setTimeout(() => e.target.classList.add('in-view'), idx * 90);
-        obs.unobserve(e.target);
+        bentoObs.unobserve(e.target);
       }
     });
   }, { threshold: 0.05, rootMargin: '0px 0px -60px 0px' });
-  cards.forEach(el => obs.observe(el));
+  cards.forEach(el => bentoObs.observe(el));
+
+  /* Section heading line-mask reveal */
+  function splitReveal(selector) {
+    document.querySelectorAll(selector).forEach(el => {
+      el.classList.add('heading-reveal');
+      const nodes = [...el.childNodes];
+      const lines = [[]];
+      nodes.forEach(node => {
+        if (node.nodeName === 'BR') lines.push([]);
+        else lines[lines.length - 1].push(node.cloneNode(true));
+      });
+      el.innerHTML = '';
+      lines.forEach((lineNodes, i) => {
+        if (!lineNodes.length) return;
+        const wrap  = document.createElement('span');
+        wrap.className = 'h-line';
+        const inner = document.createElement('span');
+        inner.className = 'h-line-inner';
+        inner.style.transitionDelay = (i * 85) + 'ms';
+        lineNodes.forEach(n => inner.appendChild(n));
+        wrap.appendChild(inner);
+        el.appendChild(wrap);
+      });
+    });
+    const headObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in-view'); headObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+    document.querySelectorAll('.heading-reveal').forEach(el => headObs.observe(el));
+  }
+  splitReveal('.cs-section-title');
 })();
 </script>
 </body>
