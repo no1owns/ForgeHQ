@@ -1,0 +1,668 @@
+/* ═══════════════════════════════════════
+   DARK UNIVERSE — COMBAT SYSTEM
+   Persona-style: enemy portrait top,
+   command menu bottom, dialogue overlay
+   ═══════════════════════════════════════ */
+
+/* ── COMBAT SCREEN WRAPPER ── */
+#combat-screen {
+  position: fixed; inset: 0; z-index: 100;
+  display: none; flex-direction: column;
+  background: var(--fog2);
+  overflow: hidden;
+}
+#combat-screen.active { display: flex; }
+
+/* ── SCENE / ENEMY AREA (top ~55%) ── */
+#combat-scene {
+  flex: 0 0 55%;
+  position: relative;
+  overflow: hidden;
+  background: #080505;
+}
+
+/* Location atmosphere behind enemy */
+#scene-bg {
+  position: absolute; inset: 0;
+  background: #080505;
+  transition: background 1s ease;
+}
+#scene-bg.derry    { background: radial-gradient(ellipse at 50% 80%, #1a0a05 0%, #080305 60%); }
+#scene-bg.sewer    { background: radial-gradient(ellipse at 50% 100%, #051505 0%, #030a05 60%); }
+#scene-bg.overlook { background: radial-gradient(ellipse at 50% 80%, #050a1a 0%, #030508 60%); }
+#scene-bg.darktower{ background: radial-gradient(ellipse at 50% 80%, #1a0515 0%, #080305 60%); }
+
+/* Animated fog/mist in background */
+#scene-mist {
+  position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px, transparent 3px,
+    rgba(139,0,0,0.02) 3px, rgba(139,0,0,0.02) 4px
+  );
+  animation: mistDrift 8s ease-in-out infinite;
+}
+@keyframes mistDrift {
+  0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)}
+}
+
+/* ── ENEMY PORTRAIT ── */
+#enemy-portrait-wrap {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: min(320px, 80vw);
+  height: 100%;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+
+/* CSS-drawn enemy portraits */
+#enemy-canvas {
+  width: 100%; height: 100%;
+  position: relative;
+  display: flex; align-items: flex-end; justify-content: center;
+  /* entrance animation */
+  animation: enemyEntrance 0.7s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes enemyEntrance {
+  from { transform: scale(0.85) translateY(30px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+/* The actual enemy figure — CSS art */
+.enemy-figure {
+  position: relative;
+  width: 100%; height: 100%;
+  display: flex; align-items: flex-end; justify-content: center;
+  filter: drop-shadow(0 0 40px rgba(139,0,0,0.6));
+  transition: filter 0.3s ease;
+}
+.enemy-figure.hit {
+  animation: enemyHit 0.35s ease;
+  filter: drop-shadow(0 0 60px rgba(255,50,50,1)) brightness(2);
+}
+@keyframes enemyHit {
+  0%  { transform: translateX(0); }
+  25% { transform: translateX(-12px) scale(0.97); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-5px); }
+  100%{ transform: translateX(0); }
+}
+.enemy-figure.phase-transition {
+  animation: phaseShift 1.2s ease;
+}
+@keyframes phaseShift {
+  0%  { filter:drop-shadow(0 0 0px transparent); opacity:1; }
+  30% { filter:drop-shadow(0 0 80px rgba(200,0,0,1)) brightness(3); opacity:0.2; }
+  60% { opacity:0; transform:scale(1.3); }
+  80% { opacity:0; transform:scale(0.7); }
+  100%{ opacity:1; transform:scale(1); filter:drop-shadow(0 0 40px rgba(139,0,0,0.6)); }
+}
+
+/* Pennywise CSS portrait */
+.pennywise-figure {
+  width: 200px;
+  height: 340px;
+  position: relative;
+  margin-bottom: 0;
+}
+/* Body */
+.pw-body {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 220px;
+  background: #e8e0d8;
+  border-radius: 40px 40px 10px 10px;
+  /* ruffled suit detail */
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,0.3),
+    0 0 0 3px #c8c0b8,
+    0 0 0 6px #e8e0d8,
+    0 0 0 9px #c8c0b8;
+}
+/* Neck & head */
+.pw-head {
+  position: absolute;
+  bottom: 200px; left: 50%;
+  transform: translateX(-50%);
+  width: 100px; height: 100px;
+  background: radial-gradient(circle at 40% 35%, #f0e8e0, #d8c8c0);
+  border-radius: 50%;
+  box-shadow: inset 0 10px 20px rgba(0,0,0,0.2);
+  animation: pwFloat 4s ease-in-out infinite;
+  z-index: 2;
+}
+@keyframes pwFloat { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-8px)} }
+/* Eyes */
+.pw-eye {
+  position: absolute;
+  width: 18px; height: 22px;
+  background: #ff6000;
+  border-radius: 50%;
+  top: 35px;
+  box-shadow: 0 0 12px rgba(255,80,0,0.8), 0 0 30px rgba(255,50,0,0.4);
+  animation: eyeGlow 2s ease-in-out infinite;
+}
+@keyframes eyeGlow { 0%,100%{box-shadow:0 0 12px rgba(255,80,0,0.8)} 50%{box-shadow:0 0 24px rgba(255,80,0,1),0 0 50px rgba(255,50,0,0.6)} }
+.pw-eye.left  { left: 20px; }
+.pw-eye.right { right: 20px; }
+/* Pupils */
+.pw-eye::after {
+  content:'';
+  position: absolute;
+  width: 8px; height: 10px;
+  background: #000;
+  border-radius: 50%;
+  top: 6px; left: 5px;
+}
+/* Nose */
+.pw-nose {
+  position: absolute;
+  width: 18px; height: 18px;
+  background: #ff2020;
+  border-radius: 50%;
+  top: 52px; left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px rgba(255,0,0,0.6);
+}
+/* Mouth */
+.pw-mouth {
+  position: absolute;
+  width: 60px; height: 28px;
+  top: 68px; left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+.pw-smile {
+  width: 60px; height: 60px;
+  border: 4px solid #8b0000;
+  border-radius: 50%;
+  position: absolute;
+  top: 0; left: 0;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+/* Teeth */
+.pw-tooth {
+  position: absolute;
+  background: #f8f0e8;
+  width: 9px; height: 16px;
+  top: 2px;
+  border-radius: 0 0 4px 4px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+}
+.pw-tooth:nth-child(1){left:6px;}
+.pw-tooth:nth-child(2){left:17px;}
+.pw-tooth:nth-child(3){left:28px;}
+.pw-tooth:nth-child(4){left:39px;}
+/* Hair tufts */
+.pw-hair {
+  position: absolute;
+  width: 28px; height: 28px;
+  background: #e05000;
+  border-radius: 50%;
+  top: -8px;
+}
+.pw-hair.left  { left: -14px; box-shadow: 0 0 10px rgba(200,60,0,0.4); }
+.pw-hair.right { right: -14px; box-shadow: 0 0 10px rgba(200,60,0,0.4); }
+/* Arms */
+.pw-arm {
+  position: absolute;
+  width: 28px; height: 90px;
+  background: #e8e0d8;
+  border-radius: 14px;
+  bottom: 50px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+  transform-origin: top center;
+}
+.pw-arm.left  { left: -20px; transform: rotate(-15deg); animation: armSwayL 3s ease-in-out infinite; }
+.pw-arm.right { right: -20px; transform: rotate(15deg);  animation: armSwayR 3s ease-in-out infinite; }
+@keyframes armSwayL { 0%,100%{transform:rotate(-15deg)} 50%{transform:rotate(-25deg)} }
+@keyframes armSwayR { 0%,100%{transform:rotate(15deg)}  50%{transform:rotate(25deg)} }
+/* Gloves */
+.pw-glove {
+  position: absolute;
+  width: 32px; height: 32px;
+  background: #f0e8e0;
+  border-radius: 50%;
+  bottom: -10px; left: 50%;
+  transform: translateX(-50%);
+}
+/* Collar ruffles */
+.pw-collar {
+  position: absolute;
+  top: -10px; left: 50%;
+  transform: translateX(-50%);
+  width: 80px; height: 30px;
+  background: #e8e0d8;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #c8c0b8, 0 0 0 6px #e8e0d8, 0 0 0 9px #c8c0b8;
+}
+/* Balloon */
+.pw-balloon {
+  position: absolute;
+  top: -60px; right: -30px;
+  z-index: 3;
+  animation: balloonBob 3s ease-in-out infinite;
+}
+@keyframes balloonBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+.balloon-body {
+  width: 36px; height: 44px;
+  background: radial-gradient(circle at 35% 30%, #ff6060, #cc0000);
+  border-radius: 50% 50% 50% 50% / 55% 55% 45% 45%;
+  box-shadow: 0 0 20px rgba(200,0,0,0.5);
+}
+.balloon-string {
+  width: 1px; height: 50px;
+  background: rgba(200,0,0,0.4);
+  margin: 0 auto;
+}
+
+/* Jack Torrance CSS portrait */
+.jack-figure {
+  width: 180px; height: 320px;
+  position: relative;
+}
+.jack-body {
+  position: absolute; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 100px; height: 200px;
+  background: linear-gradient(180deg, #3a2010 0%, #2a1508 100%);
+  border-radius: 15px 15px 5px 5px;
+}
+.jack-head {
+  position: absolute; bottom: 185px; left: 50%;
+  transform: translateX(-50%);
+  width: 85px; height: 90px;
+  background: radial-gradient(circle at 40% 35%, #c8a878, #a08858);
+  border-radius: 45% 45% 40% 40%;
+  animation: jackTilt 5s ease-in-out infinite;
+}
+@keyframes jackTilt {
+  0%,100%{transform:translateX(-50%) rotate(0deg)}
+  40%{transform:translateX(-50%) rotate(-8deg)}
+  70%{transform:translateX(-50%) rotate(5deg)}
+}
+.jack-eye {
+  position: absolute;
+  width: 14px; height: 8px;
+  background: #181008;
+  border-radius: 50%;
+  top: 32px;
+}
+.jack-eye.left  { left: 18px; }
+.jack-eye.right { right: 18px; }
+/* Madness shine in eyes */
+.jack-eye::after {
+  content:'';
+  position:absolute;
+  width:6px; height:6px;
+  background:#ff8000;
+  border-radius:50%;
+  top:1px; left:4px;
+  box-shadow:0 0 6px #ff8000;
+  animation:eyeGlow 1.5s ease-in-out infinite;
+}
+.jack-mouth {
+  position: absolute;
+  width: 40px; height: 12px;
+  top: 58px; left: 50%; transform: translateX(-50%);
+  border-bottom: 3px solid #8b4010;
+  border-radius: 0 0 20px 20px;
+}
+.jack-axe {
+  position: absolute;
+  right: -50px; bottom: 80px;
+  transform: rotate(-30deg);
+  animation: axeSwing 4s ease-in-out infinite;
+}
+@keyframes axeSwing {
+  0%,100%{transform:rotate(-30deg)}
+  50%{transform:rotate(-50deg)}
+}
+.axe-handle { width: 8px; height: 100px; background: #5a3010; border-radius: 4px; }
+.axe-head {
+  position: absolute; top: 0; left: -20px;
+  width: 40px; height: 30px;
+  background: #888880;
+  clip-path: polygon(0 0, 100% 30%, 100% 70%, 0 100%);
+}
+
+/* Phase 2 Pennywise - spider form */
+.spider-figure {
+  width: 280px; height: 200px;
+  position: relative;
+}
+.spider-body {
+  position: absolute; bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  width: 100px; height: 80px;
+  background: radial-gradient(circle, #2a1a10 0%, #0a0505 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(100,0,0,0.4);
+}
+.spider-leg {
+  position: absolute;
+  width: 5px; height: 80px;
+  background: #1a0a05;
+  border-radius: 3px;
+  bottom: 50px;
+  transform-origin: bottom center;
+}
+.spider-leg:nth-child(2){left: 20px; transform: rotate(40deg); animation: legWave 2s ease-in-out infinite 0s;}
+.spider-leg:nth-child(3){left: 30px; transform: rotate(20deg); animation: legWave 2s ease-in-out infinite 0.2s;}
+.spider-leg:nth-child(4){left: 40px; transform: rotate(5deg);  animation: legWave 2s ease-in-out infinite 0.4s;}
+.spider-leg:nth-child(5){right:20px; transform: rotate(-40deg);animation: legWave 2s ease-in-out infinite 0.1s;}
+.spider-leg:nth-child(6){right:30px; transform: rotate(-20deg);animation: legWave 2s ease-in-out infinite 0.3s;}
+.spider-leg:nth-child(7){right:40px; transform: rotate(-5deg); animation: legWave 2s ease-in-out infinite 0.5s;}
+@keyframes legWave {
+  0%,100%{transform-origin:bottom;} 50%{transform:rotate(var(--r,0deg)) translateY(-5px);}
+}
+.spider-face {
+  position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+  font-size: 3rem;
+  animation: pwFloat 3s ease-in-out infinite;
+}
+
+/* ── ENEMY STATUS BAR (top of scene) ── */
+#enemy-status-bar {
+  position: absolute; top: 0; left: 0; right: 0;
+  padding: 12px 20px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+  display: flex; align-items: center; gap: 16px;
+  z-index: 10;
+}
+#enemy-name-txt {
+  font-family: var(--font-display);
+  font-size: 1.1rem; letter-spacing: 3px;
+  color: var(--rust); text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(139,0,0,0.6);
+  flex-shrink: 0;
+}
+#enemy-hp-track {
+  flex: 1; height: 8px;
+  background: rgba(20,5,5,0.8);
+  border: 1px solid rgba(80,10,10,0.6);
+  border-radius: 4px; overflow: hidden;
+}
+#enemy-hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4a0000, var(--rust), #ff4040);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+#enemy-hp-nums {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--pale); letter-spacing: 1px; flex-shrink: 0;
+}
+#enemy-phase-badge {
+  font-family: var(--font-mono); font-size: 8px;
+  letter-spacing: 3px; color: #ff6060;
+  text-transform: uppercase; flex-shrink: 0;
+  opacity: 0; transition: opacity 0.3s;
+}
+#enemy-phase-badge.show { opacity: 1; }
+
+/* ── DIALOGUE BOX ── */
+#combat-dialogue {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 14px 20px 12px;
+  background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 100%);
+  border-top: 1px solid rgba(80,10,10,0.4);
+  min-height: 70px; z-index: 10;
+  display: none;
+}
+#combat-dialogue.active { display: block; }
+#dialogue-speaker {
+  font-family: var(--font-display); font-size: 9px;
+  letter-spacing: 4px; color: var(--rust);
+  text-transform: uppercase; margin-bottom: 6px;
+}
+#dialogue-text {
+  font-family: var(--font-body); font-size: 15px;
+  color: var(--ghost); line-height: 1.6;
+  font-style: italic;
+}
+/* Blinking cursor */
+.dial-cursor {
+  display: inline-block; width: 2px; height: 1em;
+  background: var(--rust); margin-left: 2px;
+  animation: blink 0.7s step-end infinite;
+  vertical-align: text-bottom;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ── PLAYER STATUS (bottom-left) ── */
+#player-status {
+  position: absolute; bottom: 80px; left: 20px;
+  z-index: 10; pointer-events: none;
+}
+#player-name-txt {
+  font-family: var(--font-display); font-size: 9px;
+  letter-spacing: 4px; color: var(--pale);
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.p-stat-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 5px;
+}
+.p-stat-lbl {
+  font-family: var(--font-mono); font-size: 8px;
+  letter-spacing: 2px; color: var(--pale);
+  text-transform: uppercase; width: 32px; flex-shrink: 0;
+}
+.p-stat-track {
+  width: 90px; height: 6px;
+  background: rgba(10,5,5,0.8);
+  border: 1px solid rgba(50,20,20,0.6);
+  border-radius: 3px; overflow: hidden;
+}
+.p-stat-fill {
+  height: 100%; border-radius: 3px;
+  transition: width 0.4s ease;
+}
+#p-hp-fill    { background: linear-gradient(90deg, var(--deep-blood), var(--rust)); }
+#p-san-fill   { background: linear-gradient(90deg, #0a1a40, #4080cc); }
+#p-fear-fill  { background: linear-gradient(90deg, #3a1a50, #9a30cc); }
+.p-stat-val {
+  font-family: var(--font-mono); font-size: 9px;
+  color: var(--pale); min-width: 28px;
+}
+.p-stat-row.pulse-danger .p-stat-track {
+  animation: dangerPulse 0.7s ease-in-out infinite;
+}
+@keyframes dangerPulse {
+  0%,100%{box-shadow:none} 50%{box-shadow:0 0 8px rgba(255,50,50,0.7)}
+}
+/* Fear label pulses purple when high */
+.p-stat-row.fear-high .p-stat-lbl { color: var(--purple-pale); }
+.p-stat-row.fear-high .p-stat-track { animation: fearPulseStat 1s ease-in-out infinite; }
+@keyframes fearPulseStat {
+  0%,100%{box-shadow:none} 50%{box-shadow:0 0 8px rgba(150,50,200,0.6)}
+}
+
+/* Memory tokens */
+#memory-tokens {
+  display: flex; gap: 5px; margin-top: 8px;
+}
+.mem-token {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f8f0a0, #b08020);
+  box-shadow: 0 0 6px rgba(200,160,30,0.5);
+  border: 1px solid rgba(200,160,30,0.4);
+  transition: all 0.3s;
+}
+.mem-token.spent {
+  background: #1a1408;
+  box-shadow: none;
+  border-color: rgba(60,40,10,0.4);
+}
+
+/* ── COMMAND MENU (bottom ~45%) ── */
+#combat-menu {
+  flex: 0 0 45%;
+  background: linear-gradient(180deg, #0d0b09 0%, #080605 100%);
+  border-top: 2px solid var(--blood);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+/* Turn indicator */
+#turn-banner {
+  padding: 6px 20px;
+  background: rgba(40,0,0,0.5);
+  border-bottom: 1px solid rgba(80,10,10,0.4);
+  display: flex; align-items: center; gap: 10px;
+}
+#turn-txt {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 4px; color: var(--pale);
+  text-transform: uppercase;
+}
+#turn-indicator {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--rust);
+  animation: turnPulse 1s ease-in-out infinite;
+}
+@keyframes turnPulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+#turn-indicator.enemy { background: #ff4040; animation: turnPulse 0.5s ease-in-out infinite; }
+
+/* Narrative log (scrollable, behind menu) */
+#combat-log {
+  flex: 1; overflow-y: auto; padding: 10px 20px;
+  display: flex; flex-direction: column; gap: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+#combat-log::-webkit-scrollbar { width: 3px; }
+#combat-log::-webkit-scrollbar-thumb { background: var(--deep-blood); }
+.log-line {
+  font-size: 12px; line-height: 1.5;
+  animation: logFade 0.3s ease;
+}
+@keyframes logFade { from{opacity:0;transform:translateX(-4px)} to{opacity:1;transform:none} }
+.log-line.hit    { color: #ff8060; font-family: var(--font-mono); }
+.log-line.miss   { color: #4a3a2a; font-style: italic; }
+.log-line.enemy  { color: #cc4040; }
+.log-line.system { color: var(--rust); font-family: var(--font-mono); font-size: 11px; }
+.log-line.heal   { color: #60cc80; }
+.log-line.fear   { color: var(--purple-pale); }
+
+/* Action command grid — Persona-style 2x3 */
+#command-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  border-top: 1px solid rgba(60,10,10,0.5);
+  background: rgba(30,10,10,0.3);
+  flex-shrink: 0;
+}
+.cmd-btn {
+  background: rgba(8,4,3,0.97);
+  border: none;
+  color: var(--parchment);
+  padding: 14px 16px;
+  font-family: var(--font-body); font-size: 14px;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+  display: flex; align-items: center; gap: 10px;
+  position: relative; overflow: hidden;
+  min-height: 52px;
+}
+.cmd-btn::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--blood);
+  transform: scaleY(0); transform-origin: center;
+  transition: transform 0.15s;
+}
+.cmd-btn:hover:not(:disabled) {
+  background: rgba(30,8,8,0.97);
+  color: var(--ghost);
+}
+.cmd-btn:hover:not(:disabled)::before { transform: scaleY(1); }
+.cmd-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+.cmd-btn:active:not(:disabled) { background: rgba(50,0,0,0.97); }
+
+.cmd-icon { font-size: 18px; flex-shrink: 0; }
+.cmd-label { flex: 1; }
+.cmd-sublabel {
+  font-size: 10px; color: var(--pale);
+  font-family: var(--font-mono); letter-spacing: 1px;
+  display: block; margin-top: 1px;
+}
+.cmd-cost {
+  font-family: var(--font-mono); font-size: 9px;
+  color: #6a4a3a; flex-shrink: 0;
+}
+
+/* Special states */
+.cmd-btn.danger-cmd { border-left: 2px solid var(--blood); }
+.cmd-btn.memory-cmd { border-left: 2px solid #b09020; }
+.cmd-btn.memory-cmd .cmd-icon { filter: drop-shadow(0 0 4px rgba(200,160,30,0.6)); }
+.cmd-btn.flee-cmd   { }
+.cmd-btn.locked-cmd { opacity: 0.15 !important; }
+
+/* ── PHASE TRANSITION OVERLAY ── */
+#phase-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: #000; opacity: 0;
+  pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+}
+#phase-overlay.active {
+  pointer-events: all;
+  animation: phaseOverlay 2.5s ease forwards;
+}
+@keyframes phaseOverlay {
+  0%  {opacity:0}
+  20% {opacity:1}
+  70% {opacity:1}
+  100%{opacity:0;pointer-events:none}
+}
+#phase-title {
+  font-family: var(--font-display); font-size: clamp(2rem,8vw,4rem);
+  color: var(--rust); letter-spacing: 8px; text-transform: uppercase;
+  text-shadow: 0 0 60px rgba(139,0,0,0.9);
+  animation: phaseTitle 2.5s ease both;
+}
+@keyframes phaseTitle {
+  0%{transform:scale(0.5);opacity:0} 30%{transform:scale(1.05);opacity:1}
+  70%{transform:scale(1);opacity:1}  100%{opacity:0}
+}
+#phase-sub {
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 5px; color: var(--pale);
+  text-transform: uppercase; opacity: 0;
+  animation: fadeInSlow 0.5s ease 0.5s both;
+}
+
+/* ── MOBILE COMBAT ── */
+@media(max-width: 699px) {
+  #combat-scene { flex: 0 0 52%; }
+  #combat-menu  { flex: 0 0 48%; }
+
+  #enemy-portrait-wrap { width: min(240px,75vw); }
+  .pennywise-figure { width: 150px; height: 260px; }
+  .pw-body { width: 85px; height: 170px; }
+  .pw-head { width: 80px; height: 80px; bottom: 155px; }
+
+  #player-status { bottom: 72px; left: 12px; }
+  .p-stat-track { width: 70px; }
+
+  #combat-log { padding: 7px 14px; }
+  .log-line { font-size: 11px; }
+
+  .cmd-btn { padding: 12px 12px; font-size: 13px; min-height: 48px; }
+  .cmd-icon { font-size: 16px; }
+  .cmd-sublabel { display: none; }
+
+  #enemy-status-bar { padding: 10px 14px; gap: 10px; }
+  #enemy-name-txt { font-size: 0.95rem; }
+
+  #turn-banner { padding: 5px 14px; }
+  #combat-dialogue { padding: 10px 14px 10px; min-height: 60px; }
+  #dialogue-text { font-size: 13px; }
+}

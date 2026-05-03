@@ -1,0 +1,1164 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,700;1,400&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --blood: #8b0000;
+  --deep-blood: #4a0000;
+  --rust: #c0392b;
+  --deep: #0a0505;
+  --surface: #110908;
+  --card: #0e0707;
+  --border: #2a1510;
+  --parchment: #d4c9b0;
+  --pale: #a89880;
+  --yellow: #f0c040;
+  --green: #2ecc71;
+  --muted: #4a3530;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--deep);
+  color: var(--parchment);
+  font-family: 'Crimson Pro', Georgia, serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.35;
+}
+
+#bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 20%, rgba(100,0,0,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 85% 75%, rgba(60,0,0,0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(30,0,0,0.2) 0%, transparent 60%);
+}
+
+#drips {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  pointer-events: none;
+  z-index: 2;
+}
+.drip {
+  position: absolute;
+  top: 0;
+  background: var(--blood);
+  border-radius: 0 0 4px 4px;
+  animation: drip ease-in infinite;
+}
+@keyframes drip {
+  0% { height: 0; opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { height: 80px; opacity: 0; }
+}
+
+#scanline {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 3px);
+}
+
+#wrap {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+#masthead {
+  padding: 60px 0 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 56px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+#masthead::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blood), transparent);
+}
+
+#portal-eyebrow {
+  font-family: 'Share Tech Mono';
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: var(--rust);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  animation: fadeUp 0.8s ease both;
+}
+
+#portal-title {
+  font-family: 'Bebas Neue', serif;
+  font-size: clamp(3.2rem, 9vw, 7rem);
+  letter-spacing: 8px;
+  line-height: 0.9;
+  color: var(--parchment);
+  text-shadow:
+    0 0 60px rgba(139,0,0,0.5),
+    0 2px 0 rgba(0,0,0,0.8);
+  animation: fadeUp 0.8s ease 0.1s both;
+  position: relative;
+}
+#portal-title span { color: var(--rust); }
+
+#portal-sub {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--pale);
+  margin-top: 16px;
+  letter-spacing: 1px;
+  animation: fadeUp 0.8s ease 0.2s both;
+  max-width: 36ch;
+}
+
+#portal-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 28px;
+  width: 320px;
+  max-width: 100%;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+#portal-divider::before,
+#portal-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--muted));
+}
+#portal-divider::after {
+  background: linear-gradient(90deg, var(--muted), transparent);
+}
+#portal-divider span {
+  color: var(--rust);
+  font-size: 14px;
+}
+
+#portal-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 28px;
+  animation: fadeUp 0.8s ease 0.4s both;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.p-stat { text-align: center; min-width: 72px; }
+.p-stat-num {
+  font-family: 'Bebas Neue';
+  font-size: 2rem;
+  color: var(--rust);
+  line-height: 1;
+  display: block;
+}
+.p-stat-label {
+  font-family: 'Share Tech Mono';
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.section-header h2 {
+  font-family: 'Special Elite';
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: var(--rust);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.section-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+#featured {
+  margin-bottom: 56px;
+  animation: fadeUp 0.9s ease 0.5s both;
+}
+
+#hero-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--rust);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  min-height: 360px;
+}
+#hero-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(139,0,0,0.3), 0 0 0 1px rgba(192,57,43,0.3);
+}
+#hero-card:hover #hero-play-btn {
+  background: var(--rust);
+  color: #fff;
+}
+#hero-card:hover #hero-play-btn::before { transform: scaleX(0); }
+
+#hero-art {
+  position: relative;
+  background: #070303;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+  min-height: 280px;
+}
+#hero-art-content {
+  font-size: 10rem;
+  filter: drop-shadow(0 0 40px rgba(139,0,0,0.6));
+  animation: heroFloat 4s ease-in-out infinite;
+  z-index: 2;
+  position: relative;
+}
+@keyframes heroFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+#hero-art::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(100,0,0,0.25) 0%, transparent 70%);
+}
+#hero-art::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(transparent, rgba(7,3,3,0.8));
+}
+
+.art-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image:
+    linear-gradient(rgba(139,0,0,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,0,0,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.corner-tag {
+  position: absolute;
+  z-index: 3;
+  font-family: 'Share Tech Mono';
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--rust);
+  text-transform: uppercase;
+  padding: 4px 8px;
+  background: rgba(7,3,3,0.9);
+  border: 1px solid var(--border);
+}
+.corner-tag.tl { top: 12px; left: 12px; }
+.corner-tag.br { bottom: 12px; right: 12px; }
+
+#hero-info {
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+#hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.badge {
+  font-family: 'Share Tech Mono';
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+.badge.live { background: rgba(46,204,113,0.15); color: var(--green); border: 1px solid rgba(46,204,113,0.3); }
+.badge.new { background: rgba(240,192,64,0.15); color: var(--yellow); border: 1px solid rgba(240,192,64,0.3); }
+.badge.soon { background: rgba(42,21,16,0.8); color: var(--muted); border: 1px solid var(--border); }
+.badge.chapter { background: rgba(139,0,0,0.15); color: var(--rust); border: 1px solid rgba(139,0,0,0.3); }
+
+#hero-title {
+  font-family: 'Bebas Neue';
+  font-size: 2.8rem;
+  letter-spacing: 4px;
+  color: var(--parchment);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+#hero-universe {
+  font-family: 'Share Tech Mono';
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--rust);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+#hero-desc {
+  font-size: 15px;
+  color: var(--pale);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+#hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 88px;
+}
+.meta-label {
+  font-family: 'Share Tech Mono';
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.meta-value {
+  font-size: 13px;
+  color: var(--parchment);
+}
+
+#hero-play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 2px solid var(--rust);
+  color: var(--rust);
+  padding: 14px 28px;
+  font-family: 'Special Elite';
+  font-size: 1rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s;
+  align-self: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+#hero-play-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--rust);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s;
+}
+#hero-play-btn span {
+  position: relative;
+  z-index: 1;
+}
+#hero-play-btn .btn-arrow {
+  font-size: 1.2rem;
+  transition: transform 0.2s;
+  position: relative;
+  z-index: 1;
+}
+#hero-card:hover #hero-play-btn .btn-arrow { transform: translateX(4px); }
+
+#game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 56px;
+}
+
+.game-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  animation: fadeUp 0.8s ease both;
+}
+.game-card:nth-child(1) { animation-delay: 0.6s; }
+.game-card:nth-child(2) { animation-delay: 0.7s; }
+.game-card:nth-child(3) { animation-delay: 0.8s; }
+.game-card:nth-child(4) { animation-delay: 0.9s; }
+.game-card:nth-child(5) { animation-delay: 1.0s; }
+.game-card:nth-child(6) { animation-delay: 1.1s; }
+
+.game-card:hover:not(.locked-card) {
+  transform: translateY(-6px);
+  border-color: rgba(192,57,43,0.5);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(192,57,43,0.2);
+}
+
+.card-art {
+  height: 160px;
+  background: #070303;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.card-art-emoji {
+  filter: drop-shadow(0 0 20px rgba(139,0,0,0.5));
+  transition: transform 0.3s;
+  z-index: 2;
+  position: relative;
+}
+.game-card:hover .card-art-emoji { transform: scale(1.1); }
+
+.card-art-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(100,0,0,0.2) 0%, transparent 70%);
+}
+.card-art-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(139,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139,0,0,0.04) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.locked-card .card-art::after {
+  content: '🔒';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  background: rgba(7,3,3,0.75);
+  backdrop-filter: blur(3px);
+}
+.locked-card {
+  cursor: default;
+  opacity: 0.65;
+}
+.locked-card:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.soon-card .card-art-emoji {
+  filter: grayscale(0.6) drop-shadow(0 0 10px rgba(100,100,100,0.3));
+}
+
+.card-body { padding: 16px 18px 20px; }
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 10px;
+}
+
+.card-title {
+  font-family: 'Special Elite';
+  font-size: 1rem;
+  color: var(--parchment);
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: var(--pale);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  margin-top: 4px;
+  gap: 8px;
+}
+.card-genre {
+  font-family: 'Share Tech Mono';
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.card-action {
+  font-family: 'Share Tech Mono';
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--rust);
+  text-transform: uppercase;
+  transition: letter-spacing 0.2s;
+  text-align: right;
+}
+.game-card:hover:not(.locked-card) .card-action { letter-spacing: 3px; }
+
+.card-progress { margin-bottom: 12px; }
+.progress-label {
+  font-family: 'Share Tech Mono';
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.progress-track {
+  height: 3px;
+  background: #1a0a0a;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--deep-blood), var(--rust));
+  border-radius: 2px;
+}
+
+#universe-section {
+  margin-bottom: 56px;
+  animation: fadeUp 0.8s ease 1.2s both;
+}
+
+.universe-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.universe-strip {
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+}
+.universe-strip:hover { border-color: rgba(192,57,43,0.3); }
+.u-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+.u-info { flex: 1; min-width: 0; }
+.u-title {
+  font-family: 'Special Elite';
+  font-size: 0.95rem;
+  color: var(--parchment);
+  margin-bottom: 3px;
+}
+.u-desc {
+  font-size: 13px;
+  color: var(--pale);
+  line-height: 1.5;
+}
+.u-status {
+  font-family: 'Share Tech Mono';
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+#portal-footer {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  animation: fadeUp 0.8s ease 1.4s both;
+}
+#footer-logo {
+  font-family: 'Bebas Neue';
+  font-size: 1.4rem;
+  letter-spacing: 4px;
+  color: var(--muted);
+}
+#footer-logo span { color: var(--rust); }
+#footer-links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.footer-link {
+  font-family: 'Share Tech Mono';
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-link:hover { color: var(--pale); }
+#footer-copy {
+  font-family: 'Share Tech Mono';
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #2a1a15;
+  text-transform: uppercase;
+}
+
+#modal {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(0,0,0,0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  pointer-events: none;
+}
+#modal.active {
+  display: flex;
+  pointer-events: auto;
+}
+
+#modal-inner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--rust);
+  border-radius: 4px;
+  width: 100%;
+  max-width: 660px;
+  max-height: min(88vh, 900px);
+  overflow-y: auto;
+  padding: 36px 40px;
+  position: relative;
+  animation: modalIn 0.3s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: none; }
+}
+#modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: 'Share Tech Mono';
+  font-size: 11px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+#modal-close:hover { color: var(--pale); }
+#modal-emoji {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  display: block;
+}
+#modal-title {
+  font-family: 'Bebas Neue';
+  font-size: 2.4rem;
+  letter-spacing: 4px;
+  color: var(--parchment);
+  margin-bottom: 6px;
+  line-height: 1;
+}
+#modal-universe {
+  font-family: 'Share Tech Mono';
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--rust);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+#modal-desc {
+  font-size: 15px;
+  color: var(--pale);
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+#modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.modal-tag {
+  font-family: 'Share Tech Mono';
+  font-size: 9px;
+  letter-spacing: 2px;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  text-transform: uppercase;
+}
+#modal-btns {
+  display: flex;
+  gap: 12px;
+}
+#modal-play {
+  background: var(--rust);
+  color: #fff;
+  border: 2px solid var(--rust);
+  padding: 13px 32px;
+  font-family: 'Special Elite';
+  font-size: 0.95rem;
+  letter-spacing: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  flex: 1;
+  text-align: center;
+}
+#modal-play:hover {
+  background: #a93226;
+  border-color: #a93226;
+}
+#modal-cancel {
+  background: transparent;
+  color: var(--pale);
+  border: 1px solid var(--border);
+  padding: 13px 20px;
+  font-family: 'Share Tech Mono';
+  font-size: 10px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+#modal-cancel:hover {
+  border-color: var(--pale);
+  color: var(--parchment);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (max-width: 900px) {
+  #hero-card {
+    grid-template-columns: 1fr;
+  }
+
+  #hero-art {
+    height: 240px;
+    min-height: 240px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  #hero-art-content {
+    font-size: 7rem;
+  }
+
+  #hero-info {
+    padding: 28px 24px;
+  }
+}
+
+@media (max-width: 720px) {
+  #wrap {
+    padding: 0 16px 56px;
+  }
+
+  #masthead {
+    padding: calc(34px + env(safe-area-inset-top)) 0 32px;
+    margin-bottom: 36px;
+  }
+
+  #portal-eyebrow {
+    font-size: 9px;
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+  }
+
+  #portal-title {
+    font-size: clamp(2.6rem, 16vw, 4.3rem);
+    letter-spacing: 4px;
+  }
+
+  #portal-sub {
+    font-size: 1rem;
+    margin-top: 12px;
+    max-width: 24ch;
+  }
+
+  #portal-divider {
+    margin-top: 20px;
+    width: 220px;
+    gap: 12px;
+  }
+
+  #portal-stats {
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .p-stat-num {
+    font-size: 1.6rem;
+  }
+
+  .p-stat-label {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .section-header {
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .section-header h2 {
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+
+  #featured,
+  #games-section,
+  #universe-section {
+    margin-bottom: 40px;
+  }
+
+  #hero-art {
+    height: 210px;
+    min-height: 210px;
+  }
+
+  #hero-art-content {
+    font-size: 6rem;
+  }
+
+  .corner-tag {
+    font-size: 8px;
+    letter-spacing: 1px;
+    padding: 4px 6px;
+  }
+
+  #hero-info {
+    padding: 22px 18px;
+    gap: 16px;
+  }
+
+  #hero-title {
+    font-size: 2.1rem;
+    letter-spacing: 2px;
+  }
+
+  #hero-universe {
+    font-size: 9px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  #hero-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  #hero-meta {
+    gap: 12px 16px;
+    margin-bottom: 0;
+  }
+
+  .meta-item {
+    min-width: calc(50% - 8px);
+  }
+
+  .meta-label {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .meta-value {
+    font-size: 12px;
+  }
+
+  #hero-play-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    align-self: stretch;
+  }
+
+  #game-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+
+  .card-art {
+    height: 132px;
+  }
+
+  .card-art-emoji {
+    font-size: 4rem;
+  }
+
+  .card-body {
+    padding: 14px 14px 16px;
+  }
+
+  .card-title {
+    font-size: 0.95rem;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .card-footer {
+    align-items: flex-start;
+  }
+
+  .card-action {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .universe-list {
+    gap: 12px;
+  }
+
+  .universe-strip {
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .u-icon {
+    font-size: 1.8rem;
+  }
+
+  .u-title {
+    font-size: 0.9rem;
+  }
+
+  .u-desc {
+    font-size: 13px;
+  }
+
+  .u-status {
+    text-align: left;
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  #portal-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  #footer-links {
+    gap: 14px 18px;
+  }
+
+  #footer-copy {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+
+  #modal {
+    padding: 0;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  #modal-inner {
+    max-width: none;
+    max-height: none;
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    padding: calc(52px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+  }
+
+  #modal-close {
+    top: calc(12px + env(safe-area-inset-top));
+    right: 16px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  #modal-emoji {
+    font-size: 3.2rem;
+    margin-bottom: 12px;
+  }
+
+  #modal-title {
+    font-size: 2rem;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  #modal-universe {
+    font-size: 9px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  #modal-desc {
+    font-size: 14px;
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  #modal-tags {
+    margin-bottom: 22px;
+  }
+
+  .modal-tag {
+    font-size: 8px;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+  }
+
+  #modal-btns {
+    margin-top: auto;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 12px;
+  }
+
+  #modal-play,
+  #modal-cancel {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  #modal-play {
+    font-size: 0.88rem;
+    letter-spacing: 3px;
+    padding: 14px 16px;
+  }
+
+  #modal-cancel {
+    font-size: 9px;
+    letter-spacing: 2px;
+    padding: 14px 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  #portal-title {
+    letter-spacing: 2px;
+  }
+
+  #portal-stats {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .p-stat {
+    flex: 1;
+    min-width: 0;
+  }
+
+  #hero-art {
+    height: 180px;
+    min-height: 180px;
+  }
+
+  #hero-art-content {
+    font-size: 5rem;
+  }
+
+  #hero-title {
+    font-size: 1.9rem;
+  }
+
+  .meta-item {
+    min-width: 100%;
+  }
+
+  .card-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

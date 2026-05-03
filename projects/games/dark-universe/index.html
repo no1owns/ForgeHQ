@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Dark Universe | Game Portal</title>
+<meta name="description" content="Enter The Dark Universe, a portal of interactive horror games forged from darkness. Start in Derry and explore a growing universe of branching horror RPGs.">
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+<meta property="og:image" content="img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="img/og-image.png">
+<meta name="theme-color" content="#8b0000">
+
+  <link rel="stylesheet" href="css/dark-universe.css">
+
+</head>
+<body>
+
+<div id="bg-layer"></div>
+<div id="drips"></div>
+<div id="scanline"></div>
+
+<div id="modal" aria-hidden="true">
+  <div id="modal-inner" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button id="modal-close" type="button">[ ✕ CLOSE ]</button>
+    <span id="modal-emoji">🤡</span>
+    <div id="modal-title">IT — The Derry Chronicles</div>
+    <div id="modal-universe">Text RPG · Chapter I</div>
+    <div id="modal-desc">Return to Derry, Maine. Face Pennywise. Survive the sewers. A branching horror RPG through the Stephen King multiverse — starting with IT and expanding to Castle Rock, The Overlook, and beyond.</div>
+    <div id="modal-tags">
+      <span class="modal-tag">Horror RPG</span>
+      <span class="modal-tag">Branching Narrative</span>
+      <span class="modal-tag">Turn-Based Combat</span>
+      <span class="modal-tag">Stephen King Universe</span>
+      <span class="modal-tag">Browser Game</span>
+    </div>
+    <div id="modal-btns">
+      <button id="modal-play" type="button">▸ Play Now</button>
+      <button id="modal-cancel" type="button">Back</button>
+    </div>
+  </div>
+</div>
+
+<div id="wrap">
+  <div id="masthead">
+    <div id="portal-eyebrow">◆ Dark Universe Studios ◆</div>
+    <div id="portal-title">THE DARK<br><span>UNIVERSE</span></div>
+    <div id="portal-sub">Interactive Horror — Games Forged from Darkness</div>
+    <div id="portal-divider"><span>☽</span></div>
+    <div id="portal-stats">
+      <div class="p-stat"><span class="p-stat-num" id="counter-games">1</span><span class="p-stat-label">Games Live</span></div>
+      <div class="p-stat"><span class="p-stat-num" id="counter-coming">5</span><span class="p-stat-label">In Development</span></div>
+      <div class="p-stat"><span class="p-stat-num">∞</span><span class="p-stat-label">Nightmares</span></div>
+    </div>
+  </div>
+
+  <div id="featured">
+    <div class="section-header"><h2>◈ Featured Game</h2></div>
+    <div id="hero-card" data-game="dark-universe">
+      <div id="hero-art">
+        <div class="art-grid"></div>
+        <div id="hero-art-content">🤡</div>
+        <div class="corner-tag tl">CHAPTER I</div>
+        <div class="corner-tag br">DERRY · 1989</div>
+      </div>
+      <div id="hero-info">
+        <div>
+          <div id="hero-badge">
+            <span class="badge live">● LIVE</span>
+            <span class="badge new">NEW</span>
+            <span class="badge chapter">IT Universe</span>
+          </div>
+          <div id="hero-title">IT — The Derry Chronicles</div>
+          <div id="hero-universe">Chapter I: Derry</div>
+          <div id="hero-desc">
+            Return to Derry, Maine. The Losers' Club is reassembling — because It has come back. Navigate the sewers, face Pennywise, and survive with your sanity intact. A branching text RPG with turn-based combat, an inventory system, and a map that grows darker as you explore.
+          </div>
+          <div id="hero-meta">
+            <div class="meta-item">
+              <span class="meta-label">Genre</span>
+              <span class="meta-value">Horror RPG</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Setting</span>
+              <span class="meta-value">Derry, ME · 1989</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Chapter</span>
+              <span class="meta-value">I of V</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Playtime</span>
+              <span class="meta-value">20–40 min</span>
+            </div>
+          </div>
+        </div>
+        <button id="hero-play-btn" type="button" data-game="dark-universe">
+          <span>▸ Play Now</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="games-section">
+    <div class="section-header"><h2>◈ All Games</h2></div>
+    <div id="game-grid">
+      <div class="game-card" data-game="dark-universe">
+        <div class="card-art">
+          <div class="card-art-bg"></div>
+          <div class="card-art-lines"></div>
+          <div class="card-art-emoji">🤡</div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-title">IT — The Derry Chronicles</div>
+            <span class="badge live">● LIVE</span>
+          </div>
+          <div class="card-desc">Face Pennywise in the sewers of Derry. A branching horror RPG.</div>
+          <div class="card-progress">
+            <div class="progress-label">Chapter Progress</div>
+            <div class="progress-track"><div class="progress-fill" style="width:20%"></div></div>
+          </div>
+          <div class="card-footer">
+            <span class="card-genre">Horror RPG</span>
+            <span class="card-action">Play ▸</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card soon-card" data-game="overlook">
+        <div class="card-art">
+          <div class="card-art-bg"></div>
+          <div class="card-art-lines"></div>
+          <div class="card-art-emoji">🏨</div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-title">Room 237</div>
+            <span class="badge soon">SOON</span>
+          </div>
+          <div class="card-desc">Check in to the Overlook Hotel. Jack Torrance never checked out.</div>
+          <div class="card-footer">
+            <span class="card-genre">Survival Horror</span>
+            <span class="card-action">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card soon-card" data-game="castle-rock">
+        <div class="card-art">
+          <div class="card-art-bg"></div>
+          <div class="card-art-lines"></div>
+          <div class="card-art-emoji">🌲</div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-title">Needful Things</div>
+            <span class="badge soon">SOON</span>
+          </div>
+          <div class="card-desc">Leland Gaunt has opened a new shop in Castle Rock. Everything has a price.</div>
+          <div class="card-footer">
+            <span class="card-genre">Mystery RPG</span>
+            <span class="card-action">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card locked-card" data-game="dark-tower">
+        <div class="card-art">
+          <div class="card-art-bg"></div>
+          <div class="card-art-lines"></div>
+          <div class="card-art-emoji">🗼</div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-title">The Gunslinger</div>
+            <span class="badge soon">LOCKED</span>
+          </div>
+          <div class="card-desc">The man in black fled across the desert, and the gunslinger followed.</div>
+          <div class="card-footer">
+            <span class="card-genre">Dark Fantasy</span>
+            <span class="card-action">Beat Chapter I</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card locked-card">
+        <div class="card-art">
+          <div class="card-art-bg"></div>
+          <div class="card-art-lines"></div>
+          <div class="card-art-emoji">🔨</div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-title">Misery</div>
+            <span class="badge soon">LOCKED</span>
+          </div>
+          <div class="card-desc">You wake in a farmhouse with broken legs. Annie Wilkes is your biggest fan.</div>
+          <div class="card-footer">
+            <span class="card-genre">Psychological</span>
+            <span class="card-action">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card locked-card">
+        <div class="card-art">
+          <div class="card-art-bg"></div>
+          <div class="card-art-lines"></div>
+          <div class="card-art-emoji">☣️</div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-title">The Stand</div>
+            <span class="badge soon">LOCKED</span>
+          </div>
+          <div class="card-desc">99.4% of humanity is gone. Randall Flagg is building something in Las Vegas.</div>
+          <div class="card-footer">
+            <span class="card-genre">Post-Apocalyptic</span>
+            <span class="card-action">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="universe-section">
+    <div class="section-header"><h2>◈ Universe Roadmap</h2></div>
+    <div class="universe-list">
+      <div class="universe-strip">
+        <div class="u-icon">🤡</div>
+        <div class="u-info">
+          <div class="u-title">IT — The Derry Chronicles</div>
+          <div class="u-desc">Chapters I–V spanning the Losers' Club across 1958 and 1989</div>
+        </div>
+        <div class="u-status">● Active</div>
+      </div>
+      <div class="universe-strip">
+        <div class="u-icon">🏨</div>
+        <div class="u-info">
+          <div class="u-title">The Shining — The Overlook Files</div>
+          <div class="u-desc">Survival horror inside the Overlook Hotel during the long winter season</div>
+        </div>
+        <div class="u-status">In Dev</div>
+      </div>
+      <div class="universe-strip">
+        <div class="u-icon">🗼</div>
+        <div class="u-info">
+          <div class="u-title">The Dark Tower — Ends of the Earth</div>
+          <div class="u-desc">Roland Deschain's journey across Mid-World toward the Dark Tower</div>
+        </div>
+        <div class="u-status">Planned</div>
+      </div>
+      <div class="universe-strip">
+        <div class="u-icon">🎮</div>
+        <div class="u-info">
+          <div class="u-title">Fortnite Crossover — Character Skins</div>
+          <div class="u-desc">Pennywise, Randall Flagg, Annie Wilkes & Roland — skin designs in progress</div>
+        </div>
+        <div class="u-status">Design Phase</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="portal-footer">
+    <div id="footer-logo">DARK <span>UNIVERSE</span> STUDIOS</div>
+    <div id="footer-links">
+      <a class="footer-link">Games</a>
+      <a class="footer-link">Universe</a>
+      <a class="footer-link">Skins</a>
+      <a class="footer-link">About</a>
+    </div>
+    <div id="footer-copy">Fan Project · Stephen King Universe</div>
+  </div>
+</div>
+
+<script>
+const dripsEl = document.getElementById('drips');
+for (let i = 0; i < 10; i++) {
+  const d = document.createElement('div');
+  d.className = 'drip';
+  d.style.left = (4 + i * 10 + Math.random() * 6) + '%';
+  d.style.width = (2 + Math.random() * 3) + 'px';
+  d.style.animationDuration = (3 + Math.random() * 5) + 's';
+  d.style.animationDelay = (Math.random() * 5) + 's';
+  dripsEl.appendChild(d);
+}
+
+const games = {
+  "dark-universe": {
+    emoji: "🤡",
+    title: "IT — The Derry Chronicles",
+    universe: "Horror RPG · Chapter I: Derry",
+    desc: "Return to Derry, Maine. The Losers' Club is reassembling because It has come back. Navigate the sewers, confront Pennywise, collect items, manage your Sanity and Courage, and survive. A branching text RPG with real turn-based combat and an expanding map.",
+    tags: ["Horror RPG", "Branching Narrative", "Turn-Based Combat", "Stephen King", "Browser Game"],
+    status: "live",
+    file: "dark-universe-it.html"
+  },
+  "overlook": {
+    emoji: "🏨",
+    title: "Room 237",
+    universe: "Survival Horror · The Shining",
+    desc: "The Overlook Hotel is full this winter. Jack Torrance is the caretaker. Something in the hotel has been waiting for a mind like his, something that feeds on the Shine. Can you escape before the hotel claims you?",
+    tags: ["Survival Horror", "The Shining", "Psychological", "Coming Soon"],
+    status: "soon",
+    file: null
+  },
+  "castle-rock": {
+    emoji: "🌲",
+    title: "Needful Things",
+    universe: "Mystery RPG · Castle Rock",
+    desc: "A new shop has opened on Main Street, Castle Rock. Leland Gaunt can get you anything you want, anything at all. The price is always small. Until it isn't.",
+    tags: ["Mystery RPG", "Castle Rock", "Needful Things", "Coming Soon"],
+    status: "soon",
+    file: null
+  },
+  "dark-tower": {
+    emoji: "🗼",
+    title: "The Gunslinger",
+    universe: "Dark Fantasy · The Dark Tower",
+    desc: "The man in black fled across the desert, and the gunslinger followed. Unlock this game by completing Chapter I of The Dark Universe. Roland Deschain's journey across Mid-World toward the nexus of all realities.",
+    tags: ["Dark Fantasy", "Dark Tower", "Locked", "Complete Chapter I"],
+    status: "locked",
+    file: null
+  }
+};
+
+let activeGame = null;
+let previousBodyOverflow = "";
+
+function openModal(gameId) {
+  const game = games[gameId];
+  if (!game) return;
+
+  activeGame = game;
+
+  document.getElementById("modal-emoji").textContent = game.emoji;
+  document.getElementById("modal-title").textContent = game.title;
+  document.getElementById("modal-universe").textContent = game.universe;
+  document.getElementById("modal-desc").textContent = game.desc;
+
+  const tagsEl = document.getElementById("modal-tags");
+  tagsEl.innerHTML = game.tags.map(tag => `<span class="modal-tag">${tag}</span>`).join("");
+
+  const playBtn = document.getElementById("modal-play");
+
+  if (game.status === "live") {
+    playBtn.textContent = "▸ Play Now";
+    playBtn.disabled = false;
+    playBtn.style.opacity = "1";
+    playBtn.style.cursor = "pointer";
+  } else if (game.status === "locked") {
+    playBtn.textContent = "🔒 Locked";
+    playBtn.disabled = true;
+    playBtn.style.opacity = "0.4";
+    playBtn.style.cursor = "not-allowed";
+  } else {
+    playBtn.textContent = "⏳ Coming Soon";
+    playBtn.disabled = true;
+    playBtn.style.opacity = "0.4";
+    playBtn.style.cursor = "not-allowed";
+  }
+
+  const modal = document.getElementById("modal");
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+
+  previousBodyOverflow = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal() {
+  const modal = document.getElementById("modal");
+  modal.classList.remove("active");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = previousBodyOverflow;
+  activeGame = null;
+}
+
+function launchGame() {
+  if (!activeGame || !activeGame.file) return;
+  window.open(activeGame.file, "_blank");
+}
+
+function animateCounter(el, target, duration = 1200) {
+  let start = 0;
+  const step = target / (duration / 16);
+
+  const timer = setInterval(() => {
+    start = Math.min(start + step, target);
+    el.textContent = Math.floor(start);
+    if (start >= target) clearInterval(timer);
+  }, 16);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-game]").forEach(el => {
+    el.addEventListener("click", (e) => {
+      const gameId = el.getAttribute("data-game");
+      if (!gameId) return;
+      e.preventDefault();
+      e.stopPropagation();
+      openModal(gameId);
+    });
+  });
+
+  const modal = document.getElementById("modal");
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  document.getElementById("modal-close").addEventListener("click", closeModal);
+  document.getElementById("modal-cancel").addEventListener("click", closeModal);
+  document.getElementById("modal-play").addEventListener("click", launchGame);
+
+  animateCounter(document.getElementById("counter-games"), 1);
+  animateCounter(document.getElementById("counter-coming"), 5, 1800);
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeModal();
+});
+</script>
+</body>
+</html>

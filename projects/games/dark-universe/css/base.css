@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&display=swap&font-display=swap');
+
+/* ═══════════════════════════════════════
+   DARK UNIVERSE — BASE STYLES
+   ═══════════════════════════════════════ */
+:root {
+  /* Color palette */
+  --blood:       #8b0000;
+  --deep-blood:  #4a0000;
+  --rust:        #c0392b;
+  --fog:         #1a1612;
+  --fog2:        #0d0b09;
+  --parchment:   #d4c9b0;
+  --pale:        #a89880;
+  --ghost:       #e8e0d0;
+  --yellow:      #f0c040;
+  --flash:       #ff4444;
+  --blue-pale:   #8aaacf;
+  --blue-dark:   #0a1525;
+  --purple:      #6a3a8a;
+  --purple-pale: #c0a0e0;
+
+  /* Typography */
+  --font-display: 'Special Elite', 'Palatino Linotype', Georgia, serif;
+  --font-body:    'Crimson Pro', Georgia, 'Times New Roman', serif;
+  --font-mono:    'Share Tech Mono', 'Courier New', monospace;
+
+  /* Spacing */
+  --gap-sm: 6px;
+  --gap-md: 12px;
+  --gap-lg: 20px;
+
+  /* Transitions */
+  --trans: 0.2s ease;
+  --trans-slow: 0.5s ease;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--fog2);
+  color: var(--parchment);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── ATMOSPHERE ── */
+#rain {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  overflow: hidden;
+}
+.raindrop {
+  position: absolute; top: -20px; width: 1px;
+  background: linear-gradient(transparent, rgba(100,120,140,0.25));
+  animation: fall linear infinite;
+}
+@keyframes fall { to { transform: translateY(110vh); } }
+
+#vignette {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 1;
+  background: radial-gradient(ellipse at center, transparent 25%, rgba(0,0,0,0.9) 100%);
+  animation: flicker 10s ease-in-out infinite;
+}
+@keyframes flicker {
+  0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.8} 94%{opacity:1} 97%{opacity:0.85} 98%{opacity:1}
+}
+
+#drips {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 60px; pointer-events: none; z-index: 2;
+}
+.drip {
+  position: absolute; top: 0; width: 3px;
+  background: var(--blood); border-radius: 0 0 3px 3px;
+  animation: drip ease-in infinite;
+}
+@keyframes drip {
+  0%{height:0;opacity:0} 20%{opacity:1} 80%{opacity:1} 100%{height:60px;opacity:0}
+}
+
+/* ── FX OVERLAYS ── */
+#flash-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  pointer-events: none;
+  background: rgba(139,0,0,0.45); opacity: 0;
+}
+#flash-overlay.flash { animation: flashFX 0.4s ease forwards; }
+@keyframes flashFX { 0%{opacity:0.7} 100%{opacity:0} }
+
+#flash-overlay.white-flash {
+  background: rgba(255,255,255,0.6);
+  animation: flashFX 0.3s ease forwards;
+}
+
+#fear-overlay {
+  position: fixed; inset: 0; z-index: 150;
+  pointer-events: none; opacity: 0;
+  background: radial-gradient(ellipse at center, transparent 20%, rgba(80,0,100,0.65) 100%);
+}
+#fear-overlay.active { animation: fearPulse 1.8s ease forwards; }
+@keyframes fearPulse { 0%{opacity:0} 30%{opacity:1} 70%{opacity:1} 100%{opacity:0} }
+
+#dmg-popup {
+  position: fixed; top: 38%; left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 250; pointer-events: none;
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  color: var(--flash);
+  text-shadow: 0 0 20px #ff0000;
+  opacity: 0;
+}
+#dmg-popup.show { animation: popDmg 0.75s ease forwards; }
+@keyframes popDmg {
+  0%{opacity:1;transform:translate(-50%,-50%) scale(1.6)}
+  100%{opacity:0;transform:translate(-50%,-130%) scale(0.8)}
+}
+
+@keyframes shake {
+  0%,100%{transform:none}
+  20%{transform:translate(-4px,2px)}
+  40%{transform:translate(4px,-3px)}
+  60%{transform:translate(-3px,4px)}
+  80%{transform:translate(3px,-2px)}
+}
+.shake { animation: shake 0.4s ease; }
+
+/* ── SCREEN TRANSITIONS ── */
+.screen-fade-in { animation: screenIn 0.6s ease forwards; }
+.screen-fade-out { animation: screenOut 0.5s ease forwards; }
+@keyframes screenIn { from{opacity:0} to{opacity:1} }
+@keyframes screenOut { from{opacity:1} to{opacity:0;pointer-events:none} }
+
+@keyframes fadeInSlow { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(12px) }
+  to   { opacity:1; transform:none }
+}

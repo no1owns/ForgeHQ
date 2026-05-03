@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#060202">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>KING'S NIGHTMARE — The Dark Universe</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/combat.css">
+  <link rel="stylesheet" href="css/ui.css">
+</head>
+<body>
+
+<!-- ══ ATMOSPHERE ══════════════════════════════════════════ -->
+<div id="rain"></div>
+<div id="vignette"></div>
+<div id="drips"></div>
+<div id="flash-overlay"></div>
+<div id="fear-overlay"></div>
+<div id="dmg-popup"></div>
+
+<!-- ══ INTRO SCREEN ════════════════════════════════════════ -->
+<div id="intro-screen">
+  <div id="intro-logo">KING'S NIGHTMARE</div>
+  <div id="intro-sub">The Dark Universe</div>
+  <div id="intro-divider"></div>
+  <div id="intro-tagline">
+    "We made a promise once. In the summer of 1958,<br>
+    seven children faced something ancient and hungry.<br>
+    They beat it. They forgot. Now it's 1989,<br>
+    and the phone is ringing again."
+  </div>
+  <div id="intro-balloon">🎈</div>
+  <button id="begin-btn" onclick="Game.begin()"><span>ENTER DERRY</span></button>
+  <div id="intro-credits">A Stephen King Fan Experience · Not for commercial use</div>
+</div>
+
+<!-- ══ CUTSCENE ════════════════════════════════════════════ -->
+<div id="cutscene">
+  <div id="cutscene-text"></div>
+  <div id="cutscene-progress"></div>
+  <div id="cutscene-skip" onclick="Game.skipCutscene()">SKIP ▸</div>
+</div>
+
+<!-- ══ COMBAT SCREEN ═══════════════════════════════════════ -->
+<div id="combat-screen">
+
+  <!-- Scene / Enemy area -->
+  <div id="combat-scene">
+    <div id="scene-bg" class="derry"></div>
+    <div id="scene-mist"></div>
+
+    <!-- Enemy status -->
+    <div id="enemy-status-bar">
+      <div id="enemy-name-txt">PENNYWISE</div>
+      <div id="enemy-hp-track"><div id="enemy-hp-fill" style="width:100%"></div></div>
+      <div id="enemy-hp-nums">90 / 90</div>
+      <div id="enemy-phase-badge"></div>
+    </div>
+
+    <!-- Enemy portrait -->
+    <div id="enemy-portrait-wrap">
+      <div id="enemy-canvas" class="enemy-figure"></div>
+    </div>
+
+    <!-- Player status (bottom-left of scene) -->
+    <div id="player-status">
+      <div id="player-name-txt">THE LOSERS</div>
+      <div class="p-stat-row" id="p-hp-row">
+        <span class="p-stat-lbl">HP</span>
+        <div class="p-stat-track"><div class="p-stat-fill" id="p-hp-fill" style="width:100%"></div></div>
+        <span class="p-stat-val" id="p-hp-val">100</span>
+      </div>
+      <div class="p-stat-row">
+        <span class="p-stat-lbl">SAN</span>
+        <div class="p-stat-track"><div class="p-stat-fill" id="p-san-fill" style="width:100%"></div></div>
+        <span class="p-stat-val" id="p-san-val">100</span>
+      </div>
+      <div class="p-stat-row" id="p-fear-row">
+        <span class="p-stat-lbl">FEAR</span>
+        <div class="p-stat-track"><div class="p-stat-fill" id="p-fear-fill" style="width:30%"></div></div>
+        <span class="p-stat-val" id="p-fear-val">30</span>
+      </div>
+      <div id="memory-tokens"></div>
+    </div>
+
+    <!-- Dialogue box -->
+    <div id="combat-dialogue">
+      <div id="dialogue-speaker"></div>
+      <div id="dialogue-text"></div>
+    </div>
+  </div>
+
+  <!-- Command menu -->
+  <div id="combat-menu">
+    <div id="turn-banner">
+      <div id="turn-indicator"></div>
+      <div id="turn-txt">YOUR TURN</div>
+    </div>
+    <div id="combat-log"></div>
+    <div id="command-grid"></div>
+  </div>
+
+</div>
+
+<!-- ══ PHASE TRANSITION OVERLAY ════════════════════════════ -->
+<div id="phase-overlay">
+  <div id="phase-title">PHASE II</div>
+  <div id="phase-sub">TRUE FORM</div>
+</div>
+
+<!-- ══ CHAPTER SELECT ══════════════════════════════════════ -->
+<div id="chapter-overlay">
+  <div id="chapter-title">◆ SELECT CHAPTER ◆</div>
+  <div id="chapter-grid"></div>
+  <button id="chapter-close" onclick="document.getElementById('chapter-overlay').classList.remove('active')">CLOSE</button>
+</div>
+
+<!-- ══ INVENTORY SCREEN ════════════════════════════════════ -->
+<div id="inventory-screen">
+  <div id="inv-title">◆ INVENTORY ◆</div>
+  <div id="inv-grid"></div>
+  <button id="inv-close" onclick="Game.closeInventory()">◀ BACK</button>
+</div>
+
+<!-- ══ DEATH / WIN OVERLAY ═════════════════════════════════ -->
+<div id="overlay-screen">
+  <div id="overlay-title">YOU DIED</div>
+  <div id="overlay-msg"></div>
+  <button id="restart-btn" onclick="Game.restart()">TRY AGAIN</button>
+</div>
+
+<!-- ══ GAME WRAP ═══════════════════════════════════════════ -->
+<div id="game-wrap">
+
+  <!-- Topbar -->
+  <div id="topbar">
+    <div id="stats">
+      <div class="stat">
+        <span class="stat-label">HP</span>
+        <div class="stat-bar" id="hp-bar"><div class="stat-fill" id="hp-fill" style="width:100%"></div></div>
+        <span class="stat-val" id="hp-val">100/100</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">SANITY</span>
+        <div class="stat-bar" id="san-bar"><div class="stat-fill" id="san-fill" style="width:100%"></div></div>
+        <span class="stat-val" id="san-val">100/100</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">FEAR</span>
+        <div class="stat-bar"><div class="stat-fill" id="fear-fill" style="width:30%"></div></div>
+        <span class="stat-val" id="fear-val">30/100</span>
+      </div>
+    </div>
+    <div id="topbar-row2">
+      <div id="game-title">KING'S NIGHTMARE</div>
+      <div id="location-badge">Derry, Maine</div>
+      <div id="topbar-memory"></div>
+      <button id="sound-btn" onclick="Game.toggleSound()">♪ ON</button>
+    </div>
+  </div>
+
+  <!-- Main area -->
+  <div id="main">
+
+    <!-- Story pane -->
+    <div id="story-pane">
+      <div id="story-scroll"></div>
+    </div>
+
+    <!-- Side panel -->
+    <div id="side-panel">
+      <div class="panel-box mob-active" id="panel-map">
+        <div class="panel-title">◆ MAP</div>
+        <div id="map-grid"></div>
+      </div>
+      <div class="panel-box" id="panel-inv">
+        <div class="panel-title">◆ ITEMS</div>
+        <div id="inventory-list"></div>
+      </div>
+      <div class="panel-box" id="panel-journal">
+        <div class="panel-title">◆ JOURNAL</div>
+        <div id="journal-entries"></div>
+        <div style="margin-top:10px;">
+          <button class="choice-btn" style="width:100%;text-align:center;font-size:12px;padding:8px;" onclick="UI.showChapterOverlay()">◈ Chapters</button>
+          <button class="choice-btn" style="width:100%;text-align:center;font-size:12px;padding:8px;margin-top:6px;" onclick="Game.openInventory()">◈ Full Inventory</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Choices pane -->
+  <div id="choices-pane">
+    <div id="choices-label">WHAT DO YOU DO?</div>
+    <div id="choices"></div>
+  </div>
+
+  <!-- Mobile tabs (hidden on desktop via CSS) -->
+  <div id="mobile-tabs" style="display:none;">
+    <button class="mob-tab active" id="tab-story" onclick="mobileTab('story')">
+      <span class="tab-icon">📖</span>STORY
+    </button>
+    <button class="mob-tab" id="tab-map" onclick="mobileTab('map')">
+      <span class="tab-icon">🗺</span>MAP
+    </button>
+    <button class="mob-tab" id="tab-inv" onclick="mobileTab('inv')">
+      <span class="tab-icon">🎒</span>ITEMS
+    </button>
+    <button class="mob-tab" id="tab-journal" onclick="mobileTab('journal')">
+      <span class="tab-icon">📋</span>LOG
+    </button>
+  </div>
+
+</div>
+
+<!-- ══ SCRIPTS ═════════════════════════════════════════════ -->
+<script src="js/audio.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/story-it.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/combat.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   GAME — Main orchestrator
+   Wires Engine, UI, Audio, Combat, and Story together
+   ════════════════════════════════════════════════════════ */
+
+// Map layout for the IT chapter
+window.mapLayout = [
+  { id: 'derry_street',   emoji: '🏙', label: 'Main St'   },
+  { id: 'derry_library',  emoji: '📚', label: 'Library'   },
+  { id: 'barrens',        emoji: '🌿', label: 'Barrens'   },
+  { id: 'neibolt',        emoji: '🏚', label: 'Neibolt'   },
+  { id: 'sewer_entrance', emoji: '🚇', label: 'Sewers'    },
+  { id: 'sewer_recon',    emoji: '💡', label: 'Deadlight', unlock: 'sewer_entrance' },
+  { id: 'sewer_center',   emoji: '🤡', label: 'Lair',      unlock: 'sewer_entrance' },
+  { id: 'victory',        emoji: '🌅', label: 'Dawn',      unlock: 'sewer_center'   },
+  { id: 'overlook_lobby', emoji: '🪓', label: 'Overlook',  chapter: 'shining'       },
+];
+
+const CUTSCENE_SLIDES = [
+  { text: "Summer, 1989. Seven adults receive phone calls they have been unconsciously dreading for decades." },
+  { text: "\"It's started again.\" Mike Hanlon's voice on the line. Three words. That's all it takes to unlock thirty years of buried memory." },
+  { text: "They had forgotten everything — the Barrens, the silver slugs, the Ritual, the thing that lived in the sewers beneath Derry, Maine. They had <em>needed</em> to forget." },
+  { text: "They are coming back now. One by one, the memories return. One by one, the fear returns with them." },
+  { text: "Only one question remains: after thirty years of living — of becoming adults, of forgetting what it meant to believe absolutely — do they still have what it takes?" },
+];
+
+const Game = (() => {
+  let cutsceneIdx = 0;
+  let cutsceneSkipped = false;
+  let soundOn = true;
+  let currentStoryData = null;
+
+  // ── INIT ──
+  function init() {
+    buildRain();
+    buildDrips();
+    const hasSave = Engine.load();
+    if (hasSave) {
+      // Has save — offer to continue or new game
+      const beginBtn = document.getElementById('begin-btn');
+      if (beginBtn) {
+        beginBtn.innerHTML = '<span>CONTINUE</span>';
+        const newBtn = document.createElement('button');
+        newBtn.className = 'choice-btn';
+        newBtn.style.cssText = 'margin-top:10px;font-size:12px;letter-spacing:2px;border-color:#2a1010;color:#5a3a3a;';
+        newBtn.textContent = 'New Game';
+        newBtn.onclick = () => { Engine.reset(); location.reload(); };
+        beginBtn.parentNode.insertBefore(newBtn, beginBtn.nextSibling);
+      }
+    }
+  }
+
+  // ── ATMOSPHERE ──
+  function buildRain() {
+    const container = document.getElementById('rain');
+    if (!container) return;
+    for (let i = 0; i < 55; i++) {
+      const drop = document.createElement('div');
+      drop.className = 'raindrop';
+      drop.style.left = Math.random() * 100 + '%';
+      drop.style.height = (60 + Math.random() * 80) + 'px';
+      drop.style.animationDuration = (0.5 + Math.random() * 0.9) + 's';
+      drop.style.animationDelay = (-Math.random() * 2) + 's';
+      drop.style.opacity = 0.2 + Math.random() * 0.4;
+      container.appendChild(drop);
+    }
+  }
+
+  function buildDrips() {
+    const container = document.getElementById('drips');
+    if (!container) return;
+    for (let i = 0; i < 6; i++) {
+      const drip = document.createElement('div');
+      drip.className = 'drip';
+      drip.style.left = (8 + Math.random() * 84) + '%';
+      drip.style.animationDuration = (3 + Math.random() * 6) + 's';
+      drip.style.animationDelay = (-Math.random() * 8) + 's';
+      drip.style.opacity = 0.4 + Math.random() * 0.5;
+      container.appendChild(drip);
+    }
+  }
+
+  // ── BEGIN / CUTSCENE ──
+  function begin() {
+    const intro = document.getElementById('intro-screen');
+    if (intro) intro.classList.add('hide');
+
+    // Start audio
+    try {
+      Audio.startAmbience();
+      Audio.startTheme('derry');
+      Audio.startHeartbeat(false);
+    } catch(e) {}
+
+    setTimeout(() => {
+      intro.style.display = 'none';
+      startCutscene();
+    }, 1200);
+  }
+
+  function startCutscene() {
+    const cs = document.getElementById('cutscene');
+    if (!cs) { startGame(); return; }
+    cs.classList.add('active');
+    cutsceneIdx = 0;
+    cutsceneSkipped = false;
+    buildCutsceneProgress();
+    showCutsceneSlide(0);
+  }
+
+  function buildCutsceneProgress() {
+    const prog = document.getElementById('cutscene-progress');
+    if (!prog) return;
+    prog.innerHTML = CUTSCENE_SLIDES.map((_, i) =>
+      `<div class="cs-dot${i === 0 ? ' active' : ''}"></div>`
+    ).join('');
+  }
+
+  function showCutsceneSlide(idx) {
+    if (cutsceneSkipped) return;
+    const txt = document.getElementById('cutscene-text');
+    if (!txt) return;
+    txt.innerHTML = '';
+    txt.style.opacity = 0;
+
+    const slide = CUTSCENE_SLIDES[idx];
+    setTimeout(() => {
+      txt.innerHTML = slide.text;
+      txt.style.transition = 'opacity 0.8s';
+      txt.style.opacity = 1;
+      // Update dots
+      document.querySelectorAll('.cs-dot').forEach((d, i) =>
+        d.classList.toggle('active', i === idx));
+    }, 100);
+
+    // Auto-advance
+    const autoTimer = setTimeout(() => {
+      if (cutsceneSkipped) return;
+      cutsceneIdx++;
+      if (cutsceneIdx < CUTSCENE_SLIDES.length) {
+        showCutsceneSlide(cutsceneIdx);
+      } else {
+        endCutscene();
+      }
+    }, 3800);
+
+    // Click to advance
+    txt.onclick = () => {
+      clearTimeout(autoTimer);
+      cutsceneIdx++;
+      if (cutsceneIdx < CUTSCENE_SLIDES.length) {
+        showCutsceneSlide(cutsceneIdx);
+      } else {
+        endCutscene();
+      }
+    };
+  }
+
+  function skipCutscene() {
+    cutsceneSkipped = true;
+    endCutscene();
+  }
+
+  function endCutscene() {
+    const cs = document.getElementById('cutscene');
+    if (cs) { cs.classList.add('hide'); setTimeout(() => cs.classList.remove('active','hide'), 1000); }
+    setTimeout(startGame, 600);
+  }
+
+  // ── GAME START ──
+  function startGame() {
+    const wrap = document.getElementById('game-wrap');
+    if (wrap) wrap.classList.add('active');
+
+    currentStoryData = StoryIT; // Load IT chapter
+
+    UI.updateStats();
+    UI.updateMemoryTokens();
+    UI.updateInventory();
+    UI.updateMap();
+
+    // Go to current node
+    goToNode(Engine.currentNode || 'derry_street');
+  }
+
+  // ── NODE NAVIGATION ──
+  function goToNode(nodeId) {
+    // Special nodes
+    if (nodeId === '__chapter_select__') { UI.showChapterOverlay(); return; }
+    if (nodeId === '__restart__') { restart(); return; }
+
+    const node = currentStoryData[nodeId];
+    if (!node) {
+      UI.addStoryBlock('system', `[Node not found: ${nodeId}]`);
+      return;
+    }
+
+    Engine.visit(nodeId);
+    UI.addSeparator();
+
+    // Location badge
+    if (node.location) {
+      const badge = document.getElementById('location-badge');
+      if (badge) badge.textContent = node.location.replace(/^📍 /, '');
+      // Update map current
+      UI.updateMap();
+    }
+
+    // Switch music theme
+    if (node.theme) Audio.startTheme(node.theme);
+
+    // Apply stat effects immediately (before text display)
+    if (node.gainStat) {
+      Object.entries(node.gainStat).forEach(([stat, val]) => Engine.modStat(stat, val));
+      UI.updateStats();
+    }
+    if (node.gainMemory) {
+      Engine.gainMemoryToken(node.gainMemory);
+      UI.updateMemoryTokens();
+      Audio.memoryToken();
+    }
+    if (node.gainItem) {
+      if (Engine.addItem(node.gainItem)) {
+        UI.addStoryBlock('action', `[ITEM OBTAINED: ${node.gainItem.emoji} ${node.gainItem.name}]`);
+        UI.addJournal(`Found: ${node.gainItem.name}`);
+        Audio.pickup();
+        UI.updateInventory();
+      }
+    }
+    if (node.setFlag) Engine.setFlag(node.setFlag);
+
+    // Render story text blocks
+    if (node.text) {
+      node.text.forEach((block, i) => {
+        setTimeout(() => {
+          UI.addStoryBlock(block.type || 'normal', block.text);
+          if (block.type === 'horror') Audio.horror();
+        }, i * 220);
+      });
+    }
+
+    const textDelay = (node.text?.length || 0) * 220 + 200;
+
+    // Combat node
+    if (node.combat) {
+      UI.clearChoices();
+      setTimeout(() => {
+        Combat.start(node.combat, {
+          fleeNode: node.combatFleeNode || 'derry_street',
+          onVictory: () => {
+            if (node.combatVictoryNode) goToNode(node.combatVictoryNode);
+          }
+        });
+      }, textDelay + 400);
+      return;
+    }
+
+    // Win condition
+    if (node.win && node.completeChapter) {
+      Engine.completeChapter(node.completeChapter);
+    }
+
+    // Show choices
+    setTimeout(() => {
+      if (node.choices) {
+        UI.showChoices(node.choices);
+        // Mobile: switch back to story tab for choices
+        if (window.innerWidth < 700) mobileTab('story');
+      }
+    }, textDelay);
+  }
+
+  // ── CHOICE HANDLING ──
+  function handleChoice(choice) {
+    UI.clearChoices();
+    // Echo choice in story
+    UI.addStoryBlock('action', '▸ ' + choice.text.replace(/<[^>]+>/g, ''));
+    Audio.pickup();
+    setTimeout(() => goToNode(choice.next), 350);
+  }
+
+  // ── DEATH ──
+  function triggerDeath() {
+    Audio.death();
+    Audio.stopTheme();
+    Audio.stopHeartbeat();
+    const overlay = document.getElementById('overlay-screen');
+    const title   = document.getElementById('overlay-title');
+    const msg     = document.getElementById('overlay-msg');
+    if (!overlay) return;
+
+    const deathMessages = [
+      "The deadlights claim you. Not your body — that hardly matters. But the part that makes you <em>you</em>. The memories. The name. The summer of 1958.",
+      "Derry folds you into itself. The town has been eating people for three centuries. One more makes no difference.",
+      "The last thing you see is orange light. Beautiful, actually. Wrong, but beautiful. Then nothing.",
+      "It takes the fear first. Then it takes everything else."
+    ];
+
+    title.textContent = 'IT GOT YOU';
+    msg.innerHTML = deathMessages[Math.floor(Math.random() * deathMessages.length)];
+    overlay.classList.add('active');
+  }
+
+  // ── RESTART ──
+  function restart() {
+    Engine.resetChapter();
+    UI.hideCombatScreen();
+    const overlay = document.getElementById('overlay-screen');
+    if (overlay) overlay.classList.remove('active');
+    const scroll = document.getElementById('story-scroll');
+    if (scroll) scroll.innerHTML = '';
+    UI.updateStats();
+    UI.updateMemoryTokens();
+    UI.updateInventory();
+    UI.updateMap();
+    goToNode('derry_street');
+  }
+
+  // ── CHAPTER SELECT ──
+  function resetAndStartChapter(chapterId) {
+    Engine.resetChapter();
+    const scroll = document.getElementById('story-scroll');
+    if (scroll) scroll.innerHTML = '';
+
+    const def = Engine.getCurrentChapterDef();
+
+    // Load correct story data
+    if (chapterId === 'it') currentStoryData = StoryIT;
+    // Others will be added: else if (chapterId === 'shining') currentStoryData = StoryShining;
+
+    Audio.startTheme(def.theme);
+    UI.updateStats();
+    UI.updateMemoryTokens();
+    UI.updateInventory();
+    UI.updateMap();
+    goToNode(def.startNode);
+  }
+
+  // ── SOUND TOGGLE ──
+  function toggleSound() {
+    soundOn = Audio.toggle();
+    const btn = document.getElementById('sound-btn');
+    if (btn) btn.textContent = soundOn ? '♪ ON' : '♪ OFF';
+    if (soundOn) {
+      Audio.startTheme(Engine.getCurrentChapterDef().theme);
+      Audio.startHeartbeat(false);
+    }
+  }
+
+  // ── INVENTORY SCREEN ──
+  function openInventory() {
+    UI.updateInventoryScreen();
+    document.getElementById('inventory-screen').classList.add('active');
+  }
+
+  function closeInventory() {
+    document.getElementById('inventory-screen').classList.remove('active');
+  }
+
+  return {
+    init, begin, startGame,
+    goToNode, handleChoice,
+    triggerDeath, restart,
+    skipCutscene, toggleSound,
+    resetAndStartChapter,
+    openInventory, closeInventory
+  };
+
+})();
+
+// ── BOOT ──
+document.addEventListener('DOMContentLoaded', () => Game.init());
+</script>
+
+</body>
+</html>
