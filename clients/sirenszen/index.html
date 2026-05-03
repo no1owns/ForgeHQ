@@ -6,194 +6,198 @@
   <title>Sirenszen Wellness</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
- <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Jost:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
- 
- 
- 
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-      
-      
+  <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Jost:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
   <link rel="stylesheet" href="site/styles.css">
-
- <style>
-        body {
-            font-family: "Afacad Flux", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-        }
-    </style>
+  <style>
+    body { font-family: "Afacad Flux", sans-serif; font-optical-sizing: auto; }
+  </style>
 </head>
 <body>
 
-<!-- Fixed Top Navigation -->
 <header class="top-nav">
   <div class="logo">
     <a href="/"><img src="img/color.png" alt="Sirenszen Wellness Logo"></a>
   </div>
-  <nav class="text-sm uppercase tracking-tight tracking-normal">
+  <nav>
     <a href="#modalities-massages">Massage Modalities</a>
-     <a href="https://forms.gle/J6xCLqXPnUwk227q6" target="_blank">Book a Session</a>
- 
+    <a href="https://forms.gle/J6xCLqXPnUwk227q6" target="_blank">Book a Session</a>
   </nav>
 </header>
 
 <main>
-  <section id="home" class="Index-page Index-page--has-image">    
-   <div class="text-center">
-      <h3 class="text-5sm mb-2 font-light tracking-tight">WELCOME</h3>
-      <h1 class="text-9xl font-light mb-4 tracking-tighter">SirensZen Wellness</h1>
-      <h2 class="uppercase text-2xl mb-8 font-light tracking-normal">Massage &bull; Wellness &bull; Relaxation</h2>
+
+  <!-- Hero -->
+  <section id="home">
+    <div class="text-center px-6">
+      <p class="mb-3 font-light tracking-widest" style="font-size:0.7rem;opacity:0.75;letter-spacing:0.22em;">WELCOME</p>
+      <h1 class="hero-title mb-5">SirensZen Wellness</h1>
+      <p class="uppercase mb-8 font-light" style="font-size:0.85rem;letter-spacing:0.2em;opacity:0.8;">Massage &bull; Wellness &bull; Relaxation</p>
       <a href="https://forms.gle/J6xCLqXPnUwk227q6" class="btn-primary" target="_blank">Book a Session</a>
     </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
   </section>
-  
 
-   <section id="modalities-massages" class="max-w-7xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10 text-gray-900">
-    <!-- Heading -->
-   <h1 class="text-4xl text-center text-gray-900 mb-8">
-      <i class="fas fa-spa"></i> Massage Services and Pricing
-    </h1>
-    
+  <!-- Services -->
+  <section id="modalities-massages" class="max-w-4xl mx-auto px-6 py-16">
+
+    <h2 class="section-heading reveal">
+      <i class="fas fa-spa" style="opacity:0.5;margin-right:0.4rem;"></i>Massage Services &amp; Pricing
+    </h2>
+
     <!-- Pricing Table -->
-    <div class="overflow-x-auto mb-12">
-      <table class="table-auto w-full text-left">
+    <div class="pricing-wrap reveal">
+      <table class="pricing-table">
         <thead>
-          <tr class="bg-gray-900 text-white">
-            <th class="p-6">Duration</th>
-            <th class="p-6">To Therapist</th>
-            <th class="p-6">To Your Location</th>
-            
+          <tr>
+            <th>Duration</th>
+            <th>To Therapist</th>
+            <th>To Your Location</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-gray-50 hover:bg-gray-100">
-            <td class="p-6">60 mins</td>
-            <td class="p-6">$85</td>
-            <td class="p-6">$105</td>
+          <tr>
+            <td data-label="Duration">60 mins</td>
+            <td data-label="To Therapist">$85</td>
+            <td data-label="To Your Location">$105</td>
           </tr>
-          <tr class="bg-white hover:bg-gray-100">
-            <td class="p-6">75 mins</td>
-            <td class="p-6">$100</td>
-            <td class="p-6">$120</td>
+          <tr>
+            <td data-label="Duration">75 mins</td>
+            <td data-label="To Therapist">$100</td>
+            <td data-label="To Your Location">$120</td>
           </tr>
-          <tr class="bg-gray-50 hover:bg-gray-100">
-            <td class="p-6">90 mins</td>
-            <td class="p-6">$130</td>
-            <td class="p-6">$145</td>
+          <tr class="popular">
+            <td data-label="Duration">90 mins <span class="popular-badge">Popular</span></td>
+            <td data-label="To Therapist">$130</td>
+            <td data-label="To Your Location">$145</td>
           </tr>
-          <tr class="bg-white hover:bg-gray-100">
-            <td class="p-6">120 mins</td>
-            <td class="p-6">$180</td>
-            <td class="p-6">$200</td>
+          <tr>
+            <td data-label="Duration">120 mins</td>
+            <td data-label="To Therapist">$180</td>
+            <td data-label="To Your Location">$200</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Massage Types -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-      <!-- Swedish -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">
-          <i class="fas fa-hand-holding-water"></i> Swedish
-        </h2>
-        <p class="text-gray-700">Stimulates circulation, releases tight muscles, and promotes relaxation. Swedish massage can reduce anxiety, tension, and help with depression by calming the nervous system.</p>
+    <!-- Modality Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 reveal-stagger">
+
+      <div class="modality-card bg-gray-50 p-6 rounded-lg">
+        <h3 class="text-lg font-bold text-gray-900 mb-3">
+          <i class="fas fa-hand-holding-water mr-2" style="opacity:0.45;"></i>Swedish
+        </h3>
+        <p class="text-gray-600 leading-relaxed text-sm">Stimulates circulation, releases tight muscles, and promotes relaxation. Reduces anxiety, tension, and helps calm the nervous system.</p>
       </div>
 
-      <!-- Therapeutic -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">
-          <i class="fas fa-heart"></i> Therapeutic Massage
-        </h2>
-        <p class="text-gray-700">Effective for managing chronic pain, reducing stress, and treating specific conditions like sciatica, plantar fasciitis, and frozen shoulder.</p>
+      <div class="modality-card bg-gray-50 p-6 rounded-lg">
+        <h3 class="text-lg font-bold text-gray-900 mb-3">
+          <i class="fas fa-heart mr-2" style="opacity:0.45;"></i>Therapeutic
+        </h3>
+        <p class="text-gray-600 leading-relaxed text-sm">Effective for managing chronic pain and treating specific conditions like sciatica, plantar fasciitis, and frozen shoulder.</p>
       </div>
 
-      <!-- Deep Tissue -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">
-          <i class="fas fa-layer-group"></i> Deep Tissue
-        </h2>
-        <p class="text-gray-700">Breaks down scar tissue and focuses on deeper muscle layers to improve circulation and range of motion with targeted techniques.</p>
+      <div class="modality-card bg-gray-50 p-6 rounded-lg">
+        <h3 class="text-lg font-bold text-gray-900 mb-3">
+          <i class="fas fa-layer-group mr-2" style="opacity:0.45;"></i>Deep Tissue
+        </h3>
+        <p class="text-gray-600 leading-relaxed text-sm">Breaks down scar tissue and focuses on deeper muscle layers to improve circulation and range of motion.</p>
       </div>
 
-      <!-- Trigger Point -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">
-          <i class="fas fa-bullseye"></i> Trigger Point
-        </h2>
-        <p class="text-gray-700">Addresses muscle &ldquo;knots&rdquo; and spasms, improving blood flow and relieving chronic pain in specific areas like shoulders and lower back.</p>
+      <div class="modality-card bg-gray-50 p-6 rounded-lg">
+        <h3 class="text-lg font-bold text-gray-900 mb-3">
+          <i class="fas fa-bullseye mr-2" style="opacity:0.45;"></i>Trigger Point
+        </h3>
+        <p class="text-gray-600 leading-relaxed text-sm">Addresses muscle knots and spasms, improving blood flow and relieving chronic pain in the shoulders and lower back.</p>
       </div>
 
-      <!-- Sports -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">
-          <i class="fas fa-running"></i> Sports Massage
-        </h2>
-        <p class="text-gray-700">Tailored for athletes to improve flexibility, recovery time, and prevent injuries during physical activities.</p>
+      <div class="modality-card bg-gray-50 p-6 rounded-lg">
+        <h3 class="text-lg font-bold text-gray-900 mb-3">
+          <i class="fas fa-running mr-2" style="opacity:0.45;"></i>Sports
+        </h3>
+        <p class="text-gray-600 leading-relaxed text-sm">Tailored for athletes to improve flexibility, recovery time, and prevent injuries during physical activities.</p>
       </div>
 
-      <!-- Myofascial -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">
-          <i class="fas fa-sliders-h"></i> Myofascial Massage
-        </h2>
-        <p class="text-gray-700">Focuses on releasing tension in the myofascial tissues to improve posture, movement, and overall flexibility.</p>
+      <div class="modality-card bg-gray-50 p-6 rounded-lg">
+        <h3 class="text-lg font-bold text-gray-900 mb-3">
+          <i class="fas fa-sliders-h mr-2" style="opacity:0.45;"></i>Myofascial
+        </h3>
+        <p class="text-gray-600 leading-relaxed text-sm">Releases tension in myofascial tissues to improve posture, movement, and overall flexibility.</p>
       </div>
 
-      <!-- Prenatal -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">
-          <i class="fas fa-baby"></i> Prenatal
-        </h2>
-        <p class="text-gray-700">Relieves tension and swelling for expectant mothers, promoting relaxation and comfort during pregnancy.</p>
+      <div class="modality-card bg-gray-50 p-6 rounded-lg">
+        <h3 class="text-lg font-bold text-gray-900 mb-3">
+          <i class="fas fa-baby mr-2" style="opacity:0.45;"></i>Prenatal
+        </h3>
+        <p class="text-gray-600 leading-relaxed text-sm">Relieves tension and swelling for expectant mothers, promoting relaxation and comfort during pregnancy.</p>
       </div>
 
-      <!-- Reflexology -->
-      <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
-        <h2 class="text-xl font-bold text-gray-900 mb-4">
-          <i class="fas fa-shoe-prints"></i> Reflexology
-        </h2>
-        <p class="text-gray-700">Applies targeted pressure to reflex points on the feet, hands, and ears to enhance overall well-being and relaxation.</p>
+      <div class="modality-card bg-gray-50 p-6 rounded-lg">
+        <h3 class="text-lg font-bold text-gray-900 mb-3">
+          <i class="fas fa-shoe-prints mr-2" style="opacity:0.45;"></i>Reflexology
+        </h3>
+        <p class="text-gray-600 leading-relaxed text-sm">Applies targeted pressure to reflex points on the feet, hands, and ears to enhance well-being and relaxation.</p>
       </div>
+
     </div>
   </section>
+
 </main>
 
-<footer class="text-center text-white p-6">
-      
-    <div class="Footer-business-hours mb-6">
-        <div class="font-bold text-lg mb-4">Hours</div>
-        <div class="grid grid-cols-2 gap-2 text-3sm">
-            <div>Mon</div> <div>CLOSED</div>
-            <div>Tue</div> <div>3PM - 8PM</div>
-            <div>Wed</div> <div>3PM - 8PM</div>
-            <div>Thu</div> <div>3PM - 8PM</div>
-            <div>Fri</div> <div>3PM - 8PM</div>
-            <div>Sat</div> <div>BY APPOINTMENT ONLY</div>
-            <div>Sun</div> <div>BY APPOINTMENT ONLY</div>
-        </div>
+<footer class="text-center">
+
+  <div class="reveal">
+    <div style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.4;margin-bottom:16px;">Hours</div>
+    <div class="hours-grid">
+      <span class="day">Mon</span>       <span class="time">Closed</span>
+      <span class="day">Tue – Fri</span> <span class="time">3PM – 8PM</span>
+      <span class="day">Sat – Sun</span> <span class="time">By Appointment</span>
     </div>
-    
-    <div class="relative w-full max-w-xs mx-auto">
-        <img 
-            class="w-full h-auto object-contain" 
-            src="img/1-color-ko.png"
-            alt="1-color-ko logo"
-        >
-    </div>
-     <div class="grid grid-cols-2 gap-4 mb-4 text-lg">
-        <a href="tel:+14439395144" class="block mb-2">
-          (443) 939-5144
-        </a>
-        <a href="mailto:sirenszenmassage@gmail.com" class="block">
-           sirenszenmassage@gmail.com
-        </a>
-    </div>
+  </div>
+
+  <div class="footer-logo reveal">
+    <img src="img/1-color-ko.png" alt="Sirenszen Wellness">
+  </div>
+
+  <div class="footer-contact reveal">
+    <a href="tel:+14439395144">(443) 939-5144</a>
+    <a href="mailto:sirenszenmassage@gmail.com">sirenszenmassage@gmail.com</a>
+  </div>
 
 </footer>
 
+<script>
+(function () {
+  // Parallax — JS-driven so it works on iOS too
+  var hero = document.getElementById('home');
+  function updateParallax() {
+    if (window.scrollY < window.innerHeight * 1.2) {
+      hero.style.backgroundPositionY = 'calc(50% + ' + (window.scrollY * 0.35) + 'px)';
+    }
+  }
+  window.addEventListener('scroll', updateParallax, { passive: true });
+
+  // Scroll reveal
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('in-view');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(function (el) {
+    obs.observe(el);
+  });
+})();
+</script>
 
 </body>
 </html>
