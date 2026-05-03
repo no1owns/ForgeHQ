@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#060202">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>The Derry Chronicles</title>
+  <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+<meta property="og:image" content="img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="img/og-image.png">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/combat.css">
+  <link rel="stylesheet" href="css/ui.css">
+</head>
+<body>
+
+<!-- ══ ATMOSPHERE ══════════════════════════════════════════ -->
+<div id="rain"></div>
+<div id="vignette"></div>
+<div id="drips"></div>
+<div id="flash-overlay"></div>
+<div id="fear-overlay"></div>
+<div id="dmg-popup"></div>
+
+<!-- ══ INTRO SCREEN ════════════════════════════════════════ -->
+<div id="intro-screen">
+  <div id="intro-logo">The Derry Chronicles</div>
+  <div id="intro-sub">The Dark Universe</div>
+  <div id="intro-divider"></div>
+  <div id="intro-tagline">
+    "We made a promise once. In the summer of 1958,<br>
+    seven children faced something ancient and hungry.<br>
+    They beat it. They forgot. Now it's 1989,<br>
+    and the phone is ringing again."
+  </div>
+  <div id="intro-balloon">🎈</div>
+  <button id="begin-btn" onclick="Game.begin()"><span>ENTER DERRY</span></button>
+  <div id="intro-credits">A Stephen King Fan Experience · Not for commercial use</div>
+</div>
+
+<!-- ══ CUTSCENE ════════════════════════════════════════════ -->
+<div id="cutscene">
+  <div id="cutscene-text"></div>
+  <div id="cutscene-progress"></div>
+  <div id="cutscene-skip" onclick="Game.skipCutscene()">SKIP ▸</div>
+</div>
+
+<!-- ══ COMBAT SCREEN ═══════════════════════════════════════ -->
+<div id="combat-screen">
+
+  <!-- Scene / Enemy area -->
+  <div id="combat-scene">
+    <div id="scene-bg" class="derry"></div>
+    <div id="scene-mist"></div>
+
+    <!-- Enemy status -->
+    <div id="enemy-status-bar">
+      <div id="enemy-name-txt">PENNYWISE</div>
+      <div id="enemy-hp-track"><div id="enemy-hp-fill" style="width:100%"></div></div>
+      <div id="enemy-hp-nums">90 / 90</div>
+      <div id="enemy-phase-badge"></div>
+    </div>
+
+    <!-- Enemy portrait — drawn by Canvas -->
+    <div id="enemy-portrait-wrap">
+      <!-- canvas injected here by ui.js buildEnemyPortrait() -->
+    </div>
+
+    <!-- Scene atmosphere -->
+    <div id="scene-floor"></div>
+    <div id="scene-particles"></div>
+
+    <!-- Player status (bottom-left of scene) -->
+    <div id="player-status">
+      <div id="player-name-txt">THE LOSERS</div>
+      <div class="p-stat-row" id="p-hp-row">
+        <span class="p-stat-lbl">HP</span>
+        <div class="p-stat-track"><div class="p-stat-fill" id="p-hp-fill" style="width:100%"></div></div>
+        <span class="p-stat-val" id="p-hp-val">100</span>
+      </div>
+      <div class="p-stat-row">
+        <span class="p-stat-lbl">SAN</span>
+        <div class="p-stat-track"><div class="p-stat-fill" id="p-san-fill" style="width:100%"></div></div>
+        <span class="p-stat-val" id="p-san-val">100</span>
+      </div>
+      <div class="p-stat-row" id="p-fear-row">
+        <span class="p-stat-lbl">FEAR</span>
+        <div class="p-stat-track"><div class="p-stat-fill" id="p-fear-fill" style="width:30%"></div></div>
+        <span class="p-stat-val" id="p-fear-val">30</span>
+      </div>
+      <div id="memory-tokens"></div>
+    </div>
+
+    <!-- Dialogue box -->
+    <div id="combat-dialogue">
+      <div id="dialogue-speaker"></div>
+      <div id="dialogue-text"></div>
+    </div>
+  </div>
+
+  <!-- Command menu -->
+  <div id="combat-menu">
+    <div id="turn-banner">
+      <div id="turn-indicator"></div>
+      <div id="turn-txt">YOUR TURN</div>
+    </div>
+    <div id="combat-log"></div>
+    <div id="command-grid"></div>
+  </div>
+
+</div>
+
+<!-- ══ PHASE TRANSITION OVERLAY ════════════════════════════ -->
+<div id="phase-overlay">
+  <div id="phase-title">PHASE II</div>
+  <div id="phase-sub">TRUE FORM</div>
+</div>
+
+<!-- ══ CHAPTER SELECT ══════════════════════════════════════ -->
+<div id="chapter-overlay">
+  <div id="chapter-title">◆ SELECT CHAPTER ◆</div>
+  <div id="chapter-grid"></div>
+  <button id="chapter-close" onclick="document.getElementById('chapter-overlay').classList.remove('active')">CLOSE</button>
+</div>
+
+<!-- ══ INVENTORY SCREEN ════════════════════════════════════ -->
+<div id="inventory-screen">
+  <div id="inv-title">◆ INVENTORY ◆</div>
+  <div id="inv-grid"></div>
+  <button id="inv-close" onclick="Game.closeInventory()">◀ BACK</button>
+</div>
+
+<!-- ══ DEATH OVERLAY ════════════════════════════════════════ -->
+<div id="overlay-screen">
+  <div id="overlay-title">IT GOT YOU</div>
+  <div id="overlay-msg"></div>
+  <button id="restart-btn" onclick="Game.restart()">TRY AGAIN</button>
+</div>
+
+<!-- ══ VICTORY OVERLAY ══════════════════════════════════════ -->
+<div id="victory-screen" style="
+  position:fixed;inset:0;z-index:700;
+  background:radial-gradient(ellipse at center, #080302 0%, #020101 100%);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Special Elite',serif;text-align:center;padding:32px;
+">
+  <div id="victory-eyeline" style="font-size:11px;letter-spacing:6px;color:#3a2010;text-transform:uppercase;margin-bottom:24px;opacity:0;animation:fadeInSlow 1s ease 0.3s forwards;">
+    ◆ DERRY, MAINE — DAWN ◆
+  </div>
+  <div id="victory-title" style="
+    font-size:clamp(2.2rem,8vw,4rem);color:#c0392b;letter-spacing:8px;text-transform:uppercase;
+    text-shadow:0 0 60px rgba(139,0,0,0.9),0 0 120px rgba(139,0,0,0.4);
+    margin-bottom:18px;opacity:0;animation:fadeInSlow 1.2s ease 0.6s forwards;
+  ">YOU SURVIVED</div>
+  <div style="width:160px;height:1px;background:linear-gradient(90deg,transparent,#8b0000,transparent);margin:0 auto 24px;opacity:0;animation:fadeInSlow 1s ease 1s forwards;"></div>
+  <div id="victory-msg" style="
+    font-family:'Crimson Pro',serif;font-style:italic;font-size:1.1rem;
+    color:#a89880;max-width:500px;line-height:1.85;margin-bottom:32px;
+    opacity:0;animation:fadeInSlow 1.5s ease 1.4s forwards;padding:0 12px;
+  ">
+    Against all odds, the deadlights didn't take you.<br>
+    Derry is a little quieter this morning. It will forget — it always does.<br>
+    But <em>you</em> will remember.
+  </div>
+  <div id="victory-stats" style="
+    display:flex;gap:28px;margin-bottom:32px;
+    opacity:0;animation:fadeInSlow 1s ease 2s forwards;
+  "></div>
+  <div style="display:flex;gap:12px;opacity:0;animation:fadeInSlow 1s ease 2.4s forwards;flex-wrap:wrap;justify-content:center;">
+    <button onclick="Game.continueAfterVictory()" style="
+      background:transparent;border:2px solid #c0392b;color:#c0392b;
+      padding:13px 36px;font-family:'Special Elite',serif;font-size:0.95rem;
+      letter-spacing:4px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;
+    ">CONTINUE</button>
+    <button onclick="Game.restart()" style="
+      background:transparent;border:1px solid #2a1010;color:#4a3030;
+      padding:13px 24px;font-family:'Special Elite',serif;font-size:0.85rem;
+      letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;
+    ">PLAY AGAIN</button>
+  </div>
+</div>
+
+<!-- ══ GAME WRAP ═══════════════════════════════════════════ -->
+<div id="game-wrap">
+
+  <!-- Topbar -->
+  <div id="topbar">
+    <div id="stats">
+      <div class="stat">
+        <span class="stat-label">HP</span>
+        <div class="stat-bar" id="hp-bar"><div class="stat-fill" id="hp-fill" style="width:100%"></div></div>
+        <span class="stat-val" id="hp-val">100/100</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">SANITY</span>
+        <div class="stat-bar" id="san-bar"><div class="stat-fill" id="san-fill" style="width:100%"></div></div>
+        <span class="stat-val" id="san-val">100/100</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">FEAR</span>
+        <div class="stat-bar"><div class="stat-fill" id="fear-fill" style="width:30%"></div></div>
+        <span class="stat-val" id="fear-val">30/100</span>
+      </div>
+    </div>
+    <div id="topbar-row2">
+      <div id="game-title">KING'S NIGHTMARE</div>
+      <div id="location-badge">Derry, Maine</div>
+      <div id="topbar-memory"></div>
+      <button id="sound-btn" onclick="Game.toggleSound()">♪ ON</button>
+    </div>
+  </div>
+
+  <!-- Main area -->
+  <div id="main">
+
+    <!-- Story pane -->
+    <div id="story-pane">
+      <!-- Location art panel — shown during exploration -->
+      <div id="location-art-panel" style="
+        position:relative; width:100%; overflow:hidden;
+        flex-shrink:0; display:none; height:0;
+        transition:height 0.5s ease;
+      ">
+        <canvas id="location-art-canvas" style="display:block;width:100%;position:absolute;top:0;left:0;"></canvas>
+        <!-- Strong gradient fade into story below -->
+        <div id="location-art-overlay" style="
+          position:absolute; inset:0;
+          background:linear-gradient(0deg,rgba(4,2,1,1) 0%, rgba(4,2,1,0.55) 38%, rgba(4,2,1,0.1) 68%, transparent 100%);
+          pointer-events:none;
+        "></div>
+        <!-- Location name — bottom left over art -->
+        <div id="location-art-label" style="
+          position:absolute; bottom:18px; left:16px;
+          font-family:'Share Tech Mono',monospace; font-size:9px;
+          letter-spacing:5px; color:rgba(210,170,100,0.8); text-transform:uppercase;
+          text-shadow:0 0 12px rgba(0,0,0,1), 0 1px 3px rgba(0,0,0,0.9);
+          border-left:2px solid rgba(180,60,0,0.6); padding-left:8px;
+        "></div>
+      </div>
+      <div id="story-scroll"></div>
+    </div>
+
+    <!-- Side panel -->
+    <div id="side-panel">
+      <div class="panel-box mob-active" id="panel-map">
+        <div class="panel-title">◆ MAP</div>
+        <div id="map-grid"></div>
+      </div>
+      <div class="panel-box" id="panel-inv">
+        <div class="panel-title">◆ ITEMS</div>
+        <div id="inventory-list"></div>
+      </div>
+      <div class="panel-box" id="panel-journal">
+        <div class="panel-title">◆ JOURNAL</div>
+        <div id="journal-entries"></div>
+        <div style="margin-top:10px;">
+          <button class="choice-btn" style="width:100%;text-align:center;font-size:12px;padding:8px;" onclick="UI.showChapterOverlay()">◈ Chapters</button>
+          <button class="choice-btn" style="width:100%;text-align:center;font-size:12px;padding:8px;margin-top:6px;" onclick="Game.openInventory()">◈ Full Inventory</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Choices pane -->
+  <div id="choices-pane">
+    <div id="choices-label">WHAT DO YOU DO?</div>
+    <div id="choices"></div>
+  </div>
+
+  <!-- Mobile tabs (hidden on desktop via CSS) -->
+  <div id="mobile-tabs" style="display:none;">
+    <button class="mob-tab active" id="tab-story" onclick="mobileTab('story')">
+      <span class="tab-icon">📖</span>STORY
+    </button>
+    <button class="mob-tab" id="tab-map" onclick="mobileTab('map')">
+      <span class="tab-icon">🗺</span>MAP
+    </button>
+    <button class="mob-tab" id="tab-inv" onclick="mobileTab('inv')">
+      <span class="tab-icon">🎒</span>ITEMS
+    </button>
+    <button class="mob-tab" id="tab-journal" onclick="mobileTab('journal')">
+      <span class="tab-icon">📋</span>LOG
+    </button>
+  </div>
+
+</div>
+
+<!-- ══ SCRIPTS ═════════════════════════════════════════════ -->
+<script src="js/sprite.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/story-it.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/combat.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   GAME — Main orchestrator
+   Wires Engine, UI, Audio, Combat, and Story together
+   ════════════════════════════════════════════════════════ */
+
+// Map layout for the IT chapter
+window.mapLayout = [
+  { id: 'derry_street',   emoji: '🏙', label: 'Main St'   },
+  { id: 'derry_library',  emoji: '📚', label: 'Library'   },
+  { id: 'barrens',        emoji: '🌿', label: 'Barrens'   },
+  { id: 'neibolt',        emoji: '🏚', label: 'Neibolt'   },
+  { id: 'sewer_entrance', emoji: '🚇', label: 'Sewers'    },
+  { id: 'sewer_recon',    emoji: '💡', label: 'Deadlight', unlock: 'sewer_entrance' },
+  { id: 'sewer_center',   emoji: '🤡', label: 'Lair',      unlock: 'sewer_entrance' },
+  { id: 'victory',        emoji: '🌅', label: 'Dawn',      unlock: 'sewer_center'   },
+  { id: 'overlook_lobby', emoji: '🪓', label: 'Overlook',  chapter: 'shining'       },
+];
+
+const CUTSCENE_SLIDES = [
+  { text: "Summer, 1989. Seven adults receive phone calls they have been unconsciously dreading for decades." },
+  { text: "\"It's started again.\" Mike Hanlon's voice on the line. Three words. That's all it takes to unlock thirty years of buried memory." },
+  { text: "They had forgotten everything — the Barrens, the silver slugs, the Ritual, the thing that lived in the sewers beneath Derry, Maine. They had <em>needed</em> to forget." },
+  { text: "They are coming back now. One by one, the memories return. One by one, the fear returns with them." },
+  { text: "Only one question remains: after thirty years of living — of becoming adults, of forgetting what it meant to believe absolutely — do they still have what it takes?" },
+];
+
+window.Game = (() => {
+  let cutsceneIdx = 0;
+  let cutsceneSkipped = false;
+  let soundOn = true;
+  let currentStoryData = null;
+
+  // ── INIT ──
+  function init() {
+    buildRain();
+    buildDrips();
+    const hasSave = Engine.load();
+    if (hasSave) {
+      // Has save — offer to continue or new game
+      const beginBtn = document.getElementById('begin-btn');
+      if (beginBtn) {
+        beginBtn.innerHTML = '<span>CONTINUE</span>';
+        const newBtn = document.createElement('button');
+        newBtn.className = 'choice-btn';
+        newBtn.style.cssText = 'margin-top:10px;font-size:12px;letter-spacing:2px;border-color:#2a1010;color:#5a3a3a;';
+        newBtn.textContent = 'New Game';
+        newBtn.onclick = () => { Engine.reset(); location.reload(); };
+        beginBtn.parentNode.insertBefore(newBtn, beginBtn.nextSibling);
+      }
+    }
+  }
+
+  // ── ATMOSPHERE ──
+  function buildRain() {
+    const container = document.getElementById('rain');
+    if (!container) return;
+    for (let i = 0; i < 55; i++) {
+      const drop = document.createElement('div');
+      drop.className = 'raindrop';
+      drop.style.left = Math.random() * 100 + '%';
+      drop.style.height = (60 + Math.random() * 80) + 'px';
+      drop.style.animationDuration = (0.5 + Math.random() * 0.9) + 's';
+      drop.style.animationDelay = (-Math.random() * 2) + 's';
+      drop.style.opacity = 0.2 + Math.random() * 0.4;
+      container.appendChild(drop);
+    }
+  }
+
+  function buildDrips() {
+    const container = document.getElementById('drips');
+    if (!container) return;
+    for (let i = 0; i < 6; i++) {
+      const drip = document.createElement('div');
+      drip.className = 'drip';
+      drip.style.left = (8 + Math.random() * 84) + '%';
+      drip.style.animationDuration = (3 + Math.random() * 6) + 's';
+      drip.style.animationDelay = (-Math.random() * 8) + 's';
+      drip.style.opacity = 0.4 + Math.random() * 0.5;
+      container.appendChild(drip);
+    }
+  }
+
+  // ── BEGIN / CUTSCENE ──
+  function begin() {
+    const intro = document.getElementById('intro-screen');
+    if (intro) intro.classList.add('hide');
+
+    // Start audio
+    try {
+      Audio.startAmbience();
+      Audio.startTheme('derry');
+      Audio.startHeartbeat(false);
+    } catch(e) {}
+
+    setTimeout(() => {
+      intro.style.display = 'none';
+      startCutscene();
+    }, 1200);
+  }
+
+  function startCutscene() {
+    const cs = document.getElementById('cutscene');
+    if (!cs) { startGame(); return; }
+    cs.classList.add('active');
+    cutsceneIdx = 0;
+    cutsceneSkipped = false;
+    buildCutsceneProgress();
+    showCutsceneSlide(0);
+  }
+
+  function buildCutsceneProgress() {
+    const prog = document.getElementById('cutscene-progress');
+    if (!prog) return;
+    prog.innerHTML = CUTSCENE_SLIDES.map((_, i) =>
+      `<div class="cs-dot${i === 0 ? ' active' : ''}"></div>`
+    ).join('');
+  }
+
+  function showCutsceneSlide(idx) {
+    if (cutsceneSkipped) return;
+    const txt = document.getElementById('cutscene-text');
+    if (!txt) return;
+    txt.innerHTML = '';
+    txt.style.opacity = 0;
+
+    const slide = CUTSCENE_SLIDES[idx];
+    setTimeout(() => {
+      txt.innerHTML = slide.text;
+      txt.style.transition = 'opacity 0.8s';
+      txt.style.opacity = 1;
+      // Update dots
+      document.querySelectorAll('.cs-dot').forEach((d, i) =>
+        d.classList.toggle('active', i === idx));
+    }, 100);
+
+    // Auto-advance
+    const autoTimer = setTimeout(() => {
+      if (cutsceneSkipped) return;
+      cutsceneIdx++;
+      if (cutsceneIdx < CUTSCENE_SLIDES.length) {
+        showCutsceneSlide(cutsceneIdx);
+      } else {
+        endCutscene();
+      }
+    }, 3800);
+
+    // Click to advance
+    txt.onclick = () => {
+      clearTimeout(autoTimer);
+      cutsceneIdx++;
+      if (cutsceneIdx < CUTSCENE_SLIDES.length) {
+        showCutsceneSlide(cutsceneIdx);
+      } else {
+        endCutscene();
+      }
+    };
+  }
+
+  function skipCutscene() {
+    cutsceneSkipped = true;
+    endCutscene();
+  }
+
+  function endCutscene() {
+    const cs = document.getElementById('cutscene');
+    if (cs) { cs.classList.add('hide'); setTimeout(() => cs.classList.remove('active','hide'), 1000); }
+    setTimeout(startGame, 600);
+  }
+
+  // ── GAME START ──
+  function startGame() {
+    const wrap = document.getElementById('game-wrap');
+    if (wrap) wrap.classList.add('active');
+
+    currentStoryData = StoryIT; // Load IT chapter
+
+    UI.updateStats();
+    UI.updateMemoryTokens();
+    UI.updateInventory();
+    UI.updateMap();
+
+    // Go to current node
+    goToNode(Engine.currentNode || 'derry_street');
+  }
+
+  // ── NODE NAVIGATION ──
+  function goToNode(nodeId) {
+    // Special nodes
+    if (nodeId === '__chapter_select__') { UI.showChapterOverlay(); return; }
+    if (nodeId === '__restart__') { restart(); return; }
+
+    const node = currentStoryData[nodeId];
+    if (!node) {
+      UI.addStoryBlock('system', `[Node not found: ${nodeId}]`);
+      return;
+    }
+
+    Engine.visit(nodeId);
+    showLocationArt(nodeId);
+
+    // Location badge + scene header
+    const locText = node.location ? node.location.replace(/^📍 /, '') : '';
+    if (locText) {
+      const badge = document.getElementById('location-badge');
+      if (badge) badge.textContent = locText;
+      UI.updateMap();
+    }
+    // Clear story and add location header — fresh scene per node
+    if (typeof UI.addLocationHeader === 'function') UI.addLocationHeader(locText);
+
+    // Switch music theme
+    if (node.theme) Audio.startTheme(node.theme);
+
+    // Apply stat effects immediately (before text display)
+    if (node.gainStat) {
+      Object.entries(node.gainStat).forEach(([stat, val]) => Engine.modStat(stat, val));
+      UI.updateStats();
+    }
+    if (node.gainMemory) {
+      Engine.gainMemoryToken(node.gainMemory);
+      UI.updateMemoryTokens();
+      Audio.memoryToken();
+    }
+    if (node.gainItem) {
+      if (Engine.addItem(node.gainItem)) {
+        UI.addStoryBlock('action', `[ITEM OBTAINED: ${node.gainItem.emoji} ${node.gainItem.name}]`);
+        UI.addJournal(`Found: ${node.gainItem.name}`);
+        Audio.pickup();
+        UI.updateInventory();
+      }
+    }
+    if (node.setFlag) Engine.setFlag(node.setFlag);
+
+    // Render story text blocks
+    if (node.text) {
+      node.text.forEach((block, i) => {
+        setTimeout(() => {
+          UI.addStoryBlock(block.type || 'normal', block.text);
+          if (block.type === 'horror') Audio.horror();
+        }, i * 220);
+      });
+    }
+
+    const textDelay = (node.text?.length || 0) * 220 + 200;
+
+    // Combat node
+    if (node.combat) {
+      UI.clearChoices();
+      setTimeout(() => {
+        Combat.start(node.combat, {
+          fleeNode: node.combatFleeNode || 'derry_street',
+          onVictory: () => {
+            showLocationArt(null); // hide art during victory
+            if (node.win || node.combatVictoryNode === 'victory') {
+              showVictoryScreen();
+            } else if (node.combatVictoryNode) {
+              goToNode(node.combatVictoryNode);
+            }
+          }
+        });
+      }, textDelay + 400);
+      return;
+    }
+
+    // Win condition
+    if (node.win && node.completeChapter) {
+      Engine.completeChapter(node.completeChapter);
+    }
+
+    // Show choices
+    setTimeout(() => {
+      if (node.choices) {
+        UI.showChoices(node.choices);
+        // Mobile: switch back to story tab for choices
+        if (window.innerWidth < 700) mobileTab('story');
+      }
+    }, textDelay);
+  }
+
+  // ── CHOICE HANDLING ──
+  function handleChoice(choice) {
+    UI.clearChoices();
+    // Echo choice in story
+    UI.addStoryBlock('action', '▸ ' + choice.text.replace(/<[^>]+>/g, ''));
+    Audio.pickup();
+    setTimeout(() => goToNode(choice.next), 350);
+  }
+
+  // ── DEATH ──
+  function triggerDeath() {
+    Audio.death();
+    Audio.stopTheme();
+    Audio.stopHeartbeat();
+    const overlay = document.getElementById('overlay-screen');
+    const title   = document.getElementById('overlay-title');
+    const msg     = document.getElementById('overlay-msg');
+    if (!overlay) return;
+
+    const deathMessages = [
+      "The deadlights claim you. Not your body — that hardly matters. But the part that makes you <em>you</em>. The memories. The name. The summer of 1958.",
+      "Derry folds you into itself. The town has been eating people for three centuries. One more makes no difference.",
+      "The last thing you see is orange light. Beautiful, actually. Wrong, but beautiful. Then nothing.",
+      "It takes the fear first. Then it takes everything else."
+    ];
+
+    title.textContent = 'IT GOT YOU';
+    msg.innerHTML = deathMessages[Math.floor(Math.random() * deathMessages.length)];
+    overlay.classList.add('active');
+  }
+
+  // ── RESTART ──
+  function restart() {
+    Engine.resetChapter();
+    UI.hideCombatScreen();
+    const overlay = document.getElementById('overlay-screen');
+    if (overlay) overlay.classList.remove('active');
+    const scroll = document.getElementById('story-scroll');
+    if (scroll) scroll.innerHTML = '';
+    UI.updateStats();
+    UI.updateMemoryTokens();
+    UI.updateInventory();
+    UI.updateMap();
+    goToNode('derry_street');
+  }
+
+  // ── CHAPTER SELECT ──
+  function resetAndStartChapter(chapterId) {
+    Engine.resetChapter();
+    const scroll = document.getElementById('story-scroll');
+    if (scroll) scroll.innerHTML = '';
+
+    const def = Engine.getCurrentChapterDef();
+
+    // Load correct story data
+    if (chapterId === 'it') currentStoryData = StoryIT;
+    // Others will be added: else if (chapterId === 'shining') currentStoryData = StoryShining;
+
+    Audio.startTheme(def.theme);
+    UI.updateStats();
+    UI.updateMemoryTokens();
+    UI.updateInventory();
+    UI.updateMap();
+    goToNode(def.startNode);
+  }
+
+  // ── VICTORY SCREEN ──
+  function showVictoryScreen() {
+    const vs = document.getElementById('victory-screen');
+    if (!vs) return;
+    const statsEl = document.getElementById('victory-stats');
+    if (statsEl) {
+      const s = Engine.state;
+      statsEl.innerHTML = [
+        { label: 'HP', val: s.hp + '/' + s.maxHp, color: '#c0392b' },
+        { label: 'SANITY', val: s.sanity + '/' + s.maxSanity, color: '#4080cc' },
+        { label: 'FEAR', val: s.fear + '%', color: '#8a40cc' },
+        { label: 'TOKENS', val: s.memoryTokens, color: '#c0a030' }
+      ].map(item => `
+        <div style="text-align:center;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:${item.color};text-transform:uppercase;">${item.label}</div>
+          <div style="font-family:'Special Elite',serif;font-size:1.3rem;color:#d4c9b0;">${item.val}</div>
+        </div>`).join('');
+    }
+    vs.style.display = 'flex';
+  }
+
+  function continueAfterVictory() {
+    const vs = document.getElementById('victory-screen');
+    if (vs) vs.style.display = 'none';
+    UI.showChapterOverlay();
+  }
+
+  // ── LOCATION ART ──
+  // Draws a canvas scene for each location to make exploring immersive
+  const locationArt = {
+
+    derry_street: {
+      label: 'DERRY, MAINE  —  1989',
+      draw(ctx, W, H, t) {
+        // Deep night sky
+        const sky = ctx.createLinearGradient(0,0,0,H);
+        sky.addColorStop(0,'#020108'); sky.addColorStop(0.6,'#060310'); sky.addColorStop(1,'#0a0508');
+        ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
+
+        // Stars
+        for(let s=0;s<40;s++){
+          const sx=(s*137.5)%W, sy=(s*73)%(H*0.4);
+          const sa=0.3+Math.abs(Math.sin(t*0.3+s))*0.5;
+          ctx.fillStyle=`rgba(200,190,160,${sa*0.6})`;
+          ctx.fillRect(sx,sy,1,1);
+        }
+
+        // Buildings silhouette — varied heights, detailed
+        const blds=[
+          {x:0,   y:0.28,w:0.14,h:0.72,wins:[[0.02,0.32,0.04,0.07],[0.08,0.32,0.04,0.07],[0.02,0.42,0.04,0.07],[0.08,0.42,0.04,0.07]]},
+          {x:0.13,y:0.18,w:0.12,h:0.82,wins:[[0.02,0.22,0.03,0.06],[0.07,0.22,0.03,0.06],[0.02,0.31,0.03,0.06]]},
+          {x:0.24,y:0.32,w:0.15,h:0.68,wins:[[0.02,0.36,0.04,0.07],[0.08,0.36,0.04,0.07],[0.02,0.46,0.04,0.07]]},
+          {x:0.38,y:0.22,w:0.16,h:0.78,wins:[[0.02,0.26,0.04,0.07],[0.09,0.26,0.04,0.07],[0.02,0.36,0.04,0.07],[0.09,0.36,0.04,0.07]]},
+          {x:0.53,y:0.30,w:0.13,h:0.70,wins:[[0.02,0.34,0.04,0.07],[0.07,0.34,0.04,0.07]]},
+          {x:0.65,y:0.20,w:0.14,h:0.80,wins:[[0.02,0.25,0.04,0.07],[0.08,0.25,0.04,0.07],[0.02,0.35,0.04,0.07]]},
+          {x:0.78,y:0.26,w:0.10,h:0.74,wins:[[0.01,0.30,0.03,0.06],[0.05,0.30,0.03,0.06]]},
+          {x:0.87,y:0.15,w:0.13,h:0.85,wins:[[0.01,0.19,0.04,0.07],[0.07,0.19,0.04,0.07],[0.01,0.30,0.04,0.07]]},
+        ];
+        blds.forEach(({x,y,w,h,wins})=>{
+          ctx.fillStyle='#060308'; ctx.fillRect(W*x,H*y,W*w,H*h);
+          wins.forEach(([wx,wy,ww,wh])=>{
+            const lit=Math.sin(t*0.1+(x+wy)*30)>0.0;
+            ctx.fillStyle=lit?'rgba(210,170,60,0.18)':'rgba(8,6,3,0.9)';
+            ctx.fillRect(W*(x+wx),H*(y+wy),W*ww,H*wh);
+          });
+        });
+
+        // Street surface
+        const street=ctx.createLinearGradient(0,H*0.72,0,H);
+        street.addColorStop(0,'#0c0810'); street.addColorStop(1,'#060408');
+        ctx.fillStyle=street; ctx.fillRect(0,H*0.72,W,H*0.28);
+
+        // Wet street reflections
+        ctx.fillStyle='rgba(100,80,180,0.05)';
+        ctx.fillRect(0,H*0.74,W,H*0.02);
+
+        // Street lamp
+        ctx.strokeStyle='#181220'; ctx.lineWidth=3;
+        ctx.beginPath(); ctx.moveTo(W*0.22,H*0.73); ctx.lineTo(W*0.22,H*0.35);
+        ctx.quadraticCurveTo(W*0.22,H*0.28,W*0.3,H*0.27); ctx.stroke();
+        const lamp=ctx.createRadialGradient(W*0.3,H*0.27,0,W*0.3,H*0.27,W*0.22);
+        lamp.addColorStop(0,'rgba(240,210,90,0.35)'); lamp.addColorStop(0.3,'rgba(200,160,50,0.12)'); lamp.addColorStop(1,'transparent');
+        ctx.fillStyle=lamp; ctx.fillRect(0,0,W,H);
+        // Lamp head
+        ctx.fillStyle='rgba(220,190,80,0.9)';
+        ctx.fillRect(W*0.27,H*0.265,W*0.06,H*0.015);
+
+        // Rain — animated streaks
+        ctx.strokeStyle='rgba(80,100,130,0.22)'; ctx.lineWidth=1;
+        for(let r=0;r<80;r++){
+          const rx=(r*41.3+t*120)%W;
+          const ry=(r*27.7+t*350)%(H*1.2)-H*0.1;
+          ctx.beginPath(); ctx.moveTo(rx,ry); ctx.lineTo(rx-4,ry+45); ctx.stroke();
+        }
+
+        // Puddle reflections — street level
+        ctx.fillStyle='rgba(220,180,60,0.06)';
+        ctx.beginPath(); ctx.ellipse(W*0.3,H*0.82,W*0.12,H*0.025,0,0,Math.PI*2); ctx.fill();
+
+        // Storm drain grate
+        ctx.strokeStyle='rgba(30,18,18,0.85)'; ctx.lineWidth=1.5;
+        ctx.strokeRect(W*0.58,H*0.81,W*0.08,H*0.045);
+        for(let g=0;g<4;g++){
+          ctx.beginPath();
+          ctx.moveTo(W*(0.59+g*0.018),H*0.81);
+          ctx.lineTo(W*(0.59+g*0.018),H*0.855); ctx.stroke();
+        }
+
+        // RED BALLOON — drifting toward drain, animated
+        const bx=W*(0.64+Math.sin(t*0.4)*0.02);
+        const by=H*(0.77-Math.abs(Math.sin(t*0.35))*0.06);
+        ctx.strokeStyle='rgba(130,10,10,0.45)'; ctx.lineWidth=1.2;
+        ctx.beginPath(); ctx.moveTo(bx,by+20);
+        ctx.quadraticCurveTo(bx+Math.sin(t*0.6)*8,by+36,bx+3,by+48); ctx.stroke();
+        const bg2=ctx.createRadialGradient(bx-5,by-6,2,bx,by,16);
+        bg2.addColorStop(0,'#ff3030'); bg2.addColorStop(0.6,'#cc0000'); bg2.addColorStop(1,'#500000');
+        ctx.fillStyle=bg2; ctx.beginPath(); ctx.ellipse(bx,by,13,17,-.08,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='rgba(255,120,120,0.2)';
+        ctx.beginPath(); ctx.ellipse(bx-5,by-7,4.5,7,-.25,0,Math.PI*2); ctx.fill();
+
+        // Vignette
+        const vig=ctx.createRadialGradient(W/2,H/2,W*0.2,W/2,H/2,W*0.85);
+        vig.addColorStop(0,'transparent'); vig.addColorStop(1,'rgba(1,0,3,0.6)');
+        ctx.fillStyle=vig; ctx.fillRect(0,0,W,H);
+      }
+    },
+
+    derry_library: {
+      label: 'DERRY PUBLIC LIBRARY',
+      draw(ctx, W, H, t) {
+        // Dark interior
+        const bg=ctx.createLinearGradient(0,0,0,H);
+        bg.addColorStop(0,'#040208'); bg.addColorStop(1,'#020106');
+        ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+        // High shelves receding to back wall
+        const shelfColor=(i)=>`hsl(${22+i*4},${28+i*2}%,${8+i*1.5}%)`;
+        for(let shelf=0;shelf<5;shelf++){
+          const sy=H*(0.15+shelf*0.16);
+          // Shelf board
+          ctx.fillStyle='#1a0e06';
+          ctx.fillRect(0,sy,W,H*0.018);
+          ctx.fillRect(0,sy+H*0.13,W,H*0.012);
+          // Books on shelf
+          let bx=0;
+          while(bx<W){
+            const bw=W*(0.012+Math.random()*0.018);
+            const bh=H*(0.08+Math.random()*0.045);
+            ctx.fillStyle=shelfColor(shelf+(bx/W*6)|0);
+            ctx.fillRect(bx,sy-bh+H*0.018,bw-1,bh);
+            // Spine highlight
+            ctx.fillStyle='rgba(255,255,200,0.04)';
+            ctx.fillRect(bx,sy-bh+H*0.018,1.5,bh);
+            bx+=bw;
+          }
+        }
+
+        // Reading desk — center with lamp
+        ctx.fillStyle='#1a0c04';
+        ctx.fillRect(W*0.3,H*0.72,W*0.4,H*0.08);
+        ctx.fillRect(W*0.28,H*0.70,W*0.44,H*0.025);
+
+        // Desk lamp warm glow
+        const deskGlow=ctx.createRadialGradient(W*0.5,H*0.65,0,W*0.5,H*0.65,W*0.3);
+        deskGlow.addColorStop(0,'rgba(220,180,70,0.3)'); deskGlow.addColorStop(0.4,'rgba(180,130,40,0.1)'); deskGlow.addColorStop(1,'transparent');
+        ctx.fillStyle=deskGlow; ctx.fillRect(0,0,W,H);
+        // Lamp cone
+        ctx.fillStyle='rgba(240,210,80,0.85)';
+        ctx.beginPath(); ctx.moveTo(W*0.48,H*0.62); ctx.lineTo(W*0.52,H*0.62);
+        ctx.lineTo(W*0.56,H*0.70); ctx.lineTo(W*0.44,H*0.70); ctx.closePath(); ctx.fill();
+
+        // Mike's case files spread on desk
+        ctx.fillStyle='rgba(180,150,80,0.2)';
+        ctx.fillRect(W*0.32,H*0.71,W*0.16,H*0.02);
+        ctx.fillRect(W*0.5,H*0.715,W*0.12,H*0.018);
+        // Newspaper headline visible
+        ctx.fillStyle='rgba(160,130,70,0.25)'; ctx.font=`${Math.floor(H*0.022)}px serif`;
+        ctx.textAlign='left';
+        ctx.fillText('DERRY EAGLE  —  1958', W*0.33, H*0.718);
+
+        // Atmosphere — dust motes in lamplight
+        for(let m=0;m<12;m++){
+          const mx=W*(0.3+0.4*((m*0.137+t*0.04*(m%2?1:-1))%1));
+          const my=H*(0.55+0.15*Math.sin(t*0.2+m*0.8));
+          ctx.fillStyle=`rgba(200,170,80,${0.03+Math.abs(Math.sin(t*0.4+m))*0.05})`;
+          ctx.beginPath(); ctx.arc(mx,my,1.5,0,Math.PI*2); ctx.fill();
+        }
+
+        // Vignette heavy at edges
+        const vig=ctx.createRadialGradient(W*0.5,H*0.55,W*0.1,W*0.5,H*0.5,W*0.8);
+        vig.addColorStop(0,'transparent'); vig.addColorStop(0.5,'rgba(2,1,4,0.1)'); vig.addColorStop(1,'rgba(0,0,2,0.75)');
+        ctx.fillStyle=vig; ctx.fillRect(0,0,W,H);
+      }
+    },
+
+    barrens: {
+      label: 'THE BARRENS',
+      draw(ctx, W, H, t) {
+        // Overcast evening sky
+        const sky=ctx.createLinearGradient(0,0,0,H*0.55);
+        sky.addColorStop(0,'#040810'); sky.addColorStop(0.5,'#060a14'); sky.addColorStop(1,'#0a0c10');
+        ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
+
+        // Treeline — dense, dark, irregular
+        const drawTree=(tx,ty,tr)=>{
+          ctx.fillStyle='#040c04';
+          // Trunk
+          ctx.fillRect(tx-tr*0.08,ty,tr*0.16,H*0.1);
+          // Canopy layers
+          for(let layer=0;layer<3;layer++){
+            ctx.beginPath();
+            ctx.arc(tx,ty-layer*tr*0.35,tr*(0.7-layer*0.15),0,Math.PI*2);
+            ctx.fill();
+          }
+        };
+        // Background trees — smaller
+        for(let i=0;i<16;i++){
+          drawTree(W*(i*0.065+0.02),H*(0.22+Math.sin(i*1.3)*0.06),W*(0.04+Math.sin(i*0.7)*0.015));
+        }
+        // Foreground trees — larger, flanking
+        drawTree(W*0.04, H*0.45, W*0.06);
+        drawTree(W*0.14, H*0.42, W*0.055);
+        drawTree(W*0.85, H*0.44, W*0.06);
+        drawTree(W*0.93, H*0.43, W*0.05);
+
+        // Ground — Barrens floor
+        const ground=ctx.createLinearGradient(0,H*0.6,0,H);
+        ground.addColorStop(0,'#060a04'); ground.addColorStop(1,'#030604');
+        ctx.fillStyle=ground; ctx.fillRect(0,H*0.6,W,H*0.4);
+
+        // Kenduskeag creek — dark water winding through
+        ctx.fillStyle='#030a05';
+        ctx.beginPath();
+        ctx.moveTo(0,H*0.72);
+        ctx.quadraticCurveTo(W*0.25,H*0.68,W*0.5,H*0.72);
+        ctx.quadraticCurveTo(W*0.75,H*0.76,W,H*0.7);
+        ctx.lineTo(W,H); ctx.lineTo(0,H); ctx.closePath();
+        ctx.fill();
+        // Creek ripples
+        ctx.strokeStyle='rgba(8,25,12,0.55)'; ctx.lineWidth=1;
+        for(let r=0;r<5;r++){
+          const rx=W*(0.1+r*0.18)+Math.sin(t*0.4+r)*12;
+          const ry=H*(0.72+Math.sin(r*0.7)*0.02);
+          ctx.beginPath(); ctx.ellipse(rx,ry,20+r*8,4,0,0,Math.PI*2); ctx.stroke();
+        }
+
+        // Treehouse — the Losers' Club
+        ctx.fillStyle='#0c0a06';
+        ctx.fillRect(W*0.56,H*0.3,W*0.2,H*0.18); // platform
+        ctx.fillRect(W*0.58,H*0.2,W*0.16,H*0.12); // upper room
+        // Rope ladder
+        ctx.strokeStyle='rgba(80,60,30,0.5)'; ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.moveTo(W*0.63,H*0.48); ctx.lineTo(W*0.63,H*0.62); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(W*0.68,H*0.48); ctx.lineTo(W*0.68,H*0.62); ctx.stroke();
+        for(let r=0;r<4;r++){
+          ctx.beginPath();
+          ctx.moveTo(W*0.63,H*(0.51+r*0.035));
+          ctx.lineTo(W*0.68,H*(0.51+r*0.035)); ctx.stroke();
+        }
+        // Warm window light
+        const winGlow=ctx.createRadialGradient(W*0.66,H*0.26,0,W*0.66,H*0.26,W*0.1);
+        winGlow.addColorStop(0,'rgba(200,160,60,0.35)'); winGlow.addColorStop(1,'transparent');
+        ctx.fillStyle=winGlow; ctx.fillRect(0,0,W,H);
+        ctx.fillStyle='rgba(200,160,60,0.5)';
+        ctx.fillRect(W*0.62,H*0.225,W*0.07,H*0.055);
+
+        // Fireflies
+        for(let f=0;f<8;f++){
+          const fx=W*(0.15+0.7*((f*0.14+t*0.03*(f%3-1))%1));
+          const fy=H*(0.45+0.2*Math.sin(t*0.5+f*1.2));
+          const fa=Math.abs(Math.sin(t*1.5+f*2.3));
+          ctx.fillStyle=`rgba(180,220,80,${fa*0.4})`;
+          ctx.beginPath(); ctx.arc(fx,fy,1.5,0,Math.PI*2); ctx.fill();
+        }
+
+        // Mist at water surface
+        const mist=ctx.createLinearGradient(0,H*0.68,0,H*0.78);
+        mist.addColorStop(0,'transparent'); mist.addColorStop(0.5,'rgba(8,16,10,0.3)'); mist.addColorStop(1,'transparent');
+        ctx.fillStyle=mist; ctx.fillRect(0,0,W,H);
+
+        // Vignette
+        const vig=ctx.createRadialGradient(W/2,H*0.4,W*0.15,W/2,H/2,W*0.85);
+        vig.addColorStop(0,'transparent'); vig.addColorStop(1,'rgba(0,1,0,0.65)');
+        ctx.fillStyle=vig; ctx.fillRect(0,0,W,H);
+      }
+    },
+
+    neibolt: {
+      label: '29 NEIBOLT STREET',
+      draw(ctx, W, H, t) {
+        const bg=ctx.createLinearGradient(0,0,0,H);
+        bg.addColorStop(0,'#020104'); bg.addColorStop(0.5,'#040208'); bg.addColorStop(1,'#020103');
+        ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+        // Dead trees flanking house
+        const deadTree=(tx,bending)=>{
+          ctx.strokeStyle='#0a0608'; ctx.lineWidth=4;
+          ctx.beginPath(); ctx.moveTo(tx,H); ctx.lineTo(tx+bending*W*0.02,H*0.3); ctx.stroke();
+          // Branches — bare and broken
+          for(let b=0;b<6;b++){
+            const by=H*(0.35+b*0.1);
+            const bl=W*(0.04+b*0.005);
+            const side=(b%2===0?1:-1)*bending;
+            ctx.lineWidth=2-b*0.25; ctx.lineWidth=Math.max(0.5,ctx.lineWidth);
+            ctx.beginPath();
+            ctx.moveTo(tx+bending*W*0.02*(0.3+b*0.1),by);
+            ctx.lineTo(tx+side*bl+bending*W*0.02*(0.3+b*0.1),by-H*0.06); ctx.stroke();
+          }
+        };
+        deadTree(W*0.1,1); deadTree(W*0.18,0.5); deadTree(W*0.82,-0.5); deadTree(W*0.9,-1);
+
+        // HOUSE — leaning, multi-storey
+        ctx.save(); ctx.translate(W*0.5,0); ctx.rotate(0.035);
+        ctx.fillStyle='#060304';
+        // Foundation
+        ctx.fillRect(-W*0.32,H*0.65,W*0.64,H*0.4);
+        // Ground floor
+        ctx.fillRect(-W*0.28,H*0.45,W*0.56,H*0.22);
+        // Second floor
+        ctx.fillRect(-W*0.22,H*0.28,W*0.44,H*0.19);
+        // Attic
+        ctx.fillRect(-W*0.15,H*0.15,W*0.30,H*0.15);
+        // Roof peak
+        ctx.beginPath(); ctx.moveTo(-W*0.18,H*0.15); ctx.lineTo(0,H*0.02); ctx.lineTo(W*0.18,H*0.15); ctx.closePath(); ctx.fill();
+        // Chimney
+        ctx.fillRect(W*0.06,H*0.01,W*0.06,H*0.14);
+
+        // WINDOWS — flickering wrong colors
+        const wt=Date.now()*0.0006;
+        const w1=0.22+Math.abs(Math.sin(wt))*0.25;
+        const w2=0.18+Math.abs(Math.sin(wt+1.8))*0.28;
+        const w3=0.15+Math.abs(Math.sin(wt+3.2))*0.22;
+
+        // Attic window — RED
+        ctx.fillStyle=`rgba(160,10,0,${w3})`;
+        ctx.fillRect(-W*0.06,H*0.17,W*0.12,H*0.09);
+        ctx.fillStyle=`rgba(80,0,0,${w3*0.5})`;
+        ctx.fillRect(-W*0.06,H*0.17,W*0.005,H*0.09);
+
+        // Second floor windows
+        ctx.fillStyle=`rgba(140,80,0,${w1})`;
+        ctx.fillRect(-W*0.18,H*0.31,W*0.09,H*0.11);
+        ctx.fillStyle=`rgba(80,0,0,${w2*0.8})`;
+        ctx.fillRect(W*0.07,H*0.31,W*0.09,H*0.11);
+
+        // Ground floor — one lit dirty amber, one dark
+        ctx.fillStyle=`rgba(120,90,10,${w1*0.9})`;
+        ctx.fillRect(-W*0.22,H*0.5,W*0.11,H*0.12);
+        ctx.fillStyle='rgba(6,4,2,0.95)';
+        ctx.fillRect(W*0.09,H*0.5,W*0.11,H*0.12);
+
+        // Front door — hanging open
+        ctx.fillStyle='#020101';
+        ctx.fillRect(-W*0.05,H*0.6,W*0.10,H*0.065);
+        // Door gap — red light within
+        ctx.fillStyle=`rgba(100,0,0,${0.4+Math.sin(wt*1.5)*0.2})`;
+        ctx.fillRect(-W*0.01,H*0.605,W*0.04,H*0.058);
+
+        ctx.restore();
+
+        // Ground — dead grass, dirt
+        ctx.fillStyle='#050303'; ctx.fillRect(0,H*0.83,W,H*0.17);
+        // Overgrown path
+        ctx.strokeStyle='rgba(18,12,6,0.7)'; ctx.lineWidth=W*0.08;
+        ctx.beginPath(); ctx.moveTo(W*0.5,H); ctx.lineTo(W*0.5,H*0.83); ctx.stroke();
+
+        // Scratched text
+        ctx.fillStyle='rgba(110,0,0,0.48)';
+        ctx.font=`${Math.floor(H*0.038)}px "Special Elite",Georgia,serif`;
+        ctx.textAlign='center';
+        ctx.fillText('THEY ALL FLOAT', W/2, H*0.91);
+
+        // Ground fog tendrils
+        const fog=ctx.createLinearGradient(0,H*0.75,0,H*0.9);
+        fog.addColorStop(0,'transparent'); fog.addColorStop(1,'rgba(12,4,8,0.55)');
+        ctx.fillStyle=fog; ctx.fillRect(0,0,W,H);
+
+        // Vignette
+        const vig=ctx.createRadialGradient(W/2,H*0.4,W*0.08,W/2,H/2,W*0.9);
+        vig.addColorStop(0,'transparent'); vig.addColorStop(1,'rgba(0,0,2,0.72)');
+        ctx.fillStyle=vig; ctx.fillRect(0,0,W,H);
+      }
+    },
+
+    sewer_entrance: {
+      label: 'DERRY SEWERS',
+      draw(ctx, W, H, t) {
+        const bg=ctx.createLinearGradient(0,0,0,H);
+        bg.addColorStop(0,'#010304'); bg.addColorStop(1,'#020102');
+        ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+        // Tunnel arch — brick archway receding
+        const archCX=W/2, archR=W*0.42;
+        // Outer arch brick ring
+        ctx.strokeStyle='rgba(14,8,4,0.9)'; ctx.lineWidth=W*0.045;
+        ctx.beginPath(); ctx.arc(archCX,H*0.18,archR,0,Math.PI,false); ctx.stroke();
+        // Inner arches — depth illusion
+        for(let a=0;a<4;a++){
+          const r=archR*(0.85-a*0.1);
+          const alpha=0.4+a*0.15;
+          ctx.strokeStyle=`rgba(10,6,3,${alpha})`; ctx.lineWidth=W*0.03*(1-a*0.1);
+          ctx.beginPath(); ctx.arc(archCX,H*0.18,r,0,Math.PI,false); ctx.stroke();
+        }
+        // Tunnel interior darkness
+        ctx.fillStyle='#030604';
+        ctx.beginPath(); ctx.arc(archCX,H*0.18,archR*0.84,0,Math.PI,false);
+        ctx.lineTo(archCX-archR*0.84,H); ctx.lineTo(archCX+archR*0.84,H); ctx.closePath();
+        ctx.fill();
+
+        // Brick wall texture
+        ctx.strokeStyle='rgba(10,6,3,0.6)'; ctx.lineWidth=0.8;
+        for(let row=0;row<10;row++){
+          const y=H*0.18-archR+row*H*0.12;
+          const off=(row%2)*W*0.07;
+          for(let col=-1;col<W/(W*0.14)+1;col++){
+            const bx=col*W*0.14+off;
+            ctx.strokeRect(bx+1,y+1,W*0.13-1,H*0.1-1);
+          }
+        }
+
+        // Water — floor of sewer
+        const waterY=H*0.78;
+        const waterGrad=ctx.createLinearGradient(0,waterY,0,H);
+        waterGrad.addColorStop(0,'rgba(3,12,5,0.98)'); waterGrad.addColorStop(1,'rgba(1,6,2,1)');
+        ctx.fillStyle=waterGrad; ctx.fillRect(0,waterY,W,H-waterY);
+        // Water ripples — animated
+        ctx.strokeStyle='rgba(6,22,10,0.5)'; ctx.lineWidth=1;
+        for(let r=0;r<6;r++){
+          const rx=W*(0.1+r*0.15)+Math.sin(t*0.5+r*0.8)*15;
+          const ry=waterY+5+r*4;
+          ctx.beginPath(); ctx.ellipse(rx,ry,12+r*6,3,0,0,Math.PI*2); ctx.stroke();
+        }
+
+        // Water reflection of distant orange glow
+        const reflectGrad=ctx.createRadialGradient(W/2,waterY,0,W/2,waterY,W*0.4);
+        reflectGrad.addColorStop(0,'rgba(100,40,0,0.12)'); reflectGrad.addColorStop(1,'transparent');
+        ctx.fillStyle=reflectGrad; ctx.fillRect(0,waterY,W,H-waterY);
+
+        // Distant orange glow — IT is down here
+        const glowDist=ctx.createRadialGradient(W/2,H*0.3,0,W/2,H*0.3,W*0.35);
+        const gp=0.08+Math.abs(Math.sin(t*0.7))*0.1;
+        glowDist.addColorStop(0,`rgba(200,80,0,${gp})`); glowDist.addColorStop(1,'transparent');
+        ctx.fillStyle=glowDist; ctx.fillRect(0,0,W,H);
+
+        // Children's drawings on walls
+        ctx.fillStyle='rgba(120,80,50,0.18)';
+        const drawings=[
+          {x:0.06,y:0.45,r:0.04}, {x:0.88,y:0.38,r:0.035}, {x:0.15,y:0.55,r:0.03}
+        ];
+        drawings.forEach(({x,y,r})=>{
+          // Simple crayon-like circle/stick figures
+          ctx.strokeStyle=`rgba(140,80,40,0.25)`; ctx.lineWidth=2;
+          ctx.beginPath(); ctx.arc(W*x,H*y,W*r,0,Math.PI*2); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(W*x,H*(y+r)); ctx.lineTo(W*x,H*(y+r*2.5)); ctx.stroke();
+        });
+
+        // Vignette — very heavy for sewer claustrophobia
+        const vig=ctx.createRadialGradient(W/2,H*0.5,W*0.06,W/2,H*0.5,W*0.75);
+        vig.addColorStop(0,'transparent'); vig.addColorStop(0.5,'rgba(0,1,0,0.15)'); vig.addColorStop(1,'rgba(0,0,1,0.82)');
+        ctx.fillStyle=vig; ctx.fillRect(0,0,W,H);
+      }
+    }
+  };
+  let locationArtAnimId = null;
+
+  function showLocationArt(nodeId) {
+    const artDef = locationArt[nodeId];
+    const panel = document.getElementById('location-art-panel');
+    if (!panel) return;
+
+    if (!artDef) {
+      panel.style.height = '0';
+      panel.style.display = 'none';
+      if (locationArtAnimId) { cancelAnimationFrame(locationArtAnimId); locationArtAnimId = null; }
+      return;
+    }
+
+    panel.style.display = 'block';
+    panel.style.height = '280px';
+
+    const canvas = document.getElementById('location-art-canvas');
+    const label  = document.getElementById('location-art-label');
+    if (!canvas) return;
+    if (label) label.textContent = artDef.label;
+
+    const dpr = window.devicePixelRatio || 1;
+    const W = panel.clientWidth || 400;
+    const H = 280;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.height = H + 'px';
+      canvas.style.width = '100%';
+
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+
+    if (locationArtAnimId) cancelAnimationFrame(locationArtAnimId);
+
+    // Animate (for the Neibolt window flicker etc)
+    function frame(ts) {
+      const t = ts * 0.001;
+      ctx.clearRect(0,0,W,H);
+      artDef.draw(ctx, W, H, t);
+      locationArtAnimId = requestAnimationFrame(frame);
+    }
+    locationArtAnimId = requestAnimationFrame(frame);
+  }
+
+  // ── SOUND TOGGLE ──
+  function toggleSound() {
+    soundOn = Audio.toggle();
+    const btn = document.getElementById('sound-btn');
+    if (btn) btn.textContent = soundOn ? '♪ ON' : '♪ OFF';
+    if (soundOn) {
+      Audio.startTheme(Engine.getCurrentChapterDef().theme);
+      Audio.startHeartbeat(false);
+    }
+  }
+
+  // ── INVENTORY SCREEN ──
+  function openInventory() {
+    UI.updateInventoryScreen();
+    document.getElementById('inventory-screen').classList.add('active');
+  }
+
+  function closeInventory() {
+    document.getElementById('inventory-screen').classList.remove('active');
+  }
+
+  return {
+    init, begin, startGame,
+    goToNode, handleChoice,
+    triggerDeath, restart,
+    skipCutscene, toggleSound,
+    resetAndStartChapter,
+    openInventory, closeInventory,
+    continueAfterVictory, showVictoryScreen
+  };
+
+})();
+
+// ── BOOT ──
+document.addEventListener('DOMContentLoaded', () => window.Game.init());
+</script>
+
+</body>
+</html>

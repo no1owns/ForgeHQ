@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stephen King Universe × Fortnite — Licensing Pitch</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blood: #8B0000;
+    --crimson: #C0392B;
+    --gold: #C9A84C;
+    --parchment: #F2EAD8;
+    --ink: #1A1008;
+    --ash: #5A4E42;
+    --fog: #E8DFC8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.35;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 60px;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    border-bottom: 1px solid #3A2E22;
+    padding-bottom: 80px;
+  }
+
+  .cover-rule {
+    width: 60px;
+    height: 3px;
+    background: var(--crimson);
+    margin-bottom: 40px;
+  }
+
+  .cover-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .cover-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.0;
+    color: var(--parchment);
+    margin-bottom: 12px;
+  }
+
+  .cover-title span {
+    color: var(--crimson);
+    display: block;
+  }
+
+  .cover-sub {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--gold);
+    margin: 20px 0 40px;
+  }
+
+  .cover-desc {
+    max-width: 540px;
+    color: #A89880;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+  }
+
+  .cover-meta {
+    display: flex;
+    gap: 48px;
+  }
+
+  .meta-item label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--crimson);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .meta-item span {
+    font-size: 15px;
+    color: var(--fog);
+  }
+
+  /* ── DECORATIVE ── */
+  .blood-drip {
+    position: absolute;
+    right: 60px;
+    top: 80px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18rem;
+    font-weight: 900;
+    color: var(--blood);
+    opacity: 0.07;
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    padding: 72px 0;
+    border-bottom: 1px solid #2A2018;
+    position: relative;
+  }
+
+  .section:last-of-type { border-bottom: none; }
+
+  .section-num {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: var(--crimson);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--parchment);
+    margin-bottom: 28px;
+    line-height: 1.2;
+  }
+
+  .section-body {
+    color: #C0B09A;
+    max-width: 680px;
+  }
+
+  .section-body p {
+    margin-bottom: 18px;
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    border-left: 3px solid var(--crimson);
+    padding: 16px 28px;
+    margin: 36px 0;
+    background: rgba(139,0,0,0.06);
+  }
+
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--parchment);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── CHARACTER GRID ── */
+  .char-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1px;
+    background: #2A2018;
+    border: 1px solid #2A2018;
+    margin-top: 32px;
+  }
+
+  .char-card {
+    background: #150F08;
+    padding: 24px 20px;
+  }
+
+  .char-emoji { font-size: 2rem; margin-bottom: 10px; }
+
+  .char-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--parchment);
+    margin-bottom: 4px;
+  }
+
+  .char-source {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--crimson);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .char-role {
+    font-size: 12px;
+    color: var(--ash);
+    font-style: italic;
+  }
+
+  /* ── PRECEDENT TABLE ── */
+  .precedent-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 28px;
+    font-size: 15px;
+  }
+
+  .precedent-table th {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid #3A2E22;
+  }
+
+  .precedent-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #1E1810;
+    color: #A89880;
+    vertical-align: top;
+  }
+
+  .precedent-table tr:hover td {
+    background: rgba(192,57,43,0.04);
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 3px 8px;
+    border: 1px solid var(--crimson);
+    color: var(--crimson);
+    text-transform: uppercase;
+  }
+
+  /* ── REVENUE MODEL ── */
+  .revenue-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .revenue-card {
+    background: #150F08;
+    border: 1px solid #2A2018;
+    border-top: 2px solid var(--crimson);
+    padding: 28px 24px;
+  }
+
+  .revenue-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--parchment);
+    margin-bottom: 10px;
+  }
+
+  .revenue-card p {
+    font-size: 14px;
+    color: var(--ash);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .revenue-card .amount {
+    font-family: 'Courier Prime', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+    margin: 12px 0 6px;
+  }
+
+  /* ── ROADMAP ── */
+  .roadmap {
+    margin-top: 32px;
+    display: grid;
+    gap: 0;
+  }
+
+  .roadmap-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0;
+  }
+
+  .roadmap-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4px;
+  }
+
+  .roadmap-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--crimson);
+    border: 2px solid var(--crimson);
+    flex-shrink: 0;
+  }
+
+  .roadmap-line {
+    width: 1px;
+    flex: 1;
+    background: #2A2018;
+    min-height: 40px;
+  }
+
+  .roadmap-right {
+    padding: 0 0 40px 20px;
+  }
+
+  .roadmap-phase {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .roadmap-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--parchment);
+    margin-bottom: 8px;
+  }
+
+  .roadmap-desc {
+    font-size: 14px;
+    color: var(--ash);
+    line-height: 1.6;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: linear-gradient(135deg, #1A0808 0%, #0A0A0A 100%);
+    border: 1px solid #3A1818;
+    padding: 56px 48px;
+    text-align: center;
+    margin-top: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '◆';
+    position: absolute;
+    font-size: 20rem;
+    color: var(--blood);
+    opacity: 0.04;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .cta-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--parchment);
+    margin-bottom: 16px;
+  }
+
+  .cta-section p {
+    color: var(--ash);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto 32px;
+  }
+
+  .contact-block {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+    background: rgba(192,57,43,0.08);
+    border: 1px solid rgba(192,57,43,0.25);
+    padding: 20px 32px;
+  }
+
+  .contact-block span {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13px;
+    color: var(--fog);
+  }
+
+  .contact-block span strong {
+    color: var(--gold);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 48px 0 32px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #3A2E22;
+    text-transform: uppercase;
+  }
+
+  hr.ornament {
+    border: none;
+    text-align: center;
+    color: #3A2E22;
+    margin: 8px 0;
+  }
+
+  hr.ornament::after {
+    content: '◆ ◆ ◆';
+    font-size: 10px;
+    letter-spacing: 8px;
+  }
+
+  @media (max-width: 640px) {
+    .page { padding: 48px 28px; }
+    .revenue-grid { grid-template-columns: 1fr; }
+    .cover-meta { flex-direction: column; gap: 20px; }
+    .blood-drip { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="blood-drip">IT</div>
+    <div class="cover-rule"></div>
+    <div class="cover-label">Licensing Proposal — Confidential</div>
+    <h1 class="cover-title">
+      The Stephen King
+      <span>Universe</span>
+    </h1>
+    <div class="cover-sub">A Fortnite Skin & Creative Island Partnership</div>
+    <p class="cover-desc">
+      A formal proposal to bring Stephen King's most iconic characters — Pennywise, Roland Deschain, Jack Torrance, Carrie White, and others — into the Fortnite ecosystem as officially licensed cosmetic skins, harvesting tools, and a dedicated Creative island experience.
+    </p>
+    <div class="cover-meta">
+      <div class="meta-item">
+        <label>Submitted To</label>
+        <span>The Stephen King IP & Licensing Team</span>
+      </div>
+      <div class="meta-item">
+        <label>Proposal Type</label>
+        <span>Video Game Licensing / Digital Cosmetics</span>
+      </div>
+      <div class="meta-item">
+        <label>Date</label>
+        <span>2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: THE OPPORTUNITY -->
+  <div class="section">
+    <div class="section-num">01 — The Opportunity</div>
+    <h2 class="section-title">Horror has found its home in Fortnite.</h2>
+    <div class="section-body">
+      <p>
+        Fortnite is no longer just a battle royale game. With over 350 million registered accounts, it has become one of the most significant cultural platforms in the world — a place where IP crossovers generate genuine cultural moments, not just sales.
+      </p>
+      <p>
+        Epic Games has already proven that horror IP belongs in Fortnite. Freddy Krueger, Michael Myers, Ghostface, the Xenomorph, and Vecna from Stranger Things have all appeared as premium skins. Each launch generated significant press coverage, social media engagement, and revenue.
+      </p>
+
+      <div class="pull-quote">
+        <p>"Stephen King's universe is the single largest and most beloved body of horror IP in the world — and it remains entirely absent from the Fortnite ecosystem."</p>
+      </div>
+
+      <p>
+        Pennywise alone is one of the most recognizable horror icons in modern culture. Paired with Roland Deschain, Jack Torrance, Carrie White, and Randall Flagg, a Stephen King collection would be the most significant horror licensing event in Fortnite history.
+      </p>
+    </div>
+  </div>
+
+  <!-- SECTION 2: CHARACTERS -->
+  <div class="section">
+    <div class="section-num">02 — Proposed Character Roster</div>
+    <h2 class="section-title">Eight skins. Eight worlds. One universe.</h2>
+    <div class="section-body">
+      <p>The initial proposed collection focuses on the most visually iconic and commercially recognizable characters across King's catalogue:</p>
+    </div>
+
+    <div class="char-grid">
+      <div class="char-card">
+        <div class="char-emoji">🤡</div>
+        <div class="char-name">Pennywise</div>
+        <div class="char-source">IT</div>
+        <div class="char-role">Legendary Tier — Hero Skin + It Spider Back Bling</div>
+      </div>
+      <div class="char-card">
+        <div class="char-emoji">🔫</div>
+        <div class="char-name">Roland Deschain</div>
+        <div class="char-source">The Dark Tower</div>
+        <div class="char-role">Epic Tier — Gunslinger Skin + Revolver Pickaxe</div>
+      </div>
+      <div class="char-card">
+        <div class="char-emoji">🪓</div>
+        <div class="char-name">Jack Torrance</div>
+        <div class="char-source">The Shining</div>
+        <div class="char-role">Epic Tier — Axe Harvesting Tool</div>
+      </div>
+      <div class="char-card">
+        <div class="char-emoji">🩸</div>
+        <div class="char-name">Carrie White</div>
+        <div class="char-source">Carrie</div>
+        <div class="char-role">Rare Tier — Prom Night variant</div>
+      </div>
+      <div class="char-card">
+        <div class="char-emoji">🃏</div>
+        <div class="char-name">Randall Flagg</div>
+        <div class="char-source">The Stand / Dark Tower</div>
+        <div class="char-role">Legendary Tier — Dark Man alt style</div>
+      </div>
+      <div class="char-card">
+        <div class="char-emoji">🔨</div>
+        <div class="char-name">Annie Wilkes</div>
+        <div class="char-source">Misery</div>
+        <div class="char-role">Epic Tier — Sledgehammer Pickaxe</div>
+      </div>
+      <div class="char-card">
+        <div class="char-emoji">🐕</div>
+        <div class="char-name">Cujo</div>
+        <div class="char-source">Cujo</div>
+        <div class="char-role">Rare Tier — Pet Companion Item</div>
+      </div>
+      <div class="char-card">
+        <div class="char-emoji">🎈</div>
+        <div class="char-name">The Losers Club</div>
+        <div class="char-source">IT</div>
+        <div class="char-role">Bundle — 7-skin pack with Red Balloon Back Bling</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: PRECEDENT -->
+  <div class="section">
+    <div class="section-num">03 — Market Precedent</div>
+    <h2 class="section-title">Horror IP in Fortnite has a proven track record.</h2>
+    <div class="section-body">
+      <p>The following precedents demonstrate that Epic Games actively licenses third-party horror IP, and that horror crossovers consistently outperform standard skin releases:</p>
+    </div>
+
+    <table class="precedent-table">
+      <thead>
+        <tr>
+          <th>IP / Character</th>
+          <th>Publisher/Studio</th>
+          <th>Skin Tier</th>
+          <th>Reception</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color: var(--parchment)">Freddy Krueger</strong><br><span style="font-size:12px">A Nightmare on Elm Street</span></td>
+          <td>Warner Bros.</td>
+          <td><span class="tag">Legendary</span></td>
+          <td>Top-10 selling skin on launch week</td>
+        </tr>
+        <tr>
+          <td><strong style="color: var(--parchment)">Michael Myers</strong><br><span style="font-size:12px">Halloween</span></td>
+          <td>Universal / Blumhouse</td>
+          <td><span class="tag">Legendary</span></td>
+          <td>Trended globally on social media</td>
+        </tr>
+        <tr>
+          <td><strong style="color: var(--parchment)">Ghostface</strong><br><span style="font-size:12px">Scream</span></td>
+          <td>Paramount</td>
+          <td><span class="tag">Epic</span></td>
+          <td>Coincided with Scream 5 launch</td>
+        </tr>
+        <tr>
+          <td><strong style="color: var(--parchment)">Xenomorph</strong><br><span style="font-size:12px">Alien</span></td>
+          <td>20th Century Studios</td>
+          <td><span class="tag">Legendary</span></td>
+          <td>Featured in main Battle Pass</td>
+        </tr>
+        <tr>
+          <td><strong style="color: var(--parchment)">Vecna</strong><br><span style="font-size:12px">Stranger Things</span></td>
+          <td>Netflix</td>
+          <td><span class="tag">Legendary</span></td>
+          <td>Tied to Season 4 Netflix launch</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 4: REVENUE -->
+  <div class="section">
+    <div class="section-num">04 — Revenue & Licensing Model</div>
+    <h2 class="section-title">A significant commercial opportunity.</h2>
+    <div class="section-body">
+      <p>
+        Fortnite skins are sold for V-Bucks (Fortnite's in-game currency). Legendary skins typically retail at 2,000 V-Bucks (~$16 USD). Epic Games and the IP licensor share revenue per standard licensing agreements. Based on comparable horror IP launches, a Stephen King collection could represent a multi-million dollar licensing event.
+      </p>
+    </div>
+
+    <div class="revenue-grid">
+      <div class="revenue-card">
+        <h4>Skin Sales Revenue</h4>
+        <span class="amount">$15–20M+</span>
+        <p>Estimated combined skin sales based on comparable horror IP launches (Michael Myers, Freddy Krueger precedents). Pennywise alone is a top-tier commercial property.</p>
+      </div>
+      <div class="revenue-card">
+        <h4>Licensing Royalty Structure</h4>
+        <span class="amount">Standard Epic Terms</span>
+        <p>IP licensors typically receive 20–30% of net revenue on cosmetic sales. Exact terms negotiated directly with Epic Games' partnerships team.</p>
+      </div>
+      <div class="revenue-card">
+        <h4>Creative Island Revenue</h4>
+        <span class="amount">UEFN Creator Economy</span>
+        <p>An SK-themed Fortnite Creative island (Derry, The Overlook, etc.) earns ongoing revenue via Epic's creator payout model based on player engagement time.</p>
+      </div>
+      <div class="revenue-card">
+        <h4>IP Exposure Value</h4>
+        <span class="amount">350M+ Players</span>
+        <p>A Fortnite launch reaches King's existing fanbase and introduces the IP to a younger demographic — a significant brand-building and discovery event.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: ROADMAP -->
+  <div class="section">
+    <div class="section-num">05 — Proposed Path Forward</div>
+    <h2 class="section-title">From agreement to launch in 12–18 months.</h2>
+    <div class="section-body">
+      <p>The following represents a realistic timeline from initial licensing discussion to a full Fortnite launch event:</p>
+    </div>
+
+    <div class="roadmap" style="margin-top: 36px;">
+      <div class="roadmap-item">
+        <div class="roadmap-left">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-line"></div>
+        </div>
+        <div class="roadmap-right">
+          <div class="roadmap-phase">Phase 1 · Months 1–3</div>
+          <div class="roadmap-title">Licensing Agreement & IP Audit</div>
+          <div class="roadmap-desc">Identify which properties are available (film rights vs. literary rights), define the character roster, negotiate terms with the King team and Epic Games simultaneously.</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-line"></div>
+        </div>
+        <div class="roadmap-right">
+          <div class="roadmap-phase">Phase 2 · Months 3–8</div>
+          <div class="roadmap-title">Asset Development & 3D Modeling</div>
+          <div class="roadmap-desc">Character skin sheets, 3D modeling in Blender/ZBrush, Unreal Engine 5 rigging and optimization. Concept approval process with the King team at each milestone.</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-line"></div>
+        </div>
+        <div class="roadmap-right">
+          <div class="roadmap-phase">Phase 3 · Months 8–12</div>
+          <div class="roadmap-title">Fortnite Creative Island Build</div>
+          <div class="roadmap-desc">Using UEFN (Unreal Editor for Fortnite), build a fully realized SK universe island: Derry sewers, The Overlook Hotel, Castle Rock, The Dark Tower. A playable world, not just a skin pack.</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-line"></div>
+        </div>
+        <div class="roadmap-right">
+          <div class="roadmap-phase">Phase 4 · Month 14–18</div>
+          <div class="roadmap-title">Launch Event</div>
+          <div class="roadmap-desc">Coordinate launch timing with an SK book release, film premiere, or Halloween window. Epic has a track record of timing horror drops for October. Significant earned media potential.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h3>Ready to discuss the details.</h3>
+    <p>
+      This proposal represents a starting point for conversation. We are prepared to present full character concept art, 3D modeling specs, and a detailed financial model at your request.
+    </p>
+    <div class="contact-block">
+      <span><strong>Proposal Origin:</strong> Independent Game Developer</span>
+      <span><strong>Next Step:</strong> Introductory call with licensing team</span>
+      <span><strong>Assets Available:</strong> Character concepts, design mockups, market research</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <hr class="ornament">
+    <p style="margin-top: 16px">All Stephen King characters and properties are the intellectual property of Stephen King and respective rights holders. This document is a licensing proposal only.</p>
+  </div>
+
+</div>
+</body>
+</html>
