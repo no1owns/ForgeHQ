@@ -6,13 +6,9 @@
   <title>Sirenszen Wellness</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Jost:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
   <link rel="stylesheet" href="site/styles.css">
-  <style>
-    body { font-family: "Afacad Flux", sans-serif; font-optical-sizing: auto; }
-  </style>
 </head>
 <body>
 
@@ -21,8 +17,9 @@
     <a href="/"><img src="img/color.png" alt="Sirenszen Wellness Logo"></a>
   </div>
   <nav>
-    <a href="#modalities-massages">Massage Modalities</a>
-    <a href="https://forms.gle/J6xCLqXPnUwk227q6" target="_blank">Book a Session</a>
+    <a href="#services">Services</a>
+    <a href="https://forms.gle/J6xCLqXPnUwk227q6" target="_blank" class="nav-book">Book a Session</a>
+    <a href="tel:+14439395144" class="nav-phone">(443) 939-5144</a>
   </nav>
 </header>
 
@@ -30,151 +27,221 @@
 
   <!-- Hero -->
   <section id="home">
-    <div class="text-center px-6">
-      <p class="mb-3 font-light tracking-widest" style="font-size:0.7rem;opacity:0.75;letter-spacing:0.22em;">WELCOME</p>
-      <h1 class="hero-title mb-5">SirensZen Wellness</h1>
-      <p class="uppercase mb-8 font-light" style="font-size:0.85rem;letter-spacing:0.2em;opacity:0.8;">Massage &bull; Wellness &bull; Relaxation</p>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Welcome</p>
+      <h1 class="hero-title">SirensZen<br>Wellness</h1>
+      <p class="hero-sub">Massage &bull; Wellness &bull; Relaxation</p>
       <a href="https://forms.gle/J6xCLqXPnUwk227q6" class="btn-primary" target="_blank">Book a Session</a>
     </div>
     <div class="scroll-indicator">
       <span>Scroll</span>
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <polyline points="6 9 12 15 18 9"></polyline>
-      </svg>
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
   </section>
 
-  <!-- Services -->
-  <section id="modalities-massages" class="max-w-4xl mx-auto px-6 py-16">
+  <!-- Services & Pricing -->
+  <section id="services" class="services-section">
 
-    <h2 class="section-heading reveal">
-      <i class="fas fa-spa" style="opacity:0.5;margin-right:0.4rem;"></i>Massage Services &amp; Pricing
-    </h2>
+    <!-- Pricing -->
+    <div class="pricing-block reveal">
+      <h2 class="section-heading">Services &amp; Pricing</h2>
+      <p class="section-sub">Available at our studio or at your location</p>
 
-    <!-- Pricing Table -->
-    <div class="pricing-wrap reveal">
-      <table class="pricing-table">
-        <thead>
-          <tr>
-            <th>Duration</th>
-            <th>To Therapist</th>
-            <th>To Your Location</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-label="Duration">60 mins</td>
-            <td data-label="To Therapist">$85</td>
-            <td data-label="To Your Location">$105</td>
-          </tr>
-          <tr>
-            <td data-label="Duration">75 mins</td>
-            <td data-label="To Therapist">$100</td>
-            <td data-label="To Your Location">$120</td>
-          </tr>
-          <tr class="popular">
-            <td data-label="Duration">90 mins <span class="popular-badge">Popular</span></td>
-            <td data-label="To Therapist">$130</td>
-            <td data-label="To Your Location">$145</td>
-          </tr>
-          <tr>
-            <td data-label="Duration">120 mins</td>
-            <td data-label="To Therapist">$180</td>
-            <td data-label="To Your Location">$200</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="pricing-cards">
+
+        <div class="pricing-card">
+          <div class="pricing-card-top">
+            <span class="pricing-card-num">60</span>
+            <span class="pricing-card-unit">min</span>
+          </div>
+          <div class="pricing-card-rows">
+            <div class="pricing-card-row">
+              <span class="pricing-card-label">At Studio</span>
+              <span class="pricing-card-price">$85</span>
+            </div>
+            <div class="pricing-card-row">
+              <span class="pricing-card-label">Mobile</span>
+              <span class="pricing-card-price">$105</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-card-top">
+            <span class="pricing-card-num">75</span>
+            <span class="pricing-card-unit">min</span>
+          </div>
+          <div class="pricing-card-rows">
+            <div class="pricing-card-row">
+              <span class="pricing-card-label">At Studio</span>
+              <span class="pricing-card-price">$100</span>
+            </div>
+            <div class="pricing-card-row">
+              <span class="pricing-card-label">Mobile</span>
+              <span class="pricing-card-price">$120</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pricing-card featured">
+          <div class="pricing-card-top">
+            <span class="pricing-card-num">90</span>
+            <span class="pricing-card-unit">min</span>
+            <span class="pricing-badge">Popular</span>
+          </div>
+          <div class="pricing-card-rows">
+            <div class="pricing-card-row">
+              <span class="pricing-card-label">At Studio</span>
+              <span class="pricing-card-price">$130</span>
+            </div>
+            <div class="pricing-card-row">
+              <span class="pricing-card-label">Mobile</span>
+              <span class="pricing-card-price">$145</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-card-top">
+            <span class="pricing-card-num">120</span>
+            <span class="pricing-card-unit">min</span>
+          </div>
+          <div class="pricing-card-rows">
+            <div class="pricing-card-row">
+              <span class="pricing-card-label">At Studio</span>
+              <span class="pricing-card-price">$180</span>
+            </div>
+            <div class="pricing-card-row">
+              <span class="pricing-card-label">Mobile</span>
+              <span class="pricing-card-price">$200</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <!-- Modality Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 reveal-stagger">
+    <!-- Modality Grid -->
+    <div class="modalities-block">
+      <h2 class="section-heading reveal">Modalities</h2>
 
-      <div class="modality-card bg-gray-50 p-6 rounded-lg">
-        <h3 class="text-lg font-bold text-gray-900 mb-3">
-          <i class="fas fa-hand-holding-water mr-2" style="opacity:0.45;"></i>Swedish
-        </h3>
-        <p class="text-gray-600 leading-relaxed text-sm">Stimulates circulation, releases tight muscles, and promotes relaxation. Reduces anxiety, tension, and helps calm the nervous system.</p>
+      <div class="modalities-grid reveal-stagger">
+
+        <div class="modality-card">
+          <div class="modality-photo">
+            <img src="img/massage.webp" alt="Swedish Massage" loading="lazy">
+          </div>
+          <div class="modality-info">
+            <h3 class="modality-name">Swedish</h3>
+            <p class="modality-desc">Stimulates circulation, releases tight muscles, and calms the nervous system.</p>
+          </div>
+        </div>
+
+        <div class="modality-card">
+          <div class="modality-photo">
+            <img src="img/healing.jpg" alt="Therapeutic Massage" loading="lazy">
+          </div>
+          <div class="modality-info">
+            <h3 class="modality-name">Therapeutic</h3>
+            <p class="modality-desc">Targets chronic pain and specific conditions like sciatica, plantar fasciitis, and frozen shoulder.</p>
+          </div>
+        </div>
+
+        <div class="modality-card">
+          <div class="modality-photo">
+            <img src="img/push.jpeg" alt="Deep Tissue Massage" loading="lazy">
+          </div>
+          <div class="modality-info">
+            <h3 class="modality-name">Deep Tissue</h3>
+            <p class="modality-desc">Breaks down scar tissue and reaches deeper muscle layers to improve circulation and range of motion.</p>
+          </div>
+        </div>
+
+        <div class="modality-card">
+          <div class="modality-photo">
+            <img src="img/pad.jpg" alt="Trigger Point Massage" loading="lazy">
+          </div>
+          <div class="modality-info">
+            <h3 class="modality-name">Trigger Point</h3>
+            <p class="modality-desc">Releases muscle knots and spasms to relieve chronic pain in the shoulders and lower back.</p>
+          </div>
+        </div>
+
+        <div class="modality-card">
+          <div class="modality-photo">
+            <img src="img/stretch.jpeg" alt="Sports Massage" loading="lazy">
+          </div>
+          <div class="modality-info">
+            <h3 class="modality-name">Sports</h3>
+            <p class="modality-desc">Tailored for athletes to improve flexibility, accelerate recovery, and prevent injuries.</p>
+          </div>
+        </div>
+
+        <div class="modality-card">
+          <div class="modality-photo">
+            <img src="img/thai.avif" alt="Myofascial Massage" loading="lazy">
+          </div>
+          <div class="modality-info">
+            <h3 class="modality-name">Myofascial</h3>
+            <p class="modality-desc">Releases fascial tension to restore posture, movement, and overall flexibility.</p>
+          </div>
+        </div>
+
+        <div class="modality-card">
+          <div class="modality-photo">
+            <img src="img/water-stretch.jpeg" alt="Prenatal Massage" loading="lazy">
+          </div>
+          <div class="modality-info">
+            <h3 class="modality-name">Prenatal</h3>
+            <p class="modality-desc">Relieves tension and swelling for expectant mothers, promoting comfort throughout pregnancy.</p>
+          </div>
+        </div>
+
+        <div class="modality-card">
+          <div class="modality-photo">
+            <img src="img/tahi2.jpg" alt="Reflexology" loading="lazy">
+          </div>
+          <div class="modality-info">
+            <h3 class="modality-name">Reflexology</h3>
+            <p class="modality-desc">Targeted pressure on reflex points of the feet, hands, and ears to enhance whole-body well-being.</p>
+          </div>
+        </div>
+
       </div>
-
-      <div class="modality-card bg-gray-50 p-6 rounded-lg">
-        <h3 class="text-lg font-bold text-gray-900 mb-3">
-          <i class="fas fa-heart mr-2" style="opacity:0.45;"></i>Therapeutic
-        </h3>
-        <p class="text-gray-600 leading-relaxed text-sm">Effective for managing chronic pain and treating specific conditions like sciatica, plantar fasciitis, and frozen shoulder.</p>
-      </div>
-
-      <div class="modality-card bg-gray-50 p-6 rounded-lg">
-        <h3 class="text-lg font-bold text-gray-900 mb-3">
-          <i class="fas fa-layer-group mr-2" style="opacity:0.45;"></i>Deep Tissue
-        </h3>
-        <p class="text-gray-600 leading-relaxed text-sm">Breaks down scar tissue and focuses on deeper muscle layers to improve circulation and range of motion.</p>
-      </div>
-
-      <div class="modality-card bg-gray-50 p-6 rounded-lg">
-        <h3 class="text-lg font-bold text-gray-900 mb-3">
-          <i class="fas fa-bullseye mr-2" style="opacity:0.45;"></i>Trigger Point
-        </h3>
-        <p class="text-gray-600 leading-relaxed text-sm">Addresses muscle knots and spasms, improving blood flow and relieving chronic pain in the shoulders and lower back.</p>
-      </div>
-
-      <div class="modality-card bg-gray-50 p-6 rounded-lg">
-        <h3 class="text-lg font-bold text-gray-900 mb-3">
-          <i class="fas fa-running mr-2" style="opacity:0.45;"></i>Sports
-        </h3>
-        <p class="text-gray-600 leading-relaxed text-sm">Tailored for athletes to improve flexibility, recovery time, and prevent injuries during physical activities.</p>
-      </div>
-
-      <div class="modality-card bg-gray-50 p-6 rounded-lg">
-        <h3 class="text-lg font-bold text-gray-900 mb-3">
-          <i class="fas fa-sliders-h mr-2" style="opacity:0.45;"></i>Myofascial
-        </h3>
-        <p class="text-gray-600 leading-relaxed text-sm">Releases tension in myofascial tissues to improve posture, movement, and overall flexibility.</p>
-      </div>
-
-      <div class="modality-card bg-gray-50 p-6 rounded-lg">
-        <h3 class="text-lg font-bold text-gray-900 mb-3">
-          <i class="fas fa-baby mr-2" style="opacity:0.45;"></i>Prenatal
-        </h3>
-        <p class="text-gray-600 leading-relaxed text-sm">Relieves tension and swelling for expectant mothers, promoting relaxation and comfort during pregnancy.</p>
-      </div>
-
-      <div class="modality-card bg-gray-50 p-6 rounded-lg">
-        <h3 class="text-lg font-bold text-gray-900 mb-3">
-          <i class="fas fa-shoe-prints mr-2" style="opacity:0.45;"></i>Reflexology
-        </h3>
-        <p class="text-gray-600 leading-relaxed text-sm">Applies targeted pressure to reflex points on the feet, hands, and ears to enhance well-being and relaxation.</p>
-      </div>
-
     </div>
+
   </section>
 
 </main>
 
-<footer class="text-center">
+<footer>
 
-  <div class="reveal">
-    <div style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.4;margin-bottom:16px;">Hours</div>
-    <div class="hours-grid">
-      <span class="day">Mon</span>       <span class="time">Closed</span>
-      <span class="day">Tue – Fri</span> <span class="time">3PM – 8PM</span>
-      <span class="day">Sat – Sun</span> <span class="time">By Appointment</span>
+  <div class="footer-inner">
+
+    <div class="footer-hours reveal">
+      <div class="footer-label">Hours</div>
+      <div class="hours-grid">
+        <span class="day">Mon</span>        <span class="time">Closed</span>
+        <span class="day">Tue – Fri</span>  <span class="time">3PM – 8PM</span>
+        <span class="day">Sat – Sun</span>  <span class="time">By Appointment</span>
+      </div>
     </div>
-  </div>
 
-  <div class="footer-logo reveal">
-    <img src="img/1-color-ko.png" alt="Sirenszen Wellness">
-  </div>
+    <div class="footer-logo reveal">
+      <img src="img/1-color-ko.png" alt="Sirenszen Wellness">
+    </div>
 
-  <div class="footer-contact reveal">
-    <a href="tel:+14439395144">(443) 939-5144</a>
-    <a href="mailto:sirenszenmassage@gmail.com">sirenszenmassage@gmail.com</a>
+    <div class="footer-contact reveal">
+      <a href="tel:+14439395144">(443) 939-5144</a>
+      <a href="mailto:sirenszenmassage@gmail.com">sirenszenmassage@gmail.com</a>
+    </div>
+
   </div>
 
 </footer>
 
 <script>
 (function () {
-  // Parallax — JS-driven so it works on iOS too
   var hero = document.getElementById('home');
   function updateParallax() {
     if (window.scrollY < window.innerHeight * 1.2) {
@@ -183,19 +250,13 @@
   }
   window.addEventListener('scroll', updateParallax, { passive: true });
 
-  // Scroll reveal
   var obs = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        e.target.classList.add('in-view');
-        obs.unobserve(e.target);
-      }
+      if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
 
-  document.querySelectorAll('.reveal, .reveal-stagger').forEach(function (el) {
-    obs.observe(el);
-  });
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach(function (el) { obs.observe(el); });
 })();
 </script>
 
