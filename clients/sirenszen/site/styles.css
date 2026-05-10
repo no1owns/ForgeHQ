@@ -604,37 +604,13 @@ footer {
 
 /* ── Services teaser (index.html) ── */
 .services-teaser {
-  max-width: 1440px;
+  max-width: 860px;
   margin: 0 auto;
   padding: 100px 60px 80px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
 }
-.services-teaser-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.services-teaser-item {
-  padding: 20px 16px;
-  border: 1px solid #e4e4e4;
-  border-radius: 4px;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #666;
-  transition: border-color 0.2s, color 0.2s;
-}
-.services-teaser-item:hover { border-color: #111; color: #111; }
-@media (max-width: 900px) {
-  .services-teaser { grid-template-columns: 1fr; gap: 40px; padding: 72px 32px 60px; }
-}
-@media (max-width: 600px) {
-  .services-teaser { padding: 56px 20px 48px; }
-  .services-teaser-grid { grid-template-columns: 1fr; }
-}
+.services-teaser-text .page-intro { max-width: 640px; }
+@media (max-width: 900px) { .services-teaser { padding: 72px 32px 60px; } }
+@media (max-width: 600px) { .services-teaser { padding: 56px 20px 48px; } }
 
 /* ── About page ── */
 .about-layout {
@@ -765,6 +741,12 @@ footer {
   transition: background 0.2s;
 }
 .newsletter-form button:hover { background: #333; }
+.newsletter-note {
+  margin-top: 14px;
+  font-size: 0.82rem;
+  color: #888;
+  line-height: 1.6;
+}
 
 /* ── Wellness page ── */
 .wellness-section {
@@ -793,8 +775,9 @@ footer {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.3rem;
   font-weight: 400;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
+.stretch-purpose { font-size: 0.88rem; color: #888; margin-bottom: 10px; }
 .stretch-desc { font-size: 0.97rem; line-height: 1.7; color: #444; }
 
 /* Nutrition grid */
@@ -838,8 +821,9 @@ footer {
   font-family: "Cormorant Garamond", serif;
   font-size: 1.35rem;
   font-weight: 400;
-  margin-bottom: 16px;
+  margin-bottom: 6px;
 }
+.recipe-tagline { font-size: 0.88rem; color: #888; font-style: italic; margin-bottom: 16px; }
 .recipe-section-label {
   font-size: 0.72rem;
   letter-spacing: 0.1em;
