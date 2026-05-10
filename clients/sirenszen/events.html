@@ -40,6 +40,7 @@
 <main>
   <div class="page-content reveal">
     <p class="page-intro">SirensZen is available for private and corporate events. From couples massages to employee appreciation days and wellness workshops — we bring the experience to you.</p>
+
     <ul class="event-types">
       <li>Couples massages</li>
       <li>Hotel &amp; private parties</li>
@@ -47,10 +48,15 @@
       <li>Wellness &amp; health workshops</li>
       <li>Teacher &amp; training sessions</li>
     </ul>
+
     <a href="https://forms.gle/J6xCLqXPnUwk227q6" class="btn-dark" target="_blank">Plan Your Next Event</a>
+
     <div class="newsletter-block">
       <p class="newsletter-label">Stay in the loop</p>
-      <form class="newsletter-form" action="#" method="post">
+      <!-- ACTION: Replace the Formspree endpoint below with the real form ID once account is set up at formspree.io -->
+      <form class="newsletter-form" action="https://formspree.io/f/placeholder" method="POST">
+        <input type="hidden" name="_replyto" value="sirenszenmassage@gmail.com">
+        <input type="hidden" name="_subject" value="SirensZen Newsletter Signup">
         <input type="text" name="name" placeholder="Your name" autocomplete="name">
         <input type="email" name="email" placeholder="Email address" autocomplete="email">
         <button type="submit">Subscribe</button>
@@ -61,9 +67,21 @@
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-hours reveal"><div class="footer-label">Hours</div><div class="hours-grid"><span class="day">Mon</span><span class="time">Closed</span><span class="day">Tue – Fri</span><span class="time">3PM – 8PM</span><span class="day">Sat – Sun</span><span class="time">By Appointment</span></div></div>
-    <div class="footer-logo reveal"><img src="img/1-color-ko.png" alt="Sirenszen Wellness"></div>
-    <div class="footer-contact reveal"><a href="tel:+14439395144">(443) 939-5144</a><a href="mailto:sirenszenmassage@gmail.com">sirenszenmassage@gmail.com</a></div>
+    <div class="footer-hours reveal">
+      <div class="footer-label">Hours</div>
+      <div class="hours-grid">
+        <span class="day">Mon</span>        <span class="time">Closed</span>
+        <span class="day">Tue – Fri</span>  <span class="time">3PM – 8PM</span>
+        <span class="day">Sat – Sun</span>  <span class="time">By Appointment</span>
+      </div>
+    </div>
+    <div class="footer-logo reveal">
+      <img src="img/1-color-ko.png" alt="Sirenszen Wellness">
+    </div>
+    <div class="footer-contact reveal">
+      <a href="tel:+14439395144">(443) 939-5144</a>
+      <a href="mailto:sirenszenmassage@gmail.com">sirenszenmassage@gmail.com</a>
+    </div>
   </div>
 </footer>
 
@@ -91,5 +109,6 @@
   document.querySelectorAll('.reveal, .reveal-stagger').forEach(function (el) { obs.observe(el); });
 })();
 </script>
+
 </body>
 </html>

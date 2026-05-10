@@ -738,7 +738,8 @@ footer {
   gap: 10px;
   flex-wrap: wrap;
 }
-.newsletter-form input {
+.newsletter-form input[type="text"],
+.newsletter-form input[type="email"] {
   flex: 1;
   min-width: 140px;
   padding: 12px 16px;
@@ -750,7 +751,8 @@ footer {
   outline: none;
   transition: border-color 0.2s;
 }
-.newsletter-form input:focus { border-color: #111; }
+.newsletter-form input[type="text"]:focus,
+.newsletter-form input[type="email"]:focus { border-color: #111; }
 .newsletter-form button {
   padding: 12px 24px;
   background: #111;
@@ -766,25 +768,123 @@ footer {
 }
 .newsletter-form button:hover { background: #333; }
 
-/* ── Wellness placeholders ── */
+/* ── Wellness page ── */
 .wellness-section {
   padding: 40px 0;
   border-top: 1px solid #ebebeb;
 }
 .wellness-section:first-child { border-top: none; }
-.wellness-placeholder {
-  margin-top: 16px;
-  height: 100px;
+.wellness-intro {
+  margin-top: 12px;
+  margin-bottom: 36px;
+  max-width: 680px;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #444;
+}
+
+/* Stretch cards */
+.stretch-cards { display: flex; flex-direction: column; gap: 20px; max-width: 720px; }
+.stretch-card {
+  padding: 24px 28px;
   background: #fafafa;
-  border: 1px dashed #ddd;
+  border-left: 3px solid #111;
+  border-radius: 2px;
+}
+.stretch-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+.stretch-desc { font-size: 0.97rem; line-height: 1.7; color: #444; }
+
+/* Nutrition grid */
+.nutrition-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+.nutrition-card {
+  padding: 22px 24px;
+  border: 1px solid #e8e8e8;
   border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ccc;
+}
+.nutrition-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+.nutrition-examples {
+  font-size: 0.75rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 10px;
+}
+.nutrition-card p { font-size: 0.94rem; line-height: 1.65; color: #444; }
+
+/* Recipe cards */
+.recipe-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+.recipe-card {
+  padding: 28px 28px;
+  background: #fafafa;
+  border-radius: 4px;
+}
+.recipe-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+.recipe-section-label {
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: #888;
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+.recipe-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.recipe-list li {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #333;
+  padding-left: 14px;
+  position: relative;
+}
+.recipe-list li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: #aaa;
+}
+.recipe-instructions { font-size: 0.95rem; line-height: 1.7; color: #444; }
+.wellness-disclaimer {
+  margin-top: 48px;
+  padding: 20px 24px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  color: #777;
+  line-height: 1.6;
+  max-width: 640px;
+}
+
+@media (max-width: 600px) {
+  .nutrition-grid { grid-template-columns: 1fr; }
+  .recipe-cards { grid-template-columns: 1fr; }
 }
 
 /* ── Book page ── */
