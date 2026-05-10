@@ -53,14 +53,12 @@
 
     <div class="newsletter-block">
       <p class="newsletter-label">Stay in the loop</p>
-      <!-- ACTION: Replace the Formspree endpoint below with the real form ID once account is set up at formspree.io -->
-      <form class="newsletter-form" action="https://formspree.io/f/placeholder" method="POST">
-        <input type="hidden" name="_replyto" value="sirenszenmassage@gmail.com">
-        <input type="hidden" name="_subject" value="SirensZen Newsletter Signup">
+      <form class="newsletter-form" action="mailto:sirenszenmassage@gmail.com" method="POST" enctype="text/plain">
         <input type="text" name="name" placeholder="Your name" autocomplete="name">
         <input type="email" name="email" placeholder="Email address" autocomplete="email">
         <button type="submit">Subscribe</button>
       </form>
+      <p class="newsletter-note">You'll receive updates on events, workshops, and wellness tips from SirensZen.</p>
     </div>
   </div>
 </main>
