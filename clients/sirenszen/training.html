@@ -40,6 +40,7 @@
 <main>
   <div class="page-content reveal">
     <p class="page-intro">SirensZen is a certified teacher with a background in special education. Trained and mentored under apprenticeships — offering hands-on training and support for therapists in school or pursuing continuing education.</p>
+
     <div style="max-width: 640px; margin-bottom: 48px;">
       <h2 class="section-heading" style="font-size: clamp(1.4rem, 2.5vw, 2rem); margin-bottom: 24px;">What We Offer</h2>
       <ul class="safety-list">
@@ -49,41 +50,32 @@
         <li>Apprenticeship-based learning rooted in real clinical experience</li>
       </ul>
     </div>
+
     <a href="https://forms.gle/J6xCLqXPnUwk227q6" class="btn-dark" target="_blank">Inquire About Training</a>
   </div>
 </main>
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-hours reveal"><div class="footer-label">Hours</div><div class="hours-grid"><span class="day">Mon</span><span class="time">Closed</span><span class="day">Tue – Fri</span><span class="time">3PM – 8PM</span><span class="day">Sat – Sun</span><span class="time">By Appointment</span></div></div>
-    <div class="footer-logo reveal"><img src="img/1-color-ko.png" alt="Sirenszen Wellness"></div>
-    <div class="footer-contact reveal"><a href="tel:+14439395144">(443) 939-5144</a><a href="mailto:sirenszenmassage@gmail.com">sirenszenmassage@gmail.com</a></div>
+    <div class="footer-hours reveal">
+      <div class="footer-label">Hours</div>
+      <div class="hours-grid">
+        <span class="day">Mon</span>        <span class="time">Closed</span>
+        <span class="day">Tue – Fri</span>  <span class="time">3PM – 8PM</span>
+        <span class="day">Sat – Sun</span>  <span class="time">By Appointment</span>
+      </div>
+    </div>
+    <div class="footer-logo reveal">
+      <img src="img/1-color-ko.png" alt="Sirenszen Wellness">
+    </div>
+    <div class="footer-contact reveal">
+      <a href="tel:+14439395144">(443) 939-5144</a>
+      <a href="mailto:sirenszenmassage@gmail.com">sirenszenmassage@gmail.com</a>
+    </div>
   </div>
 </footer>
 
-<script>
-(function () {
-  var toggle = document.querySelector('.nav-toggle');
-  var nav = document.getElementById('main-nav');
-  toggle.addEventListener('click', function () {
-    var open = nav.classList.toggle('nav-open');
-    toggle.classList.toggle('is-active');
-    toggle.setAttribute('aria-expanded', String(open));
-  });
-  nav.querySelectorAll('a').forEach(function (a) {
-    a.addEventListener('click', function () {
-      nav.classList.remove('nav-open');
-      toggle.classList.remove('is-active');
-      toggle.setAttribute('aria-expanded', 'false');
-    });
-  });
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal, .reveal-stagger').forEach(function (el) { obs.observe(el); });
-})();
-</script>
+<script src="site/scroll.js"></script>
+
 </body>
 </html>

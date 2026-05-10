@@ -52,7 +52,7 @@
     <a href="https://forms.gle/J6xCLqXPnUwk227q6" class="btn-dark" target="_blank">Plan Your Next Event</a>
 
     <div class="newsletter-block">
-      <p class="newsletter-label">Stay in the loop</p>
+      <h2 class="newsletter-label">Stay in the loop</h2>
       <form class="newsletter-form" action="mailto:sirenszenmassage@gmail.com" method="POST" enctype="text/plain">
         <input type="text" name="name" placeholder="Your name" autocomplete="name">
         <input type="email" name="email" placeholder="Email address" autocomplete="email">
@@ -83,30 +83,7 @@
   </div>
 </footer>
 
-<script>
-(function () {
-  var toggle = document.querySelector('.nav-toggle');
-  var nav = document.getElementById('main-nav');
-  toggle.addEventListener('click', function () {
-    var open = nav.classList.toggle('nav-open');
-    toggle.classList.toggle('is-active');
-    toggle.setAttribute('aria-expanded', String(open));
-  });
-  nav.querySelectorAll('a').forEach(function (a) {
-    a.addEventListener('click', function () {
-      nav.classList.remove('nav-open');
-      toggle.classList.remove('is-active');
-      toggle.setAttribute('aria-expanded', 'false');
-    });
-  });
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal, .reveal-stagger').forEach(function (el) { obs.observe(el); });
-})();
-</script>
+<script src="site/scroll.js"></script>
 
 </body>
 </html>
