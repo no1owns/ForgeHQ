@@ -49,10 +49,11 @@
 
       <div class="about-bio">
         <p>Toyin Akintilo wants to change the world, and she believes she and her team have the therapeutic touch to change the negative energy in today's environment.</p>
-        <p>"We live in a very fast-paced world, so it's easier to get caught up in stress," she says. She believes many people are experiencing high levels of stress, and she wants to help relieve their tension.</p>
-        <p>"There's stress that can keep you motivated and help you survive. That can be a good type of stress, but then there's the bad type of stress that damages your mental and physical health," says Akintilo.</p>
+        <blockquote class="toyin-quote reveal">"We live in a very fast-paced world, so it's easier to get caught up in stress."</blockquote>
+        <p>She believes many people are experiencing high levels of stress, and she wants to help relieve their tension.</p>
+        <blockquote class="toyin-quote reveal">"There's stress that can keep you motivated and help you survive. That can be a good type of stress, but then there's the bad type of stress that damages your mental and physical health."</blockquote>
         <p>She sees it in how people react to daily situations and how their body responds — including allergies, cancers, and autoimmune diseases.</p>
-        <p>"As a child, I didn't want to see other people upset. I never liked watching my parents or siblings argue; I would always try to find harmony," says Akintilo.</p>
+        <blockquote class="toyin-quote reveal">"As a child, I didn't want to see other people upset. I never liked watching my parents or siblings argue; I would always try to find harmony."</blockquote>
         <a href="https://forms.gle/J6xCLqXPnUwk227q6" class="btn-dark" target="_blank" style="margin-top: 16px;">Book a Session</a>
       </div>
 
@@ -80,30 +81,7 @@
   </div>
 </footer>
 
-<script>
-(function () {
-  var toggle = document.querySelector('.nav-toggle');
-  var nav = document.getElementById('main-nav');
-  toggle.addEventListener('click', function () {
-    var open = nav.classList.toggle('nav-open');
-    toggle.classList.toggle('is-active');
-    toggle.setAttribute('aria-expanded', String(open));
-  });
-  nav.querySelectorAll('a').forEach(function (a) {
-    a.addEventListener('click', function () {
-      nav.classList.remove('nav-open');
-      toggle.classList.remove('is-active');
-      toggle.setAttribute('aria-expanded', 'false');
-    });
-  });
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal, .reveal-stagger').forEach(function (el) { obs.observe(el); });
-})();
-</script>
+<script src="site/scroll.js"></script>
 
 </body>
 </html>
