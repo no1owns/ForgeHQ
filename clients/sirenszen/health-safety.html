@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sirenszen Wellness</title>
+  <title>Health &amp; Safety | Sirenszen Wellness</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
@@ -30,42 +30,26 @@
   </nav>
 </header>
 
+<div class="page-hero" style="background-image: url('img/pad.jpg');">
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Your Comfort Comes First</p>
+    <h1 class="page-hero-title">Health &amp; Safety</h1>
+  </div>
+</div>
+
 <main>
+  <div class="page-content reveal">
+    <p class="page-intro">We are committed to providing a clean, safe, and comfortable environment for every client. The following protocols are in place at every session.</p>
 
-  <!-- Hero -->
-  <section id="home">
-    <div class="hero-content">
-      <p class="hero-eyebrow">Welcome</p>
-      <h1 class="hero-title">SirensZen<br>Wellness</h1>
-      <p class="hero-sub">Massage &bull; Wellness &bull; Relaxation</p>
-      <a href="https://forms.gle/J6xCLqXPnUwk227q6" class="btn-primary" target="_blank">Book a Session</a>
-    </div>
-    <div class="scroll-indicator">
-      <span>Scroll</span>
-      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-    </div>
-  </section>
+    <ul class="safety-list">
+      <li>Massage table sanitized before and after each client</li>
+      <li>Appointments scheduled with 1 hour cleaning time between sessions</li>
+      <li>Masks worn by therapist — optional for clients once on the table</li>
+      <li>Clients may remain face down (prone) for the majority or all of their session if preferred</li>
+    </ul>
 
-  <!-- Services Teaser -->
-  <section class="services-teaser reveal">
-    <div class="services-teaser-text">
-      <h2 class="section-heading">Services &amp; Pricing</h2>
-      <p class="section-sub">Studio &amp; mobile sessions available</p>
-      <p class="page-intro" style="margin-bottom: 32px;">From Swedish relaxation to targeted deep tissue work, every session is tailored to your body and your goals. Available at our studio or we come to you.</p>
-      <a href="services.html" class="btn-dark">View All Services</a>
-    </div>
-    <div class="services-teaser-grid">
-      <div class="services-teaser-item">Swedish</div>
-      <div class="services-teaser-item">Therapeutic</div>
-      <div class="services-teaser-item">Deep Tissue</div>
-      <div class="services-teaser-item">Trigger Point</div>
-      <div class="services-teaser-item">Sports</div>
-      <div class="services-teaser-item">Myofascial</div>
-      <div class="services-teaser-item">Prenatal</div>
-      <div class="services-teaser-item">Reflexology</div>
-    </div>
-  </section>
-
+    <a href="https://forms.gle/J6xCLqXPnUwk227q6" class="btn-dark" target="_blank">Book a Session</a>
+  </div>
 </main>
 
 <footer>
@@ -90,14 +74,6 @@
 
 <script>
 (function () {
-  var hero = document.getElementById('home');
-  function updateParallax() {
-    if (window.scrollY < window.innerHeight * 1.2) {
-      hero.style.backgroundPositionY = 'calc(50% + ' + (window.scrollY * 0.35) + 'px)';
-    }
-  }
-  window.addEventListener('scroll', updateParallax, { passive: true });
-
   var toggle = document.querySelector('.nav-toggle');
   var nav = document.getElementById('main-nav');
   toggle.addEventListener('click', function () {
@@ -112,7 +88,6 @@
       toggle.setAttribute('aria-expanded', 'false');
     });
   });
-
   var obs = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }

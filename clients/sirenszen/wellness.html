@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sirenszen Wellness</title>
+  <title>Self Care &amp; Wellness | Sirenszen Wellness</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
@@ -30,42 +30,38 @@
   </nav>
 </header>
 
+<div class="page-hero" style="background-image: url('img/water-stretch.jpeg');">
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Feel Better Every Day</p>
+    <h1 class="page-hero-title">Self Care &amp; Wellness</h1>
+  </div>
+</div>
+
 <main>
+  <div class="page-content">
+    <p class="page-intro reveal">There are things we can do for ourselves to better our movement, flexibility, and strength. Explore our growing library of self-care resources.</p>
 
-  <!-- Hero -->
-  <section id="home">
-    <div class="hero-content">
-      <p class="hero-eyebrow">Welcome</p>
-      <h1 class="hero-title">SirensZen<br>Wellness</h1>
-      <p class="hero-sub">Massage &bull; Wellness &bull; Relaxation</p>
-      <a href="https://forms.gle/J6xCLqXPnUwk227q6" class="btn-primary" target="_blank">Book a Session</a>
+    <div class="wellness-section reveal">
+      <h2 class="section-heading">Stretches &amp; Exercises</h2>
+      <p class="section-sub">Movement for every body</p>
+      <!-- CONTENT COMING SOON - CLIENT TO PROVIDE -->
+      <div class="wellness-placeholder">Content coming soon</div>
     </div>
-    <div class="scroll-indicator">
-      <span>Scroll</span>
-      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-    </div>
-  </section>
 
-  <!-- Services Teaser -->
-  <section class="services-teaser reveal">
-    <div class="services-teaser-text">
-      <h2 class="section-heading">Services &amp; Pricing</h2>
-      <p class="section-sub">Studio &amp; mobile sessions available</p>
-      <p class="page-intro" style="margin-bottom: 32px;">From Swedish relaxation to targeted deep tissue work, every session is tailored to your body and your goals. Available at our studio or we come to you.</p>
-      <a href="services.html" class="btn-dark">View All Services</a>
+    <div class="wellness-section reveal">
+      <h2 class="section-heading">Nutrition &amp; Foods</h2>
+      <p class="section-sub">Fuel that supports recovery</p>
+      <!-- CONTENT COMING SOON - CLIENT TO PROVIDE -->
+      <div class="wellness-placeholder">Content coming soon</div>
     </div>
-    <div class="services-teaser-grid">
-      <div class="services-teaser-item">Swedish</div>
-      <div class="services-teaser-item">Therapeutic</div>
-      <div class="services-teaser-item">Deep Tissue</div>
-      <div class="services-teaser-item">Trigger Point</div>
-      <div class="services-teaser-item">Sports</div>
-      <div class="services-teaser-item">Myofascial</div>
-      <div class="services-teaser-item">Prenatal</div>
-      <div class="services-teaser-item">Reflexology</div>
-    </div>
-  </section>
 
+    <div class="wellness-section reveal">
+      <h2 class="section-heading">Recipes</h2>
+      <p class="section-sub">Nourishing meals and drinks</p>
+      <!-- CONTENT COMING SOON - CLIENT TO PROVIDE -->
+      <div class="wellness-placeholder">Content coming soon</div>
+    </div>
+  </div>
 </main>
 
 <footer>
@@ -90,14 +86,6 @@
 
 <script>
 (function () {
-  var hero = document.getElementById('home');
-  function updateParallax() {
-    if (window.scrollY < window.innerHeight * 1.2) {
-      hero.style.backgroundPositionY = 'calc(50% + ' + (window.scrollY * 0.35) + 'px)';
-    }
-  }
-  window.addEventListener('scroll', updateParallax, { passive: true });
-
   var toggle = document.querySelector('.nav-toggle');
   var nav = document.getElementById('main-nav');
   toggle.addEventListener('click', function () {
@@ -112,7 +100,6 @@
       toggle.setAttribute('aria-expanded', 'false');
     });
   });
-
   var obs = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }

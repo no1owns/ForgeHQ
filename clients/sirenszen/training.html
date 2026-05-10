@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sirenszen Wellness</title>
+  <title>Training &amp; CEUs | Sirenszen Wellness</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
@@ -30,42 +30,29 @@
   </nav>
 </header>
 
+<div class="page-hero" style="background-image: url('img/push.jpeg');">
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Hands-On Education</p>
+    <h1 class="page-hero-title">Massage Therapy Training &amp; CEUs</h1>
+  </div>
+</div>
+
 <main>
+  <div class="page-content reveal">
+    <p class="page-intro">SirensZen is a certified teacher with a background in special education. Trained and mentored under apprenticeships — offering hands-on training and support for therapists in school or pursuing continuing education.</p>
 
-  <!-- Hero -->
-  <section id="home">
-    <div class="hero-content">
-      <p class="hero-eyebrow">Welcome</p>
-      <h1 class="hero-title">SirensZen<br>Wellness</h1>
-      <p class="hero-sub">Massage &bull; Wellness &bull; Relaxation</p>
-      <a href="https://forms.gle/J6xCLqXPnUwk227q6" class="btn-primary" target="_blank">Book a Session</a>
+    <div style="max-width: 640px; margin-bottom: 48px;">
+      <h2 class="section-heading" style="font-size: clamp(1.4rem, 2.5vw, 2rem); margin-bottom: 24px;">What We Offer</h2>
+      <ul class="safety-list">
+        <li>Hands-on training and mentorship for massage therapy students</li>
+        <li>Support for therapists pursuing CEUs (Continuing Education Units)</li>
+        <li>Study and practice guidance to pass State and National Exams</li>
+        <li>Apprenticeship-based learning rooted in real clinical experience</li>
+      </ul>
     </div>
-    <div class="scroll-indicator">
-      <span>Scroll</span>
-      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-    </div>
-  </section>
 
-  <!-- Services Teaser -->
-  <section class="services-teaser reveal">
-    <div class="services-teaser-text">
-      <h2 class="section-heading">Services &amp; Pricing</h2>
-      <p class="section-sub">Studio &amp; mobile sessions available</p>
-      <p class="page-intro" style="margin-bottom: 32px;">From Swedish relaxation to targeted deep tissue work, every session is tailored to your body and your goals. Available at our studio or we come to you.</p>
-      <a href="services.html" class="btn-dark">View All Services</a>
-    </div>
-    <div class="services-teaser-grid">
-      <div class="services-teaser-item">Swedish</div>
-      <div class="services-teaser-item">Therapeutic</div>
-      <div class="services-teaser-item">Deep Tissue</div>
-      <div class="services-teaser-item">Trigger Point</div>
-      <div class="services-teaser-item">Sports</div>
-      <div class="services-teaser-item">Myofascial</div>
-      <div class="services-teaser-item">Prenatal</div>
-      <div class="services-teaser-item">Reflexology</div>
-    </div>
-  </section>
-
+    <a href="https://forms.gle/J6xCLqXPnUwk227q6" class="btn-dark" target="_blank">Inquire About Training</a>
+  </div>
 </main>
 
 <footer>
@@ -90,14 +77,6 @@
 
 <script>
 (function () {
-  var hero = document.getElementById('home');
-  function updateParallax() {
-    if (window.scrollY < window.innerHeight * 1.2) {
-      hero.style.backgroundPositionY = 'calc(50% + ' + (window.scrollY * 0.35) + 'px)';
-    }
-  }
-  window.addEventListener('scroll', updateParallax, { passive: true });
-
   var toggle = document.querySelector('.nav-toggle');
   var nav = document.getElementById('main-nav');
   toggle.addEventListener('click', function () {
@@ -112,7 +91,6 @@
       toggle.setAttribute('aria-expanded', 'false');
     });
   });
-
   var obs = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
