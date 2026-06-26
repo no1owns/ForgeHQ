@@ -902,5 +902,19 @@ resetBtn.addEventListener('click', () => {
   el.addEventListener('input', renderPreview);
 });
 
+/* ── Mobile tabs ── */
+const mobileTabs = document.querySelectorAll('.mobile-tab');
+
+function setMobileTab(targetId) {
+  mobileTabs.forEach(t => t.classList.toggle('active', t.dataset.target === targetId));
+  document.getElementById('builderPanel').classList.toggle('mobile-active', targetId === 'builderPanel');
+  document.getElementById('previewPanel').classList.toggle('mobile-active', targetId === 'previewPanel');
+}
+
+mobileTabs.forEach(tab => {
+  tab.addEventListener('click', () => setMobileTab(tab.dataset.target));
+});
+
 /* ── Init ── */
+setMobileTab('builderPanel');
 addStep();
