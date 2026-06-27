@@ -1192,7 +1192,7 @@ select.preview-input option {
   font-size: 13px;
   font-weight: 700;
   color: var(--accent);
-  background: rgba(232, 255, 71, 0.12);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-sm);
   padding: 4px 8px;
   line-height: 1;
@@ -1250,6 +1250,36 @@ select.preview-input option {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+/* ── Conditional logic (field editor) ── */
+.condition-section {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.condition-empty-msg {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.condition-rule {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ── Field card condition badge ── */
+.field-condition-badge {
+  font-size: 11px;
+  color: var(--accent);
+  flex-shrink: 0;
+  line-height: 1;
+  opacity: 0.85;
 }
 
 /* ── Scrollbar global ── */

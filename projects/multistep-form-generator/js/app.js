@@ -17,11 +17,12 @@ const FIELD_TYPES = {
   rating:    { label: 'Rating',          icon: '★',   color: '#fbbf24', hasPlaceholder: false },
   scale:     { label: 'Opinion Scale',   icon: '↔',   color: '#67e8f9', hasPlaceholder: false },
   statement: { label: 'Statement',       icon: '✦',   color: '#e8ff47', hasPlaceholder: false, isContent: true },
+  country:   { label: 'Country',         icon: '⊛',   color: '#22d3ee', hasPlaceholder: true  },
 };
 
 const FIELD_CATEGORIES = [
   { label: 'Text',    types: ['text', 'textarea', 'email', 'phone', 'number', 'url', 'date', 'time', 'file', 'password'] },
-  { label: 'Choice',  types: ['select', 'radio', 'checkbox', 'yesno'] },
+  { label: 'Choice',  types: ['select', 'radio', 'checkbox', 'yesno', 'country'] },
   { label: 'Scale',   types: ['rating', 'scale'] },
   { label: 'Content', types: ['statement'] },
 ];
@@ -34,6 +35,33 @@ const FIELD_DEFAULTS = {
   rating:   { options: ['5'] },
   scale:    { options: ['1', '10', '', ''] },
 };
+
+const COUNTRY_LIST = [
+  'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria','Azerbaijan',
+  'Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi',
+  'Cabo Verde','Cambodia','Cameroon','Canada','Central African Republic','Chad','Chile','China','Colombia','Comoros','Congo (Brazzaville)','Congo (Kinshasa)','Costa Rica','Croatia','Cuba','Cyprus','Czech Republic',
+  'Denmark','Djibouti','Dominica','Dominican Republic',
+  'Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Eswatini','Ethiopia',
+  'Fiji','Finland','France',
+  'Gabon','Gambia','Georgia','Germany','Ghana','Greece','Grenada','Guatemala','Guinea','Guinea-Bissau','Guyana',
+  'Haiti','Honduras','Hungary',
+  'Iceland','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy',
+  'Jamaica','Japan','Jordan',
+  'Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan',
+  'Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg',
+  'Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Mauritania','Mauritius','Mexico','Micronesia','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar',
+  'Namibia','Nauru','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Korea','North Macedonia','Norway',
+  'Oman',
+  'Pakistan','Palau','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal',
+  'Qatar',
+  'Romania','Russia','Rwanda',
+  'Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines','Samoa','San Marino','Sao Tome and Principe','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Sweden','Switzerland','Syria',
+  'Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Tuvalu',
+  'Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan',
+  'Vanuatu','Vatican City','Venezuela','Vietnam',
+  'Yemen',
+  'Zambia','Zimbabwe',
+];
 
 /* ── State ── */
 const state = {
@@ -92,6 +120,25 @@ function escHtml(s) {
 }
 function typeDef(type) {
   return FIELD_TYPES[type] || { label: type, icon: '?', color: '#888', hasPlaceholder: true };
+}
+
+function findFieldById(fieldId) {
+  for (const step of state.steps) {
+    const f = step.fields.find(f => f.id === fieldId);
+    if (f) return f;
+  }
+  return null;
+}
+
+function getFieldsBefore(targetFieldId) {
+  const result = [];
+  for (const step of state.steps) {
+    for (const field of step.fields) {
+      if (field.id === targetFieldId) return result;
+      result.push(field);
+    }
+  }
+  return result;
 }
 
 /* ── Field type picker modal (dynamically built from FIELD_TYPES) ── */
@@ -223,6 +270,7 @@ function addField(stepId, type) {
     placeholder: '',
     required: false,
     options: defaults.options ? [...defaults.options] : [],
+    condition: null,
   };
   step.fields.push(field);
   renderBuilder();
@@ -344,6 +392,10 @@ function renderEditorBody(stepId, fieldId) {
     fieldEditorBody.appendChild(makeEditorText('Max label (optional)', field.options[3] || '', 'e.g. Extremely',
       val => { field.options[3] = val; renderPreview(); }));
   }
+
+  if (!def.isContent) {
+    fieldEditorBody.appendChild(makeConditionSection(stepId, fieldId));
+  }
 }
 
 function renderEditorOptions(stepId, fieldId) {
@@ -425,6 +477,112 @@ function makeEditorToggle(labelText, currentValue, onChange) {
   group.appendChild(lbl);
   group.appendChild(inp);
   return group;
+}
+
+function makeConditionSection(stepId, fieldId) {
+  const field = getField(stepId, fieldId);
+  if (!field) return document.createElement('div');
+
+  const beforeFields = getFieldsBefore(fieldId).filter(f => !typeDef(f.type).isContent);
+
+  const section = document.createElement('div');
+  section.className = 'condition-section';
+
+  const title = document.createElement('div');
+  title.className = 'editor-group-label';
+  title.textContent = 'Conditional Logic';
+  section.appendChild(title);
+
+  if (beforeFields.length === 0) {
+    const msg = document.createElement('p');
+    msg.className = 'condition-empty-msg';
+    msg.textContent = 'Add fields before this one to show it conditionally.';
+    section.appendChild(msg);
+    return section;
+  }
+
+  const enableRow = document.createElement('div');
+  enableRow.className = 'editor-group editor-toggle-row';
+
+  const enableId = `cond-enable-${fieldId}`;
+  const enableLabel = document.createElement('label');
+  enableLabel.htmlFor = enableId;
+  enableLabel.textContent = 'Only show when…';
+  enableLabel.style.cssText = 'font-size:13px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--text-primary)';
+
+  const enableToggle = document.createElement('input');
+  enableToggle.type = 'checkbox';
+  enableToggle.className = 'toggle-checkbox';
+  enableToggle.id = enableId;
+  enableToggle.checked = !!field.condition;
+
+  enableRow.appendChild(enableLabel);
+  enableRow.appendChild(enableToggle);
+  section.appendChild(enableRow);
+
+  const rule = document.createElement('div');
+  rule.className = 'condition-rule';
+  if (!field.condition) rule.style.display = 'none';
+
+  const srcSel = document.createElement('select');
+  srcSel.className = 'input';
+  beforeFields.forEach(f => {
+    const o = document.createElement('option');
+    o.value = f.id;
+    o.textContent = f.label || `Untitled ${typeDef(f.type).label}`;
+    if (field.condition && field.condition.fieldId === f.id) o.selected = true;
+    srcSel.appendChild(o);
+  });
+
+  const opSel = document.createElement('select');
+  opSel.className = 'input';
+  [['eq', 'equals'], ['neq', 'not equals'], ['contains', 'contains']].forEach(([val, lbl]) => {
+    const o = document.createElement('option');
+    o.value = val; o.textContent = lbl;
+    if (field.condition && field.condition.operator === val) o.selected = true;
+    opSel.appendChild(o);
+  });
+
+  const valInp = document.createElement('input');
+  valInp.type = 'text';
+  valInp.className = 'input';
+  valInp.placeholder = 'value…';
+  valInp.value = field.condition ? field.condition.value || '' : '';
+
+  rule.appendChild(srcSel);
+  rule.appendChild(opSel);
+  rule.appendChild(valInp);
+  section.appendChild(rule);
+
+  function syncCondition() {
+    if (!field.condition) return;
+    field.condition.fieldId = parseInt(srcSel.value, 10);
+    field.condition.operator = opSel.value;
+    field.condition.value = valInp.value;
+  }
+
+  enableToggle.addEventListener('change', () => {
+    if (enableToggle.checked) {
+      const firstId = beforeFields[0] ? beforeFields[0].id : null;
+      field.condition = {
+        fieldId: parseInt(srcSel.value, 10) || firstId,
+        operator: opSel.value,
+        value: valInp.value,
+      };
+      rule.style.display = 'flex';
+    } else {
+      field.condition = null;
+      rule.style.display = 'none';
+    }
+    renderPreview();
+    renderBuilder();
+  });
+
+  srcSel.addEventListener('change', () => { syncCondition(); renderPreview(); });
+  opSel.addEventListener('change', () => { syncCondition(); renderPreview(); });
+  valInp.addEventListener('input', () => { syncCondition(); renderPreview(); });
+
+  return section;
 }
 
 function makeEditorSelect(labelText, options, labelFn, currentValue, onChange) {
@@ -690,6 +848,13 @@ function buildFieldCard(stepId, field) {
   card.appendChild(dragHandle);
   card.appendChild(pill);
   card.appendChild(labelEl);
+  if (field.condition) {
+    const badge = document.createElement('span');
+    badge.className = 'field-condition-badge';
+    badge.title = 'Has conditional logic';
+    badge.textContent = '⚡';
+    card.appendChild(badge);
+  }
   card.appendChild(editBtn);
   card.appendChild(deleteBtn);
 
@@ -785,6 +950,7 @@ function renderPreview() {
 
       const group = document.createElement('div');
       group.className = 'preview-field-group';
+      group.dataset.previewFieldGroup = field.id;
 
       const labelEl = document.createElement('label');
       labelEl.className = 'preview-field-label';
@@ -796,7 +962,9 @@ function renderPreview() {
         labelEl.appendChild(star);
       }
       group.appendChild(labelEl);
-      group.appendChild(buildPreviewField(field));
+      const fieldEl = buildPreviewField(field);
+      fieldEl.dataset.previewInput = field.id;
+      group.appendChild(fieldEl);
       stepDiv.appendChild(group);
     });
 
@@ -837,6 +1005,38 @@ function renderPreview() {
   });
 
   previewContainer.appendChild(wrap);
+  evaluatePreviewConditions();
+}
+
+function getPreviewFieldValue(fieldId) {
+  const el = previewContainer.querySelector(`[data-preview-input="${fieldId}"]`);
+  if (!el) return '';
+  if (el.tagName === 'SELECT' || el.tagName === 'TEXTAREA') return el.value || '';
+  if (el.tagName === 'INPUT') return el.value || '';
+  const yesnoBtn = el.querySelector('.preview-yesno-btn.selected');
+  if (yesnoBtn) return yesnoBtn.textContent;
+  const checkedRadio = el.querySelector('input[type="radio"]:checked');
+  if (checkedRadio) return checkedRadio.value;
+  const checked = [...el.querySelectorAll('input[type="checkbox"]:checked')].map(e => e.value);
+  return checked.join(',');
+}
+
+function evaluatePreviewConditions() {
+  state.steps.forEach(step => {
+    step.fields.forEach(field => {
+      if (!field.condition) return;
+      const group = previewContainer.querySelector(`[data-preview-field-group="${field.id}"]`);
+      if (!group) return;
+      const { fieldId, operator, value } = field.condition;
+      const sv = getPreviewFieldValue(fieldId).toLowerCase();
+      const cv = (value || '').toLowerCase();
+      let show = false;
+      if (operator === 'eq')            show = sv === cv;
+      else if (operator === 'neq')      show = sv !== cv;
+      else if (operator === 'contains') show = sv.includes(cv);
+      group.style.display = show ? '' : 'none';
+    });
+  });
 }
 
 function buildPreviewField(field) {
@@ -904,6 +1104,7 @@ function buildPreviewField(field) {
       btn.addEventListener('click', () => {
         wrap.querySelectorAll('.preview-yesno-btn').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
+        evaluatePreviewConditions();
       });
       wrap.appendChild(btn);
     });
@@ -967,6 +1168,21 @@ function buildPreviewField(field) {
     return wrap;
   }
 
+  if (field.type === 'country') {
+    const el = document.createElement('select');
+    el.className = 'preview-input';
+    const ph = document.createElement('option');
+    ph.value = ''; ph.disabled = true; ph.selected = true;
+    ph.textContent = field.placeholder || 'Select a country';
+    el.appendChild(ph);
+    COUNTRY_LIST.forEach(c => {
+      const o = document.createElement('option');
+      o.value = c; o.textContent = c;
+      el.appendChild(o);
+    });
+    return el;
+  }
+
   if (field.type === 'statement') {
     const el = document.createElement('div');
     el.className = 'preview-statement';
@@ -994,6 +1210,7 @@ function goPreviewStep(idx) {
     el.classList.toggle('active', i === idx);
   });
   updatePreviewProgress(idx);
+  evaluatePreviewConditions();
 }
 
 function showPreviewSuccess(wrap) {
@@ -1090,12 +1307,32 @@ ${stepsHtml}
 <script>
 (function(){
   var cur=0,total=${total};
+  function mfgGetFieldVal(fid){
+    var el=document.getElementById('f'+fid);
+    if(el)return el.value||'';
+    var r=document.querySelector('input[name="r'+fid+'"]:checked');
+    if(r)return r.value;
+    var h=document.getElementById('f'+fid+'-val');
+    if(h)return h.value||'';
+    return '';
+  }
+  function mfgEvalCond(){
+    document.querySelectorAll('[data-cond-fid]').forEach(function(el){
+      var fid=el.getAttribute('data-cond-fid');
+      var op=el.getAttribute('data-cond-op');
+      var val=(el.getAttribute('data-cond-val')||'').toLowerCase();
+      var sv=mfgGetFieldVal(fid).toLowerCase();
+      var show=op==='eq'?sv===val:op==='neq'?sv!==val:sv.indexOf(val)>=0;
+      el.style.display=show?'':'none';
+    });
+  }
   function show(n){
     document.querySelectorAll('.mfg-step').forEach(function(s,i){s.classList.toggle('active',i===n);});
     document.querySelectorAll('.mfg-dot').forEach(function(d,i){d.classList.toggle('active',i===n);});
     var bf=document.querySelector('.mfg-bar-fill');if(bf)bf.style.width=(((n+1)/total)*100)+'%';
     var cn=document.getElementById('mfgCur');if(cn)cn.textContent=n+1;
     cur=n;window.scrollTo(0,0);
+    mfgEvalCond();
   }
   function validate(n){
     var step=document.querySelectorAll('.mfg-step')[n];
@@ -1105,6 +1342,7 @@ ${stepsHtml}
     step.querySelectorAll('.mfg-input').forEach(function(el){el.classList.remove('mfg-err');});
     step.querySelectorAll('[data-req]').forEach(function(el){
       if(el.type==='radio'||el.type==='checkbox')return;
+      if(el.closest('[data-cond-fid]')&&el.closest('[data-cond-fid]').style.display==='none')return;
       if(!el.value.trim()){
         el.classList.add('mfg-err');
         var m=document.createElement('div');
@@ -1120,10 +1358,12 @@ ${stepsHtml}
     btn.parentNode.querySelectorAll('.mfg-yesno-btn').forEach(function(b){b.classList.remove('selected');});
     btn.classList.add('selected');
     var h=btn.parentNode.querySelector('input[type=hidden]');if(h)h.value=btn.textContent;
+    mfgEvalCond();
   };
   window.mfgRate=function(star,val,gid){
     document.querySelectorAll('#'+gid+' .mfg-star').forEach(function(s,i){s.classList.toggle('on',i<val);});
     var h=document.querySelector('#'+gid+'-val');if(h)h.value=val;
+    mfgEvalCond();
   };
   window.mfgSubmit=function(e){
     if(!validate(cur)){e.preventDefault();return;}
@@ -1133,6 +1373,8 @@ ${stepsHtml}
       document.getElementById('mfgForm').parentNode.innerHTML='<div class="mfg-success"><h2>${successMsg}</h2><p>Your response has been received.</p></div>';
     }
   };
+  document.addEventListener('change',mfgEvalCond);
+  document.addEventListener('input',mfgEvalCond);
   show(0);
 })();
 <\/script>`;
@@ -1170,13 +1412,17 @@ function buildFieldHtml(field) {
   const req   = field.required ? ' data-req required' : '';
   const star  = field.required ? '<span class="mfg-req">*</span>' : '';
   const fid   = `f${field.id}`;
+  const condAttr  = field.condition
+    ? ` data-cond-fid="${field.condition.fieldId}" data-cond-op="${escHtml(field.condition.operator)}" data-cond-val="${escHtml(field.condition.value || '')}"`
+    : '';
+  const condStyle = field.condition ? ' style="display:none"' : '';
 
   if (field.type === 'statement') {
     return `      <div class="mfg-statement"><p>${label}</p></div>`;
   }
 
   if (field.type === 'textarea') {
-    return `      <div class="mfg-field-group">
+    return `      <div class="mfg-field-group"${condAttr}${condStyle}>
         <label class="mfg-label" for="${fid}">${label}${star}</label>
         <textarea id="${fid}" class="mfg-input" placeholder="${ph}"${req}></textarea>
       </div>`;
@@ -1185,7 +1431,7 @@ function buildFieldHtml(field) {
   if (field.type === 'select') {
     const opts = (field.options || []).map(o =>
       `          <option value="${escHtml(o)}">${escHtml(o)}</option>`).join('\n');
-    return `      <div class="mfg-field-group">
+    return `      <div class="mfg-field-group"${condAttr}${condStyle}>
         <label class="mfg-label" for="${fid}">${label}${star}</label>
         <select id="${fid}" class="mfg-input"${req}>
           <option value="" disabled selected>${ph || 'Select an option'}</option>
@@ -1199,7 +1445,7 @@ ${opts}
     const items = (field.options || []).map(o =>
       `          <label class="mfg-choice-item"><input type="radio" name="${name}" value="${escHtml(o)}"${field.required ? ' required' : ''}> ${escHtml(o)}</label>`
     ).join('\n');
-    return `      <div class="mfg-field-group">
+    return `      <div class="mfg-field-group"${condAttr}${condStyle}>
         <div class="mfg-label">${label}${star}</div>
         <div class="mfg-choice-group">
 ${items}
@@ -1211,7 +1457,7 @@ ${items}
     const items = (field.options || []).map((o, i) =>
       `          <label class="mfg-choice-item"><input type="checkbox" name="${fid}-${i}" value="${escHtml(o)}"> ${escHtml(o)}</label>`
     ).join('\n');
-    return `      <div class="mfg-field-group">
+    return `      <div class="mfg-field-group"${condAttr}${condStyle}>
         <div class="mfg-label">${label}${star}</div>
         <div class="mfg-choice-group">
 ${items}
@@ -1222,7 +1468,7 @@ ${items}
   if (field.type === 'yesno') {
     const yes = escHtml(field.options[0] || 'Yes');
     const no  = escHtml(field.options[1] || 'No');
-    return `      <div class="mfg-field-group">
+    return `      <div class="mfg-field-group"${condAttr}${condStyle}>
         <div class="mfg-label">${label}${star}</div>
         <div class="mfg-yesno">
           <button type="button" class="mfg-yesno-btn" onclick="mfgYesNo(this)">${yes}</button>
@@ -1237,7 +1483,7 @@ ${items}
     const stars = Array.from({ length: max }, (_, i) =>
       `          <button type="button" class="mfg-star" onclick="mfgRate(this,${i + 1},'${fid}')">★</button>`
     ).join('\n');
-    return `      <div class="mfg-field-group">
+    return `      <div class="mfg-field-group"${condAttr}${condStyle}>
         <div class="mfg-label">${label}${star}</div>
         <div class="mfg-rating" id="${fid}">
 ${stars}
@@ -1256,7 +1502,7 @@ ${stars}
     for (let i = parseInt(min, 10); i <= parseInt(max, 10); i++) nums.push(`<span>${i}</span>`);
     const lblsHtml = (minLbl || maxLbl)
       ? `<div class="mfg-scale-lbls"><span>${minLbl}</span><span>${maxLbl}</span></div>` : '';
-    return `      <div class="mfg-field-group">
+    return `      <div class="mfg-field-group"${condAttr}${condStyle}>
         <div class="mfg-label">${label}${star}</div>
         <div>
           <input type="range" id="${fid}" class="mfg-scale-slider" min="${min}" max="${max}" value="${mid}" name="${fid}"${req}>
@@ -1266,11 +1512,23 @@ ${stars}
       </div>`;
   }
 
+  if (field.type === 'country') {
+    const opts = COUNTRY_LIST.map(c =>
+      `          <option value="${escHtml(c)}">${escHtml(c)}</option>`).join('\n');
+    return `      <div class="mfg-field-group"${condAttr}${condStyle}>
+        <label class="mfg-label" for="${fid}">${label}${star}</label>
+        <select id="${fid}" class="mfg-input"${req}>
+          <option value="" disabled selected>${ph || 'Select a country'}</option>
+${opts}
+        </select>
+      </div>`;
+  }
+
   /* text, email, phone, url, number, date, time, file, password */
   const inputType = field.type === 'phone' ? 'tel'
     : field.type === 'time' ? 'time'
     : field.type;
-  return `      <div class="mfg-field-group">
+  return `      <div class="mfg-field-group"${condAttr}${condStyle}>
         <label class="mfg-label" for="${fid}">${label}${star}</label>
         <input type="${inputType}" id="${fid}" class="mfg-input" placeholder="${ph}" name="${fid}"${req}>
       </div>`;
@@ -1364,6 +1622,8 @@ mobileTabs.forEach(tab => {
 });
 
 /* ── Init ── */
+previewContainer.addEventListener('change', evaluatePreviewConditions);
+previewContainer.addEventListener('input', evaluatePreviewConditions);
 buildFieldTypeModal();
 setMobileTab('builder');
 addStep();
