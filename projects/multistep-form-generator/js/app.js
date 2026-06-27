@@ -905,10 +905,12 @@ resetBtn.addEventListener('click', () => {
 /* ── Mobile tabs ── */
 const mobileTabs = document.querySelectorAll('.mobile-tab');
 
-function setMobileTab(targetId) {
-  mobileTabs.forEach(t => t.classList.toggle('active', t.dataset.target === targetId));
-  document.getElementById('builderPanel').classList.toggle('mobile-active', targetId === 'builderPanel');
-  document.getElementById('previewPanel').classList.toggle('mobile-active', targetId === 'previewPanel');
+function setMobileTab(tab) {
+  mobileTabs.forEach(t => t.classList.toggle('active', t.dataset.target === tab));
+  document.body.dataset.mobileTab = tab;
+  // Builder panel stays visible for both 'builder' and 'settings' views
+  document.getElementById('builderPanel').classList.toggle('mobile-active', tab !== 'preview');
+  document.getElementById('previewPanel').classList.toggle('mobile-active', tab === 'preview');
 }
 
 mobileTabs.forEach(tab => {
@@ -916,5 +918,5 @@ mobileTabs.forEach(tab => {
 });
 
 /* ── Init ── */
-setMobileTab('builderPanel');
+setMobileTab('builder');
 addStep();
