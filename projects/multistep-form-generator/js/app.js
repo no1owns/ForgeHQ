@@ -1,21 +1,30 @@
 /* ── Field type definitions ── */
 const FIELD_TYPES = {
-  text:      { label: 'Short Text',      icon: 'Aa',  hasPlaceholder: true  },
-  textarea:  { label: 'Long Text',       icon: '¶',   hasPlaceholder: true  },
-  email:     { label: 'Email',           icon: '@',   hasPlaceholder: true  },
-  phone:     { label: 'Phone',           icon: '☎',   hasPlaceholder: true  },
-  number:    { label: 'Number',          icon: '#',   hasPlaceholder: true  },
-  url:       { label: 'URL',             icon: '⌘',   hasPlaceholder: true  },
-  date:      { label: 'Date',            icon: '▦',   hasPlaceholder: false },
-  file:      { label: 'File Upload',     icon: '↑',   hasPlaceholder: false },
-  select:    { label: 'Dropdown',        icon: '▾',   hasPlaceholder: true,  hasOptions: true },
-  radio:     { label: 'Multiple Choice', icon: '◉',   hasPlaceholder: false, hasOptions: true },
-  checkbox:  { label: 'Checkboxes',      icon: '☑',   hasPlaceholder: false, hasOptions: true },
-  yesno:     { label: 'Yes / No',        icon: 'Y/N', hasPlaceholder: false, hasOptions: true },
-  rating:    { label: 'Rating',          icon: '★',   hasPlaceholder: false },
-  scale:     { label: 'Opinion Scale',   icon: '↔',   hasPlaceholder: false },
-  statement: { label: 'Statement',       icon: '✦',   hasPlaceholder: false, isContent: true },
+  text:      { label: 'Short Text',      icon: 'Aa',  color: '#60a5fa', hasPlaceholder: true  },
+  textarea:  { label: 'Long Text',       icon: '¶',   color: '#a78bfa', hasPlaceholder: true  },
+  email:     { label: 'Email',           icon: '@',   color: '#fb923c', hasPlaceholder: true  },
+  phone:     { label: 'Phone',           icon: '☎',   color: '#4ade80', hasPlaceholder: true  },
+  number:    { label: 'Number',          icon: '#',   color: '#c084fc', hasPlaceholder: true  },
+  url:       { label: 'URL',             icon: '↗',   color: '#38bdf8', hasPlaceholder: true  },
+  date:      { label: 'Date',            icon: '▦',   color: '#34d399', hasPlaceholder: false },
+  time:      { label: 'Time',            icon: '◷',   color: '#2dd4bf', hasPlaceholder: false },
+  file:      { label: 'File',            icon: '↑',   color: '#94a3b8', hasPlaceholder: false },
+  password:  { label: 'Password',        icon: '●●',  color: '#f43f5e', hasPlaceholder: true  },
+  select:    { label: 'Dropdown',        icon: '▾',   color: '#fbbf24', hasPlaceholder: true,  hasOptions: true },
+  radio:     { label: 'Multiple Choice', icon: '◉',   color: '#f97316', hasPlaceholder: false, hasOptions: true },
+  checkbox:  { label: 'Checkboxes',      icon: '☑',   color: '#86efac', hasPlaceholder: false, hasOptions: true },
+  yesno:     { label: 'Yes / No',        icon: 'Y/N', color: '#e879f9', hasPlaceholder: false, hasOptions: true },
+  rating:    { label: 'Rating',          icon: '★',   color: '#fbbf24', hasPlaceholder: false },
+  scale:     { label: 'Opinion Scale',   icon: '↔',   color: '#67e8f9', hasPlaceholder: false },
+  statement: { label: 'Statement',       icon: '✦',   color: '#e8ff47', hasPlaceholder: false, isContent: true },
 };
+
+const FIELD_CATEGORIES = [
+  { label: 'Text',    types: ['text', 'textarea', 'email', 'phone', 'number', 'url', 'date', 'time', 'file', 'password'] },
+  { label: 'Choice',  types: ['select', 'radio', 'checkbox', 'yesno'] },
+  { label: 'Scale',   types: ['rating', 'scale'] },
+  { label: 'Content', types: ['statement'] },
+];
 
 const FIELD_DEFAULTS = {
   select:   { options: ['Option 1', 'Option 2', 'Option 3'] },
@@ -82,8 +91,72 @@ function escHtml(s) {
     .replace(/"/g, '&quot;');
 }
 function typeDef(type) {
-  return FIELD_TYPES[type] || { label: type, icon: '?', hasPlaceholder: true };
+  return FIELD_TYPES[type] || { label: type, icon: '?', color: '#888', hasPlaceholder: true };
 }
+
+/* ── Field type picker modal (dynamically built from FIELD_TYPES) ── */
+function buildFieldTypeModal() {
+  const container = document.getElementById('fieldTypeCategories');
+  container.innerHTML = '';
+
+  FIELD_CATEGORIES.forEach(cat => {
+    const catDiv = document.createElement('div');
+    catDiv.className = 'field-type-category';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'ftc-label';
+    lbl.textContent = cat.label;
+    catDiv.appendChild(lbl);
+
+    const grid = document.createElement('div');
+    grid.className = 'field-type-grid';
+
+    cat.types.forEach(type => {
+      const def = typeDef(type);
+      const btn = document.createElement('button');
+      btn.className = 'field-type-btn';
+      btn.dataset.type = type;
+
+      const icon = document.createElement('span');
+      icon.className = 'field-type-icon';
+      icon.textContent = def.icon;
+      icon.style.color = def.color;
+
+      const name = document.createElement('span');
+      name.textContent = def.label;
+
+      btn.appendChild(icon);
+      btn.appendChild(name);
+      btn.addEventListener('click', () => {
+        if (pendingAddFieldStepId !== null) addField(pendingAddFieldStepId, type);
+        closeModal();
+      });
+
+      grid.appendChild(btn);
+    });
+
+    catDiv.appendChild(grid);
+    container.appendChild(catDiv);
+  });
+}
+
+function openModal(stepId) {
+  pendingAddFieldStepId = stepId;
+  fieldTypeModal.classList.remove('hidden');
+  const firstBtn = fieldTypeModal.querySelector('.field-type-btn');
+  if (firstBtn) firstBtn.focus();
+}
+
+function closeModal() {
+  fieldTypeModal.classList.add('hidden');
+  pendingAddFieldStepId = null;
+}
+
+modalBackdrop.addEventListener('click', closeModal);
+modalClose.addEventListener('click', closeModal);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeFieldEditor(); }
+});
 
 /* ── Step operations ── */
 function addStep() {
@@ -191,32 +264,6 @@ function updateOption(stepId, fieldId, idx, value) {
   }
 }
 
-/* ── Field type picker modal ── */
-function openModal(stepId) {
-  pendingAddFieldStepId = stepId;
-  fieldTypeModal.classList.remove('hidden');
-  fieldTypeModal.querySelector('.field-type-btn').focus();
-}
-
-function closeModal() {
-  fieldTypeModal.classList.add('hidden');
-  pendingAddFieldStepId = null;
-}
-
-modalBackdrop.addEventListener('click', closeModal);
-modalClose.addEventListener('click', closeModal);
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeFieldEditor(); }
-});
-
-fieldTypeModal.querySelectorAll('.field-type-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const type = btn.dataset.type;
-    if (pendingAddFieldStepId !== null) addField(pendingAddFieldStepId, type);
-    closeModal();
-  });
-});
-
 /* ── Field editor sheet ── */
 function openFieldEditor(stepId, fieldId) {
   const field = getField(stepId, fieldId);
@@ -225,6 +272,7 @@ function openFieldEditor(stepId, fieldId) {
   editingFieldId = fieldId;
   const def = typeDef(field.type);
   editorTypeIcon.textContent = def.icon;
+  editorTypeIcon.style.color = def.color || '';
   editorTypeName.textContent = def.label;
   renderEditorBody(stepId, fieldId);
   fieldEditor.classList.remove('hidden');
@@ -615,6 +663,7 @@ function buildFieldCard(stepId, field) {
   pill.className = 'field-type-pill';
   pill.textContent = def.icon;
   pill.title = def.label;
+  pill.style.color = def.color;
 
   const labelEl = document.createElement('span');
   labelEl.className = 'field-card-label';
@@ -925,9 +974,15 @@ function buildPreviewField(field) {
     return el;
   }
 
-  /* text, email, phone, url, number, date, file */
+  /* text, email, phone, url, number, date, time, file, password */
   const el = document.createElement('input');
-  el.type = field.type === 'phone' ? 'tel' : field.type;
+  if (field.type === 'phone') {
+    el.type = 'tel';
+  } else if (field.type === 'time') {
+    el.type = 'time';
+  } else {
+    el.type = field.type;
+  }
   el.className = 'preview-input';
   if (field.placeholder) el.placeholder = field.placeholder;
   return el;
@@ -1211,11 +1266,13 @@ ${stars}
       </div>`;
   }
 
-  /* text, email, phone, url, number, date, file */
-  const inputType = field.type === 'phone' ? 'tel' : field.type;
+  /* text, email, phone, url, number, date, time, file, password */
+  const inputType = field.type === 'phone' ? 'tel'
+    : field.type === 'time' ? 'time'
+    : field.type;
   return `      <div class="mfg-field-group">
         <label class="mfg-label" for="${fid}">${label}${star}</label>
-        <input type="${inputType}" id="${fid}" class="mfg-input" placeholder="${ph}"${req}>
+        <input type="${inputType}" id="${fid}" class="mfg-input" placeholder="${ph}" name="${fid}"${req}>
       </div>`;
 }
 
@@ -1307,5 +1364,6 @@ mobileTabs.forEach(tab => {
 });
 
 /* ── Init ── */
+buildFieldTypeModal();
 setMobileTab('builder');
 addStep();

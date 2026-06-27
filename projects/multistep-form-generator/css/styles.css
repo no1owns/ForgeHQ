@@ -349,7 +349,6 @@ body {
 .field-type-pill {
   font-size: 11px;
   font-weight: 700;
-  color: var(--text-muted);
   background: var(--card-bg);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
@@ -998,12 +997,11 @@ select.preview-input option {
 .field-type-icon {
   font-size: 15px;
   font-weight: 700;
-  color: var(--text-muted);
   line-height: 1;
 }
 
 .field-type-btn:hover .field-type-icon {
-  color: var(--accent);
+  filter: brightness(1.25) saturate(1.1);
 }
 
 /* ── Progress style picker ── */
