@@ -32,10 +32,18 @@ const state = {
   nextStepId: 1,
   nextFieldId: 1,
   previewStep: 0,
+  mobileBuilderStep: 0,
+  settings: {
+    progressStyle: 'dots',
+    formAction: '',
+    formMethod: 'POST',
+    successMessage: 'Thank you!',
+  },
 };
 
 /* ── DOM refs ── */
 const stepsList           = document.getElementById('stepsList');
+const stepTabsBar         = document.getElementById('stepTabsBar');
 const addStepBtn          = document.getElementById('addStepBtn');
 const nextLabelInput      = document.getElementById('nextLabel');
 const backLabelInput      = document.getElementById('backLabel');
@@ -53,6 +61,10 @@ const fieldEditorDone     = document.getElementById('fieldEditorDone');
 const fieldEditorBody     = document.getElementById('fieldEditorBody');
 const editorTypeIcon      = document.getElementById('editorTypeIcon');
 const editorTypeName      = document.getElementById('editorTypeName');
+const progressStyleGrid   = document.getElementById('progressStyleGrid');
+const formActionInput     = document.getElementById('formAction');
+const successMessageInput = document.getElementById('successMessage');
+const methodToggle        = document.getElementById('methodToggle');
 
 let pendingAddFieldStepId = null;
 let statusTimeout = null;
@@ -77,6 +89,7 @@ function typeDef(type) {
 function addStep() {
   const id = stepUid();
   state.steps.push({ id, name: `Step ${state.steps.length + 1}`, collapsed: false, fields: [] });
+  state.mobileBuilderStep = state.steps.length - 1;
   renderBuilder();
   renderPreview();
 }
@@ -86,6 +99,9 @@ function deleteStep(stepId) {
   if (state.previewStep >= state.steps.length) {
     state.previewStep = Math.max(0, state.steps.length - 1);
   }
+  if (state.mobileBuilderStep >= state.steps.length) {
+    state.mobileBuilderStep = Math.max(0, state.steps.length - 1);
+  }
   renderBuilder();
   renderPreview();
 }
@@ -94,12 +110,27 @@ function renameStep(stepId, name) {
   const step = state.steps.find(s => s.id === stepId);
   if (step) step.name = name;
   renderPreview();
+  const idx = state.steps.findIndex(s => s.id === stepId);
+  const tabs = stepTabsBar.querySelectorAll('.step-tab:not(.step-tab-add)');
+  if (tabs[idx]) tabs[idx].textContent = name || `Step ${idx + 1}`;
 }
 
 function toggleCollapse(stepId) {
   const step = state.steps.find(s => s.id === stepId);
   if (step) step.collapsed = !step.collapsed;
   renderBuilder();
+}
+
+/* ── Mobile builder step tabs ── */
+function setMobileBuilderStep(idx) {
+  if (idx < 0 || idx >= state.steps.length) return;
+  state.mobileBuilderStep = idx;
+  stepTabsBar.querySelectorAll('.step-tab:not(.step-tab-add)').forEach((tab, i) => {
+    tab.classList.toggle('active', i === idx);
+  });
+  stepsList.querySelectorAll('.step-card').forEach((card, i) => {
+    card.classList.toggle('mobile-step-active', i === idx);
+  });
 }
 
 /* ── Field operations ── */
@@ -214,7 +245,6 @@ function renderEditorBody(stepId, fieldId) {
   const def = typeDef(field.type);
   fieldEditorBody.innerHTML = '';
 
-  /* Label / content */
   fieldEditorBody.appendChild(makeEditorText(
     def.isContent ? 'Content' : 'Label',
     field.label,
@@ -222,7 +252,6 @@ function renderEditorBody(stepId, fieldId) {
     val => { field.label = val; renderPreview(); renderBuilder(); }
   ));
 
-  /* Placeholder */
   if (def.hasPlaceholder) {
     fieldEditorBody.appendChild(makeEditorText(
       'Placeholder',
@@ -232,7 +261,6 @@ function renderEditorBody(stepId, fieldId) {
     ));
   }
 
-  /* Required toggle — not for statements */
   if (!def.isContent) {
     fieldEditorBody.appendChild(makeEditorToggle(
       'Required',
@@ -241,7 +269,6 @@ function renderEditorBody(stepId, fieldId) {
     ));
   }
 
-  /* Options list */
   if (def.hasOptions) {
     const sec = document.createElement('div');
     sec.id = 'editorOptionsSection';
@@ -249,7 +276,6 @@ function renderEditorBody(stepId, fieldId) {
     renderEditorOptions(stepId, fieldId);
   }
 
-  /* Rating — star count */
   if (field.type === 'rating') {
     fieldEditorBody.appendChild(makeEditorSelect(
       'Stars',
@@ -260,7 +286,6 @@ function renderEditorBody(stepId, fieldId) {
     ));
   }
 
-  /* Scale config */
   if (field.type === 'scale') {
     fieldEditorBody.appendChild(makeEditorText('Min value',  field.options[0] || '1',  '1',
       val => { field.options[0] = val; renderPreview(); }));
@@ -457,6 +482,22 @@ function onFieldDrop(e, stepId, targetFieldId) {
 
 /* ── Builder render ── */
 function renderBuilder() {
+  /* Step tabs bar */
+  stepTabsBar.innerHTML = '';
+  state.steps.forEach((step, idx) => {
+    const tab = document.createElement('button');
+    tab.className = 'step-tab' + (idx === state.mobileBuilderStep ? ' active' : '');
+    tab.textContent = step.name || `Step ${idx + 1}`;
+    tab.addEventListener('click', () => setMobileBuilderStep(idx));
+    stepTabsBar.appendChild(tab);
+  });
+  const addTab = document.createElement('button');
+  addTab.className = 'step-tab step-tab-add';
+  addTab.textContent = '+ Step';
+  addTab.addEventListener('click', addStep);
+  stepTabsBar.appendChild(addTab);
+
+  /* Step cards */
   stepsList.innerHTML = '';
 
   if (state.steps.length === 0) {
@@ -467,9 +508,13 @@ function renderBuilder() {
     return;
   }
 
-  state.steps.forEach(step => {
+  state.steps.forEach((step, idx) => {
     const card = document.createElement('div');
-    card.className = 'step-card' + (step.collapsed ? ' collapsed' : '');
+    card.className = [
+      'step-card',
+      step.collapsed ? 'collapsed' : '',
+      idx === state.mobileBuilderStep ? 'mobile-step-active' : '',
+    ].filter(Boolean).join(' ');
     card.dataset.stepId = step.id;
     card.draggable = true;
 
@@ -607,6 +652,53 @@ function buildFieldCard(stepId, field) {
   return card;
 }
 
+/* ── Preview progress ── */
+function buildPreviewProgress(currentIdx, total) {
+  const style = state.settings.progressStyle;
+  if (style === 'none') return null;
+
+  const el = document.createElement('div');
+  el.id = 'previewIndicator';
+
+  if (style === 'numbers') {
+    el.className = 'preview-progress-numbers';
+    el.textContent = `Step ${currentIdx + 1} of ${total}`;
+  } else if (style === 'dots') {
+    el.className = 'preview-progress-dots';
+    for (let i = 0; i < total; i++) {
+      const dot = document.createElement('span');
+      dot.className = 'preview-dot' + (i === currentIdx ? ' active' : '');
+      el.appendChild(dot);
+    }
+  } else if (style === 'bar') {
+    el.className = 'preview-progress-bar-wrap';
+    const fill = document.createElement('div');
+    fill.className = 'preview-progress-bar-fill';
+    fill.style.width = `${((currentIdx + 1) / total) * 100}%`;
+    el.appendChild(fill);
+  }
+
+  return el;
+}
+
+function updatePreviewProgress(idx) {
+  const ind = previewContainer.querySelector('#previewIndicator');
+  if (!ind) return;
+  const total = state.steps.length;
+  const style = state.settings.progressStyle;
+
+  if (style === 'numbers') {
+    ind.textContent = `Step ${idx + 1} of ${total}`;
+  } else if (style === 'dots') {
+    ind.querySelectorAll('.preview-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === idx);
+    });
+  } else if (style === 'bar') {
+    const fill = ind.querySelector('.preview-progress-bar-fill');
+    if (fill) fill.style.width = `${((idx + 1) / total) * 100}%`;
+  }
+}
+
 /* ── Preview render ── */
 function renderPreview() {
   previewContainer.innerHTML = '';
@@ -626,11 +718,8 @@ function renderPreview() {
   const wrap = document.createElement('div');
   wrap.className = 'preview-form-wrap';
 
-  const indicator = document.createElement('div');
-  indicator.className = 'preview-step-indicator';
-  indicator.id = 'previewIndicator';
-  indicator.textContent = `Step ${state.previewStep + 1} of ${state.steps.length}`;
-  wrap.appendChild(indicator);
+  const progress = buildPreviewProgress(state.previewStep, state.steps.length);
+  if (progress) wrap.appendChild(progress);
 
   state.steps.forEach((step, idx) => {
     const stepDiv = document.createElement('div');
@@ -849,15 +938,14 @@ function goPreviewStep(idx) {
   previewContainer.querySelectorAll('.preview-step').forEach((el, i) => {
     el.classList.toggle('active', i === idx);
   });
-  const ind = previewContainer.querySelector('#previewIndicator');
-  if (ind) ind.textContent = `Step ${idx + 1} of ${state.steps.length}`;
+  updatePreviewProgress(idx);
 }
 
 function showPreviewSuccess(wrap) {
   wrap.innerHTML = `
     <div class="preview-success">
       <div class="preview-success-icon">✓</div>
-      <h2>Form submitted!</h2>
+      <h2>${escHtml(state.settings.successMessage || 'Thank you!')}</h2>
       <p>This is a preview — no data was sent anywhere.</p>
     </div>`;
   const btn = document.createElement('button');
@@ -873,6 +961,10 @@ function buildHtmlOutput() {
   const nextLabel   = escHtml(nextLabelInput.value || 'Next');
   const backLabel   = escHtml(backLabelInput.value || 'Back');
   const submitLabel = escHtml(submitLabelInput.value || 'Submit');
+  const successMsg  = escHtml(state.settings.successMessage || 'Thank you!');
+  const formAction  = state.settings.formAction ? ` action="${escHtml(state.settings.formAction)}"` : '';
+  const formMethod  = ` method="${state.settings.formMethod}"`;
+  const total       = state.steps.length;
 
   const stepsHtml = state.steps.map((step, idx) => {
     const fieldsHtml = step.fields.map(f => buildFieldHtml(f)).join('\n');
@@ -889,15 +981,12 @@ ${idx < state.steps.length - 1
   </div>`;
   }).join('\n');
 
-  const dots = state.steps.map((_, i) =>
-    `    <span class="mfg-dot${i === 0 ? ' active' : ''}"></span>`
-  ).join('\n');
+  const progressHtml = buildExportProgress(total);
+  const progressCss  = buildExportProgressCss();
 
   return `<style>
   .mfg-wrap{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 0}
-  .mfg-progress{display:flex;gap:6px;margin-bottom:28px}
-  .mfg-dot{width:8px;height:8px;border-radius:50%;background:#d0d0d0;transition:background .2s}
-  .mfg-dot.active{background:#333}
+  ${progressCss}
   .mfg-step{display:none}
   .mfg-step.active{display:block}
   .mfg-field-group{margin-bottom:20px}
@@ -937,21 +1026,21 @@ ${idx < state.steps.length - 1
 </style>
 
 <div class="mfg-wrap">
-  <div class="mfg-progress">
-${dots}
-  </div>
-  <form id="mfgForm" onsubmit="mfgSubmit(event)" novalidate>
+${progressHtml}
+  <form id="mfgForm"${formAction}${formMethod} onsubmit="mfgSubmit(event)" novalidate>
 ${stepsHtml}
   </form>
 </div>
 
 <script>
 (function(){
-  var cur=0;
+  var cur=0,total=${total};
   function show(n){
     document.querySelectorAll('.mfg-step').forEach(function(s,i){s.classList.toggle('active',i===n);});
     document.querySelectorAll('.mfg-dot').forEach(function(d,i){d.classList.toggle('active',i===n);});
-    cur=n; window.scrollTo(0,0);
+    var bf=document.querySelector('.mfg-bar-fill');if(bf)bf.style.width=(((n+1)/total)*100)+'%';
+    var cn=document.getElementById('mfgCur');if(cn)cn.textContent=n+1;
+    cur=n;window.scrollTo(0,0);
   }
   function validate(n){
     var step=document.querySelectorAll('.mfg-step')[n];
@@ -982,13 +1071,41 @@ ${stepsHtml}
     var h=document.querySelector('#'+gid+'-val');if(h)h.value=val;
   };
   window.mfgSubmit=function(e){
-    e.preventDefault();
-    if(!validate(cur))return;
-    document.getElementById('mfgForm').parentNode.innerHTML='<div class="mfg-success"><h2>Thank you!</h2><p>Your response has been received.</p></div>';
+    if(!validate(cur)){e.preventDefault();return;}
+    var hasAction=document.getElementById('mfgForm').getAttribute('action');
+    if(!hasAction){
+      e.preventDefault();
+      document.getElementById('mfgForm').parentNode.innerHTML='<div class="mfg-success"><h2>${successMsg}</h2><p>Your response has been received.</p></div>';
+    }
   };
   show(0);
 })();
 <\/script>`;
+}
+
+function buildExportProgress(total) {
+  const style = state.settings.progressStyle;
+  if (style === 'none') return '';
+  if (style === 'dots') {
+    const dots = Array.from({ length: total }, (_, i) =>
+      `    <span class="mfg-dot${i === 0 ? ' active' : ''}"></span>`).join('\n');
+    return `  <div class="mfg-progress">\n${dots}\n  </div>\n`;
+  }
+  if (style === 'bar') {
+    return `  <div class="mfg-progress-bar"><div class="mfg-bar-fill" style="width:${Math.round(100/total)}%"></div></div>\n`;
+  }
+  if (style === 'numbers') {
+    return `  <div class="mfg-progress-num">Step <span id="mfgCur">1</span> of ${total}</div>\n`;
+  }
+  return '';
+}
+
+function buildExportProgressCss() {
+  const style = state.settings.progressStyle;
+  if (style === 'dots')    return '.mfg-progress{display:flex;gap:6px;margin-bottom:28px}.mfg-dot{width:8px;height:8px;border-radius:50%;background:#d0d0d0;transition:background .2s}.mfg-dot.active{background:#333}';
+  if (style === 'bar')     return '.mfg-progress-bar{height:4px;background:#eee;border-radius:2px;margin-bottom:28px;overflow:hidden}.mfg-bar-fill{height:100%;background:#333;border-radius:2px;transition:width .3s}';
+  if (style === 'numbers') return '.mfg-progress-num{font-size:13px;color:#999;margin-bottom:20px;font-weight:500}';
+  return '';
 }
 
 function buildFieldHtml(field) {
@@ -1024,7 +1141,7 @@ ${opts}
 
   if (field.type === 'radio') {
     const name = `r${field.id}`;
-    const items = (field.options || []).map((o, i) =>
+    const items = (field.options || []).map(o =>
       `          <label class="mfg-choice-item"><input type="radio" name="${name}" value="${escHtml(o)}"${field.required ? ' required' : ''}> ${escHtml(o)}</label>`
     ).join('\n');
     return `      <div class="mfg-field-group">
@@ -1109,7 +1226,28 @@ function showStatus(msg) {
   statusTimeout = setTimeout(() => statusLabel.classList.remove('visible'), 2000);
 }
 
-/* ── Event listeners ── */
+/* ── Settings event listeners ── */
+progressStyleGrid.querySelectorAll('.progress-style-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.settings.progressStyle = btn.dataset.style;
+    progressStyleGrid.querySelectorAll('.progress-style-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderPreview();
+  });
+});
+
+methodToggle.querySelectorAll('.method-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.settings.formMethod = btn.dataset.method;
+    methodToggle.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+formActionInput.addEventListener('input', e => { state.settings.formAction = e.target.value; });
+successMessageInput.addEventListener('input', e => { state.settings.successMessage = e.target.value; });
+
+/* ── Core event listeners ── */
 addStepBtn.addEventListener('click', addStep);
 
 copyHtmlBtn.addEventListener('click', () => {
@@ -1133,11 +1271,19 @@ resetBtn.addEventListener('click', () => {
   if (confirm('Reset everything? This will clear all steps and fields.')) {
     state.steps = [];
     state.previewStep = 0;
+    state.mobileBuilderStep = 0;
     state.nextStepId = 1;
     state.nextFieldId = 1;
+    state.settings = { progressStyle: 'dots', formAction: '', formMethod: 'POST', successMessage: 'Thank you!' };
     nextLabelInput.value = 'Next';
     backLabelInput.value = 'Back';
     submitLabelInput.value = 'Submit';
+    formActionInput.value = '';
+    successMessageInput.value = 'Thank you!';
+    progressStyleGrid.querySelectorAll('.progress-style-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.style === 'dots'));
+    methodToggle.querySelectorAll('.method-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.method === 'POST'));
     addStep();
   }
 });

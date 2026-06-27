@@ -523,11 +523,22 @@ body {
   color: var(--accent);
 }
 
+/* ── Step tabs bar (mobile only) ── */
+.step-tabs-bar {
+  display: none;
+}
+
 /* ── Button labels section ── */
 .button-labels-section {
   padding: 16px 20px;
   border-top: 1px solid var(--border-subtle);
   flex-shrink: 0;
+  overflow-y: auto;
+  max-height: 340px;
+}
+
+.settings-section-gap {
+  margin-top: 18px;
 }
 
 .section-title {
@@ -995,6 +1006,135 @@ select.preview-input option {
   color: var(--accent);
 }
 
+/* ── Progress style picker ── */
+.progress-style-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.progress-style-btn {
+  background: var(--bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-input);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 4px;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.progress-style-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.progress-style-btn.active {
+  border-color: var(--accent);
+  background: rgba(232, 255, 71, 0.08);
+  color: var(--accent);
+}
+
+.progress-style-icon {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.03em;
+}
+
+/* ── Submission settings ── */
+.submission-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.submission-method-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.method-toggle {
+  display: flex;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-input);
+  overflow: hidden;
+}
+
+.method-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 14px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.method-btn.active {
+  background: var(--accent);
+  color: #0f0f0f;
+}
+
+.method-btn:not(.active):hover {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-primary);
+}
+
+/* ── Preview progress indicators ── */
+.preview-progress-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.preview-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border-hover);
+  transition: background 0.2s, transform 0.2s;
+  flex-shrink: 0;
+}
+
+.preview-dot.active {
+  background: var(--accent);
+  transform: scale(1.2);
+}
+
+.preview-progress-bar-wrap {
+  height: 3px;
+  background: var(--border-subtle);
+  border-radius: 2px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.preview-progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.preview-progress-numbers {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
 /* ── Add field button in step ── */
 .add-field-row {
   display: flex;
@@ -1215,6 +1355,80 @@ select.preview-input option {
     margin-bottom: 20px;
   }
 
+  /* ── Step tabs (mobile only) ── */
+  .step-tabs-bar {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-subtle);
+    flex-shrink: 0;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .step-tabs-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .step-tab {
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    color: var(--text-muted);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .step-tab.active {
+    background: var(--accent);
+    color: #0f0f0f;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .step-tab-add {
+    border-style: dashed;
+  }
+
+  /* Step cards on mobile: hide all, show only the active one */
+  .step-card {
+    display: none;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .step-card.mobile-step-active {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Always show the active step's body even if it's collapsed */
+  .step-card.mobile-step-active .step-card-body {
+    display: flex !important;
+    flex-direction: column;
+    padding: 12px 0 0;
+  }
+
+  /* On mobile, drag handle and collapse btn aren't useful */
+  .step-card.mobile-step-active .drag-handle,
+  .step-card.mobile-step-active .collapse-btn {
+    display: none;
+  }
+
+  /* Remove "Add Step" from header on mobile (tabs bar has "+ Step") */
+  #addStepBtn {
+    display: none;
+  }
+
   /* Field cards: always show edit button on touch devices */
   .field-edit-btn {
     opacity: 1;
@@ -1223,6 +1437,16 @@ select.preview-input option {
 
   .field-card:hover .delete-field-btn {
     color: var(--danger);
+  }
+
+  /* Settings: clear max-height so it scrolls naturally */
+  body[data-mobile-tab="settings"] .button-labels-section {
+    max-height: none;
+  }
+
+  /* Progress style: 2x2 on small screens */
+  .progress-style-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   /* Field type modal: narrower, bottom-friendly */

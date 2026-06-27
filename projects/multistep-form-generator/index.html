@@ -26,14 +26,55 @@
         <span class="panel-label">Builder</span>
         <button class="btn btn-accent" id="addStepBtn">+ Add Step</button>
       </div>
+      <div class="step-tabs-bar" id="stepTabsBar"></div>
       <div class="steps-list" id="stepsList"></div>
       <div class="button-labels-section">
         <div class="mobile-settings-header">Settings</div>
+
         <h3 class="section-title">Button Labels</h3>
         <div class="button-labels-grid">
           <label class="field-label-text">Next<input type="text" class="input" id="nextLabel" value="Next" /></label>
           <label class="field-label-text">Back<input type="text" class="input" id="backLabel" value="Back" /></label>
           <label class="field-label-text">Submit<input type="text" class="input" id="submitLabel" value="Submit" /></label>
+        </div>
+
+        <h3 class="section-title settings-section-gap">Progress Indicator</h3>
+        <div class="progress-style-grid" id="progressStyleGrid">
+          <button class="progress-style-btn active" data-style="dots">
+            <span class="progress-style-icon">• • •</span>
+            <span>Dots</span>
+          </button>
+          <button class="progress-style-btn" data-style="bar">
+            <span class="progress-style-icon">▬▬▬</span>
+            <span>Bar</span>
+          </button>
+          <button class="progress-style-btn" data-style="numbers">
+            <span class="progress-style-icon">1 / 3</span>
+            <span>Numbers</span>
+          </button>
+          <button class="progress-style-btn" data-style="none">
+            <span class="progress-style-icon">—</span>
+            <span>None</span>
+          </button>
+        </div>
+
+        <h3 class="section-title settings-section-gap">Submission</h3>
+        <div class="submission-settings">
+          <label class="field-label-text">
+            Action URL
+            <input type="url" class="input" id="formAction" placeholder="https://… (blank = demo mode)" />
+          </label>
+          <div class="submission-method-row">
+            <span class="field-label-text">Method</span>
+            <div class="method-toggle" id="methodToggle">
+              <button class="method-btn active" data-method="POST">POST</button>
+              <button class="method-btn" data-method="GET">GET</button>
+            </div>
+          </div>
+          <label class="field-label-text">
+            Success Message
+            <input type="text" class="input" id="successMessage" value="Thank you!" />
+          </label>
         </div>
       </div>
     </section>
