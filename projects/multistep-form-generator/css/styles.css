@@ -930,9 +930,11 @@ select.preview-input option {
     border-bottom-color: var(--accent);
   }
 
-  /* Panel visibility */
+  /* Panel visibility — position absolute so panels fill exact app-body height,
+     giving steps-list a real boundary to scroll within */
   .app-body {
     grid-template-columns: 1fr;
+    position: relative;
   }
 
   .panel {
@@ -941,6 +943,8 @@ select.preview-input option {
 
   .panel.mobile-active {
     display: flex;
+    position: absolute;
+    inset: 0;
   }
 
   .builder-panel {
