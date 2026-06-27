@@ -52,6 +52,7 @@
     <span class="status-label" id="statusLabel"></span>
   </footer>
 
+  <!-- Field type picker -->
   <div class="field-type-modal hidden" id="fieldTypeModal" role="dialog" aria-modal="true" aria-label="Choose field type">
     <div class="modal-backdrop" id="modalBackdrop"></div>
     <div class="modal-card">
@@ -59,36 +60,58 @@
         <span class="modal-title">Add a Field</span>
         <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
       </div>
-      <div class="field-type-grid">
-        <button class="field-type-btn" data-type="text">
-          <span class="field-type-icon">Aa</span>
-          <span>Text</span>
-        </button>
-        <button class="field-type-btn" data-type="email">
-          <span class="field-type-icon">@</span>
-          <span>Email</span>
-        </button>
-        <button class="field-type-btn" data-type="number">
-          <span class="field-type-icon">##</span>
-          <span>Number</span>
-        </button>
-        <button class="field-type-btn" data-type="textarea">
-          <span class="field-type-icon">¶</span>
-          <span>Textarea</span>
-        </button>
-        <button class="field-type-btn" data-type="select">
-          <span class="field-type-icon">▾</span>
-          <span>Select</span>
-        </button>
-        <button class="field-type-btn" data-type="radio">
-          <span class="field-type-icon">◉</span>
-          <span>Radio</span>
-        </button>
-        <button class="field-type-btn" data-type="checkbox">
-          <span class="field-type-icon">☑</span>
-          <span>Checkbox</span>
-        </button>
+      <div class="field-type-categories">
+        <div class="field-type-category">
+          <div class="ftc-label">Text</div>
+          <div class="field-type-grid">
+            <button class="field-type-btn" data-type="text"><span class="field-type-icon">Aa</span><span>Short Text</span></button>
+            <button class="field-type-btn" data-type="textarea"><span class="field-type-icon">¶</span><span>Long Text</span></button>
+            <button class="field-type-btn" data-type="email"><span class="field-type-icon">@</span><span>Email</span></button>
+            <button class="field-type-btn" data-type="phone"><span class="field-type-icon">☎</span><span>Phone</span></button>
+            <button class="field-type-btn" data-type="number"><span class="field-type-icon">#</span><span>Number</span></button>
+            <button class="field-type-btn" data-type="url"><span class="field-type-icon">⌘</span><span>URL</span></button>
+            <button class="field-type-btn" data-type="date"><span class="field-type-icon">▦</span><span>Date</span></button>
+            <button class="field-type-btn" data-type="file"><span class="field-type-icon">↑</span><span>File</span></button>
+          </div>
+        </div>
+        <div class="field-type-category">
+          <div class="ftc-label">Choice</div>
+          <div class="field-type-grid">
+            <button class="field-type-btn" data-type="select"><span class="field-type-icon">▾</span><span>Dropdown</span></button>
+            <button class="field-type-btn" data-type="radio"><span class="field-type-icon">◉</span><span>Multiple Choice</span></button>
+            <button class="field-type-btn" data-type="checkbox"><span class="field-type-icon">☑</span><span>Checkboxes</span></button>
+            <button class="field-type-btn" data-type="yesno"><span class="field-type-icon">Y/N</span><span>Yes / No</span></button>
+          </div>
+        </div>
+        <div class="field-type-category">
+          <div class="ftc-label">Scale</div>
+          <div class="field-type-grid">
+            <button class="field-type-btn" data-type="rating"><span class="field-type-icon">★</span><span>Rating</span></button>
+            <button class="field-type-btn" data-type="scale"><span class="field-type-icon">↔</span><span>Opinion Scale</span></button>
+          </div>
+        </div>
+        <div class="field-type-category">
+          <div class="ftc-label">Content</div>
+          <div class="field-type-grid">
+            <button class="field-type-btn" data-type="statement"><span class="field-type-icon">✦</span><span>Statement</span></button>
+          </div>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Field editor sheet / modal -->
+  <div class="field-editor hidden" id="fieldEditor" role="dialog" aria-modal="true">
+    <div class="field-editor-backdrop" id="fieldEditorBackdrop"></div>
+    <div class="field-editor-panel">
+      <div class="field-editor-header">
+        <div class="field-editor-type-info">
+          <span class="field-editor-type-icon" id="editorTypeIcon"></span>
+          <span class="field-editor-type-name" id="editorTypeName"></span>
+        </div>
+        <button class="btn btn-accent btn-sm" id="fieldEditorDone">Done</button>
+      </div>
+      <div class="field-editor-body" id="fieldEditorBody"></div>
     </div>
   </div>
 
