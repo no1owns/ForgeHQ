@@ -259,6 +259,127 @@ const TEMPLATES = [
       ]},
     ],
   },
+  {
+    id: 'appointment', name: 'Appointment Request', icon: '◷', color: '#2dd4bf',
+    desc: 'Let customers book appointments, consultations, or service calls',
+    steps: [
+      { name: 'Your Details', fields: [
+        { type: 'text',  label: 'Full Name',     required: true,  placeholder: 'Jane Smith' },
+        { type: 'email', label: 'Email Address', required: true,  placeholder: 'jane@example.com' },
+        { type: 'phone', label: 'Phone Number',  required: true,  placeholder: '+1 (555) 000-0000' },
+        { type: 'text',  label: 'Company (if applicable)', placeholder: 'Optional' },
+      ]},
+      { name: 'Appointment Details', fields: [
+        { type: 'select',   label: 'Service Type', required: true, placeholder: 'Choose a service…',
+          options: ['Consultation', 'Demo / Walkthrough', 'Support Session', 'Strategy Call', 'Other'] },
+        { type: 'date',     label: 'Preferred Date',           required: true },
+        { type: 'radio',    label: 'Preferred Time',           required: true,
+          options: ['Morning (9am – 12pm)', 'Afternoon (12pm – 5pm)', 'Evening (5pm – 7pm)', 'Flexible'] },
+        { type: 'radio',    label: 'Meeting Format',
+          options: ['In-person', 'Video Call', 'Phone Call'] },
+      ]},
+      { name: 'Anything Else?', fields: [
+        { type: 'textarea', label: 'Additional Notes or Questions', placeholder: 'What would you like to discuss or prepare for?' },
+        { type: 'radio',    label: 'How did you hear about us?',
+          options: ['Google Search', 'Social Media', 'Referral', 'Existing Customer', 'Other'] },
+      ]},
+    ],
+  },
+  {
+    id: 'creative-brief', name: 'Project / Creative Brief', icon: '◧', color: '#f472b6',
+    desc: 'Capture project scope, goals, and deliverables from a new client',
+    steps: [
+      { name: 'About You', fields: [
+        { type: 'text',    label: 'Your Name',       required: true,  placeholder: 'Jane Smith' },
+        { type: 'email',   label: 'Email Address',   required: true,  placeholder: 'jane@company.com' },
+        { type: 'text',    label: 'Company / Brand', required: true,  placeholder: 'Company name' },
+        { type: 'url',     label: 'Website',         placeholder: 'https://yoursite.com' },
+      ]},
+      { name: 'Project Overview', fields: [
+        { type: 'select',   label: 'Project Type', required: true, placeholder: 'Select a type…',
+          options: ['Brand Identity', 'Website Design', 'Marketing Campaign', 'Content Creation', 'Social Media', 'Video / Motion', 'Print / Collateral', 'Other'] },
+        { type: 'text',     label: 'Project Title / Working Name', placeholder: 'e.g. Spring Campaign 2025' },
+        { type: 'textarea', label: 'Project Description', required: true, placeholder: 'What are you trying to achieve? What problem does this project solve?' },
+        { type: 'radio',    label: 'Estimated Budget',
+          options: ['Under $2,000', '$2,000 – $10,000', '$10,000 – $30,000', '$30,000+', 'To be discussed'] },
+        { type: 'radio',    label: 'Desired Timeline',
+          options: ['Under 2 weeks', '2–4 weeks', '1–3 months', '3+ months', 'Flexible'] },
+      ]},
+      { name: 'Details & Deliverables', fields: [
+        { type: 'textarea', label: 'Who is your target audience?',    required: true, placeholder: 'Describe the people you are trying to reach…' },
+        { type: 'checkbox', label: 'Deliverables Needed',
+          options: ['Logo / Brand Assets', 'Website Pages', 'Social Media Graphics', 'Print Materials', 'Copy / Messaging', 'Video / Animation', 'Other'] },
+        { type: 'textarea', label: 'Examples or Inspiration', placeholder: 'Links or descriptions of work you like…' },
+        { type: 'textarea', label: 'Anything else we should know?',   placeholder: 'Constraints, must-haves, or questions…' },
+      ]},
+    ],
+  },
+  {
+    id: 'demo-request', name: 'Free Trial / Demo Request', icon: '▷', color: '#818cf8',
+    desc: 'Qualify leads and schedule product demos or trial activations',
+    steps: [
+      { name: 'Your Info', fields: [
+        { type: 'text',   label: 'Full Name',     required: true, placeholder: 'Jane Smith' },
+        { type: 'email',  label: 'Work Email',    required: true, placeholder: 'jane@company.com' },
+        { type: 'phone',  label: 'Phone Number',  placeholder: '+1 (555) 000-0000' },
+        { type: 'text',   label: 'Company Name',  required: true, placeholder: 'Your company name' },
+        { type: 'text',   label: 'Job Title',     placeholder: 'e.g. Marketing Manager' },
+      ]},
+      { name: 'Your Needs', fields: [
+        { type: 'radio',    label: 'Company Size', required: true,
+          options: ['1–10 employees', '11–50 employees', '51–200 employees', '201–1,000 employees', '1,000+ employees'] },
+        { type: 'select',   label: 'Industry', placeholder: 'Select your industry…',
+          options: ['Retail / E-commerce', 'Professional Services', 'Technology / SaaS', 'Healthcare', 'Finance', 'Education', 'Non-profit', 'Other'] },
+        { type: 'textarea', label: 'What are you hoping to achieve?', required: true, placeholder: 'Describe your main goal or challenge…' },
+        { type: 'text',     label: 'What solution are you using today?', placeholder: 'e.g. spreadsheets, a competitor tool, nothing yet' },
+      ]},
+      { name: 'Schedule', fields: [
+        { type: 'date',     label: 'Preferred Demo Date', required: true },
+        { type: 'radio',    label: 'Preferred Time (your timezone)', required: true,
+          options: ['9am – 11am', '11am – 1pm', '1pm – 3pm', '3pm – 5pm', 'Flexible'] },
+        { type: 'textarea', label: 'Any specific questions for the demo?', placeholder: 'Tell us what you most want to see…' },
+      ]},
+    ],
+  },
+  {
+    id: 'vendor-application', name: 'Vendor / Partner Application', icon: '◆', color: '#fb923c',
+    desc: 'Vet and onboard suppliers, resellers, and strategic partners',
+    steps: [
+      { name: 'Company Details', fields: [
+        { type: 'text',    label: 'Company Name',   required: true },
+        { type: 'url',     label: 'Website',        required: true, placeholder: 'https://yourcompany.com' },
+        { type: 'country', label: 'Country',        required: true },
+        { type: 'select',  label: 'Industry / Sector', required: true, placeholder: 'Select your sector…',
+          options: ['Technology', 'Manufacturing', 'Distribution / Logistics', 'Professional Services', 'Marketing / Agency', 'Retail', 'Other'] },
+        { type: 'radio',   label: 'Company Size',
+          options: ['Freelancer / Solo', '2–10 employees', '11–50 employees', '51–200 employees', '200+ employees'] },
+      ]},
+      { name: 'Partnership Type', fields: [
+        { type: 'checkbox', label: 'Type of Partnership', required: true,
+          options: ['Reseller / Referral', 'Technology Integration', 'Co-marketing', 'Supplier / Vendor', 'Strategic Alliance', 'Other'] },
+        { type: 'textarea', label: 'What do you offer?', required: true, placeholder: 'Describe your products, services, or expertise…' },
+        { type: 'textarea', label: 'Why do you want to partner with us?', placeholder: 'What makes this a good fit for both parties?' },
+        { type: 'radio',    label: 'How did you find us?',
+          options: ['Web Search', 'Referral', 'Industry Event', 'Social Media', 'Other'] },
+      ]},
+      { name: 'Contact & Proposal', fields: [
+        { type: 'text',     label: 'Primary Contact Name',  required: true },
+        { type: 'text',     label: 'Job Title',             required: true },
+        { type: 'email',    label: 'Email Address',         required: true },
+        { type: 'phone',    label: 'Phone Number' },
+        { type: 'textarea', label: 'Any other information?', placeholder: 'Certifications, case studies, or specific terms to discuss…' },
+      ]},
+    ],
+  },
+];
+
+/* ── Data destination options ── */
+const DESTINATIONS = [
+  { id: 'demo',      icon: '◎', name: 'Demo Mode',       desc: 'Preview only — no data is sent anywhere' },
+  { id: 'formspree', icon: '✉', name: 'Formspree',       desc: 'Free 50/mo · email notifications · GDPR' },
+  { id: 'web3forms', icon: '⊕', name: 'Web3Forms',       desc: 'Unlimited free · email alerts · no CAPTCHA' },
+  { id: 'netlify',   icon: '◈', name: 'Netlify Forms',   desc: 'Free 100/mo · built-in when hosted on Netlify' },
+  { id: 'custom',    icon: '↗', name: 'Custom Endpoint', desc: 'POST to any URL — full control over method' },
 ];
 
 /* ── State ── */
@@ -270,6 +391,10 @@ const state = {
   mobileBuilderStep: 0,
   settings: {
     progressStyle: 'dots',
+    destination: 'demo',
+    formspreeEndpoint: '',
+    web3formsKey: '',
+    netlifyFormName: 'contact',
     formAction: '',
     formMethod: 'POST',
     successMessage: 'Thank you!',
@@ -297,10 +422,10 @@ const fieldEditorBody     = document.getElementById('fieldEditorBody');
 const editorTypeIcon      = document.getElementById('editorTypeIcon');
 const editorTypeName      = document.getElementById('editorTypeName');
 const progressStyleGrid   = document.getElementById('progressStyleGrid');
-const formActionInput     = document.getElementById('formAction');
-const successMessageInput = document.getElementById('successMessage');
-const methodToggle        = document.getElementById('methodToggle');
-const templatesBtn        = document.getElementById('templatesBtn');
+const successMessageInput  = document.getElementById('successMessage');
+const destinationPicker    = document.getElementById('destinationPicker');
+const destinationConfig    = document.getElementById('destinationConfig');
+const templatesBtn         = document.getElementById('templatesBtn');
 const templatesModal      = document.getElementById('templatesModal');
 const templatesBackdrop   = document.getElementById('templatesBackdrop');
 const templatesClose      = document.getElementById('templatesClose');
@@ -342,6 +467,107 @@ function getFieldsBefore(targetFieldId) {
     }
   }
   return result;
+}
+
+/* ── Data Destination ── */
+function buildDestinationPicker() {
+  destinationPicker.innerHTML = '';
+  DESTINATIONS.forEach(dest => {
+    const btn = document.createElement('button');
+    btn.className = 'destination-btn' + (state.settings.destination === dest.id ? ' active' : '');
+    btn.dataset.dest = dest.id;
+    btn.innerHTML = `<span class="destination-btn-icon">${dest.icon}</span><span class="destination-btn-name">${escHtml(dest.name)}</span>`;
+    btn.title = dest.desc;
+    btn.addEventListener('click', () => setDestination(dest.id));
+    destinationPicker.appendChild(btn);
+  });
+}
+
+function setDestination(id) {
+  state.settings.destination = id;
+  destinationPicker.querySelectorAll('.destination-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.dest === id));
+  buildDestinationConfig();
+}
+
+function makeDestField(labelText, inputType, settingKey, placeholder, helpText) {
+  const wrap = document.createElement('div');
+  wrap.className = 'destination-field';
+  const lbl = document.createElement('label');
+  lbl.className = 'field-label-text';
+  lbl.textContent = labelText;
+  const inp = document.createElement('input');
+  inp.type = inputType;
+  inp.className = 'input';
+  inp.placeholder = placeholder;
+  inp.value = state.settings[settingKey] || '';
+  inp.addEventListener('input', e => { state.settings[settingKey] = e.target.value; });
+  lbl.appendChild(inp);
+  wrap.appendChild(lbl);
+  if (helpText) {
+    const p = document.createElement('p');
+    p.className = 'destination-help';
+    p.textContent = helpText;
+    wrap.appendChild(p);
+  }
+  return wrap;
+}
+
+function makeMethodToggle() {
+  const row = document.createElement('div');
+  row.className = 'submission-method-row';
+  const lbl = document.createElement('span');
+  lbl.className = 'field-label-text';
+  lbl.textContent = 'Method';
+  const toggle = document.createElement('div');
+  toggle.className = 'method-toggle';
+  ['POST', 'GET'].forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'method-btn' + (state.settings.formMethod === m ? ' active' : '');
+    btn.dataset.method = m;
+    btn.textContent = m;
+    btn.addEventListener('click', () => {
+      state.settings.formMethod = m;
+      toggle.querySelectorAll('.method-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.method === m));
+    });
+    toggle.appendChild(btn);
+  });
+  row.appendChild(lbl);
+  row.appendChild(toggle);
+  return row;
+}
+
+function buildDestinationConfig() {
+  destinationConfig.innerHTML = '';
+  const d = state.settings.destination;
+  if (d === 'demo') {
+    const p = document.createElement('p');
+    p.className = 'destination-help';
+    p.textContent = 'The exported form shows a success message locally — no backend needed. Great for testing or embedding on static pages.';
+    destinationConfig.appendChild(p);
+  } else if (d === 'formspree') {
+    destinationConfig.appendChild(makeDestField(
+      'Endpoint URL', 'url', 'formspreeEndpoint',
+      'https://formspree.io/f/xxxxxxxx',
+      'Create a free form at formspree.io and paste the endpoint URL here.'
+    ));
+  } else if (d === 'web3forms') {
+    destinationConfig.appendChild(makeDestField(
+      'Access Key', 'text', 'web3formsKey',
+      'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+      'Get your free access key at web3forms.com — unlimited submissions, no CAPTCHA.'
+    ));
+  } else if (d === 'netlify') {
+    destinationConfig.appendChild(makeDestField(
+      'Form Name', 'text', 'netlifyFormName',
+      'contact',
+      'Must match the name Netlify uses to identify your form. Deploy the exported HTML to Netlify first.'
+    ));
+  } else if (d === 'custom') {
+    destinationConfig.appendChild(makeDestField('Action URL', 'url', 'formAction', 'https://…', null));
+    destinationConfig.appendChild(makeMethodToggle());
+  }
 }
 
 /* ── Templates ── */
@@ -1515,8 +1741,6 @@ function buildHtmlOutput() {
   const backLabel   = escHtml(backLabelInput.value || 'Back');
   const submitLabel = escHtml(submitLabelInput.value || 'Submit');
   const successMsg  = escHtml(state.settings.successMessage || 'Thank you!');
-  const formAction  = state.settings.formAction ? ` action="${escHtml(state.settings.formAction)}"` : '';
-  const formMethod  = ` method="${state.settings.formMethod}"`;
   const total       = state.steps.length;
 
   const stepsHtml = state.steps.map((step, idx) => {
@@ -1580,8 +1804,8 @@ ${idx < state.steps.length - 1
 
 <div class="mfg-wrap">
 ${progressHtml}
-  <form id="mfgForm"${formAction}${formMethod} onsubmit="mfgSubmit(event)" novalidate>
-${stepsHtml}
+${buildExportFormTag()}
+${buildExportHiddenFields()}${stepsHtml}
   </form>
 </div>
 
@@ -1648,10 +1872,17 @@ ${stepsHtml}
   };
   window.mfgSubmit=function(e){
     if(!validate(cur)){e.preventDefault();return;}
-    var hasAction=document.getElementById('mfgForm').getAttribute('action');
-    if(!hasAction){
+    var form=document.getElementById('mfgForm');
+    var dest=form.getAttribute('data-mfg-dest')||'';
+    if(dest==='demo'){
       e.preventDefault();
-      document.getElementById('mfgForm').parentNode.innerHTML='<div class="mfg-success"><h2>${successMsg}</h2><p>Your response has been received.</p></div>';
+      form.parentNode.innerHTML='<div class="mfg-success"><h2>${successMsg}</h2><p>Your response has been received.</p></div>';
+    } else if(dest==='formspree'||dest==='web3forms'||dest==='netlify'){
+      e.preventDefault();
+      var data=new FormData(form);
+      fetch(form.action||window.location.href,{method:'POST',body:data,headers:{Accept:'application/json'}})
+        .then(function(){form.parentNode.innerHTML='<div class="mfg-success"><h2>${successMsg}</h2><p>Your response has been received.</p></div>';})
+        .catch(function(){form.parentNode.innerHTML='<div class="mfg-success"><h2>${successMsg}</h2><p>Your response has been received.</p></div>';});
     }
   };
   document.addEventListener('change',mfgEvalCond);
@@ -1659,6 +1890,38 @@ ${stepsHtml}
   show(0);
 })();
 <\/script>`;
+}
+
+function buildExportFormTag() {
+  const d = state.settings.destination;
+  if (d === 'formspree') {
+    return `  <form id="mfgForm" action="${escHtml(state.settings.formspreeEndpoint || '')}" method="POST" data-mfg-dest="formspree" onsubmit="mfgSubmit(event)" novalidate>`;
+  }
+  if (d === 'web3forms') {
+    return `  <form id="mfgForm" action="https://api.web3forms.com/submit" method="POST" data-mfg-dest="web3forms" onsubmit="mfgSubmit(event)" novalidate>`;
+  }
+  if (d === 'netlify') {
+    return `  <form id="mfgForm" name="${escHtml(state.settings.netlifyFormName || 'contact')}" method="POST" netlify data-mfg-dest="netlify" onsubmit="mfgSubmit(event)" novalidate>`;
+  }
+  if (d === 'custom') {
+    const action = state.settings.formAction ? ` action="${escHtml(state.settings.formAction)}"` : '';
+    return `  <form id="mfgForm"${action} method="${state.settings.formMethod}" onsubmit="mfgSubmit(event)" novalidate>`;
+  }
+  return `  <form id="mfgForm" data-mfg-dest="demo" onsubmit="mfgSubmit(event)" novalidate>`;
+}
+
+function buildExportHiddenFields() {
+  const d = state.settings.destination;
+  if (d === 'web3forms') {
+    return `    <input type="hidden" name="access_key" value="${escHtml(state.settings.web3formsKey || '')}">
+    <input type="hidden" name="redirect" value="false">
+`;
+  }
+  if (d === 'netlify') {
+    return `    <input type="hidden" name="form-name" value="${escHtml(state.settings.netlifyFormName || 'contact')}">
+`;
+  }
+  return '';
 }
 
 function buildExportProgress(total) {
@@ -1832,15 +2095,6 @@ progressStyleGrid.querySelectorAll('.progress-style-btn').forEach(btn => {
   });
 });
 
-methodToggle.querySelectorAll('.method-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    state.settings.formMethod = btn.dataset.method;
-    methodToggle.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  });
-});
-
-formActionInput.addEventListener('input', e => { state.settings.formAction = e.target.value; });
 successMessageInput.addEventListener('input', e => { state.settings.successMessage = e.target.value; });
 
 /* ── Core event listeners ── */
@@ -1870,16 +2124,24 @@ resetBtn.addEventListener('click', () => {
     state.mobileBuilderStep = 0;
     state.nextStepId = 1;
     state.nextFieldId = 1;
-    state.settings = { progressStyle: 'dots', formAction: '', formMethod: 'POST', successMessage: 'Thank you!' };
+    state.settings = {
+      progressStyle: 'dots',
+      destination: 'demo',
+      formspreeEndpoint: '',
+      web3formsKey: '',
+      netlifyFormName: 'contact',
+      formAction: '',
+      formMethod: 'POST',
+      successMessage: 'Thank you!',
+    };
     nextLabelInput.value = 'Next';
     backLabelInput.value = 'Back';
     submitLabelInput.value = 'Submit';
-    formActionInput.value = '';
     successMessageInput.value = 'Thank you!';
     progressStyleGrid.querySelectorAll('.progress-style-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.style === 'dots'));
-    methodToggle.querySelectorAll('.method-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset.method === 'POST'));
+    buildDestinationPicker();
+    buildDestinationConfig();
     addStep();
   }
 });
@@ -1905,6 +2167,8 @@ mobileTabs.forEach(tab => {
 /* ── Init ── */
 previewContainer.addEventListener('change', evaluatePreviewConditions);
 previewContainer.addEventListener('input', evaluatePreviewConditions);
+buildDestinationPicker();
+buildDestinationConfig();
 buildTemplatesModal();
 buildFieldTypeModal();
 setMobileTab('builder');

@@ -58,24 +58,14 @@
           </button>
         </div>
 
-        <h3 class="section-title settings-section-gap">Submission</h3>
-        <div class="submission-settings">
-          <label class="field-label-text">
-            Action URL
-            <input type="url" class="input" id="formAction" placeholder="https://… (blank = demo mode)" />
-          </label>
-          <div class="submission-method-row">
-            <span class="field-label-text">Method</span>
-            <div class="method-toggle" id="methodToggle">
-              <button class="method-btn active" data-method="POST">POST</button>
-              <button class="method-btn" data-method="GET">GET</button>
-            </div>
-          </div>
-          <label class="field-label-text">
-            Success Message
-            <input type="text" class="input" id="successMessage" value="Thank you!" />
-          </label>
-        </div>
+        <h3 class="section-title settings-section-gap">Data Destination</h3>
+        <div id="destinationPicker" class="destination-picker"></div>
+        <div id="destinationConfig" class="destination-config"></div>
+
+        <label class="field-label-text settings-section-gap">
+          Success Message
+          <input type="text" class="input" id="successMessage" value="Thank you!" />
+        </label>
       </div>
     </section>
 
