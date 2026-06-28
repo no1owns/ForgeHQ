@@ -63,6 +63,204 @@ const COUNTRY_LIST = [
   'Zambia','Zimbabwe',
 ];
 
+/* ── Form templates ── */
+const TEMPLATES = [
+  {
+    id: 'contact', name: 'Contact & Inquiry', icon: '✉', color: '#60a5fa',
+    desc: 'Capture leads and general inquiries from your website',
+    steps: [
+      { name: 'Your Details', fields: [
+        { type: 'text',     label: 'Full Name',            required: true,  placeholder: 'Jane Smith' },
+        { type: 'email',    label: 'Email Address',        required: true,  placeholder: 'jane@company.com' },
+        { type: 'phone',    label: 'Phone Number',         required: false, placeholder: '+1 (555) 000-0000' },
+        { type: 'text',     label: 'Company',              required: false, placeholder: 'Your company name' },
+      ]},
+      { name: 'Your Message', fields: [
+        { type: 'select',   label: 'Reason for Contact',   required: true,  placeholder: 'Choose a topic…',
+          options: ['General Inquiry', 'Sales', 'Support', 'Partnership', 'Other'] },
+        { type: 'textarea', label: 'Message',              required: true,  placeholder: 'How can we help you?' },
+        { type: 'radio',    label: 'Preferred Contact Method',
+          options: ['Email', 'Phone', 'Either'] },
+      ]},
+    ],
+  },
+  {
+    id: 'job-application', name: 'Job Application', icon: '◈', color: '#a78bfa',
+    desc: 'Collect structured applications for open positions',
+    steps: [
+      { name: 'Personal Info', fields: [
+        { type: 'text',     label: 'Full Name',              required: true,  placeholder: 'Jane Smith' },
+        { type: 'email',    label: 'Email Address',          required: true,  placeholder: 'jane@example.com' },
+        { type: 'phone',    label: 'Phone Number',           required: true,  placeholder: '+1 (555) 000-0000' },
+        { type: 'url',      label: 'LinkedIn Profile',       placeholder: 'linkedin.com/in/…' },
+      ]},
+      { name: 'Experience', fields: [
+        { type: 'text',     label: 'Position Applying For',  required: true },
+        { type: 'select',   label: 'Years of Experience',    required: true,
+          options: ['Less than 1 year', '1–3 years', '3–5 years', '5–10 years', '10+ years'] },
+        { type: 'text',     label: 'Current or Most Recent Employer', placeholder: 'Company name' },
+        { type: 'textarea', label: 'Why do you want this role?', required: true, placeholder: 'Tell us what excites you about this opportunity…' },
+      ]},
+      { name: 'Documents', fields: [
+        { type: 'file',     label: 'Upload Resume / CV',     required: true },
+        { type: 'url',      label: 'Portfolio or Work Samples URL', placeholder: 'https://…' },
+        { type: 'date',     label: 'Earliest Start Date',    required: true },
+        { type: 'radio',    label: 'How did you hear about us?',
+          options: ['LinkedIn', 'Job Board', 'Referral', 'Company Website', 'Other'] },
+      ]},
+    ],
+  },
+  {
+    id: 'feedback', name: 'Customer Feedback', icon: '★', color: '#fbbf24',
+    desc: 'Measure satisfaction and collect improvement insights',
+    steps: [
+      { name: 'Overall Experience', fields: [
+        { type: 'statement', label: 'We\'d love to hear about your experience. This only takes 2 minutes.' },
+        { type: 'rating',    label: 'Overall Satisfaction', required: true, options: ['5'] },
+        { type: 'radio',     label: 'How easy was it to work with us?',
+          options: ['Very easy', 'Easy', 'Neutral', 'Difficult', 'Very difficult'] },
+      ]},
+      { name: 'Your Thoughts', fields: [
+        { type: 'textarea', label: 'What went well?',         placeholder: 'Tell us what you liked…' },
+        { type: 'textarea', label: 'What could we improve?',  placeholder: 'Any suggestions are welcome…' },
+        { type: 'scale',    label: 'How likely are you to recommend us?', options: ['0', '10', 'Not likely', 'Very likely'] },
+      ]},
+      { name: 'About You', fields: [
+        { type: 'text',  label: 'Name (optional)',            placeholder: 'Jane Smith' },
+        { type: 'email', label: 'Email (optional)',           placeholder: 'jane@example.com' },
+        { type: 'radio', label: 'Customer type',
+          options: ['New customer', 'Returning customer', 'Long-term client'] },
+      ]},
+    ],
+  },
+  {
+    id: 'event-registration', name: 'Event Registration', icon: '▦', color: '#34d399',
+    desc: 'Register attendees for events, webinars, and workshops',
+    steps: [
+      { name: 'Your Details', fields: [
+        { type: 'text',  label: 'First Name',           required: true,  placeholder: 'Jane' },
+        { type: 'text',  label: 'Last Name',            required: true,  placeholder: 'Smith' },
+        { type: 'email', label: 'Email Address',        required: true,  placeholder: 'jane@example.com' },
+        { type: 'phone', label: 'Phone Number',         placeholder: '+1 (555) 000-0000' },
+        { type: 'text',  label: 'Company / Organisation', placeholder: 'Optional' },
+      ]},
+      { name: 'Attendance', fields: [
+        { type: 'radio',    label: 'Ticket Type',       required: true,
+          options: ['General Admission', 'VIP', 'Student / Non-profit'] },
+        { type: 'number',   label: 'Number of Guests (including yourself)', placeholder: '1' },
+        { type: 'checkbox', label: 'Dietary Requirements',
+          options: ['Vegetarian', 'Vegan', 'Gluten-free', 'Halal', 'Kosher', 'None'] },
+        { type: 'textarea', label: 'Accessibility or Special Requirements', placeholder: 'Any specific needs we should know about?' },
+      ]},
+      { name: 'Confirm', fields: [
+        { type: 'select',   label: 'How did you hear about this event?',
+          options: ['Email Newsletter', 'Social Media', 'Friend / Colleague', 'Website', 'Other'] },
+        { type: 'checkbox', label: 'Agreements', required: true,
+          options: ['I agree to the terms and conditions', 'I consent to receive event communications'] },
+      ]},
+    ],
+  },
+  {
+    id: 'quote-request', name: 'Service Quote Request', icon: '◎', color: '#f97316',
+    desc: 'Let prospects describe their project and request a proposal',
+    steps: [
+      { name: 'Contact Info', fields: [
+        { type: 'text',    label: 'Full Name',     required: true,  placeholder: 'Jane Smith' },
+        { type: 'email',   label: 'Email Address', required: true,  placeholder: 'jane@company.com' },
+        { type: 'phone',   label: 'Phone Number',  required: true,  placeholder: '+1 (555) 000-0000' },
+        { type: 'text',    label: 'Company Name',  required: true,  placeholder: 'Your business name' },
+        { type: 'country', label: 'Country',       required: true },
+      ]},
+      { name: 'Project Details', fields: [
+        { type: 'select',   label: 'Service Needed', required: true, placeholder: 'Select a service…',
+          options: ['Consulting', 'Design', 'Development', 'Marketing', 'Training', 'Other'] },
+        { type: 'textarea', label: 'Project Description', required: true, placeholder: 'Describe your project and goals…' },
+        { type: 'radio',    label: 'Estimated Budget', required: true,
+          options: ['Under $1,000', '$1,000 – $5,000', '$5,000 – $20,000', '$20,000+', 'To be discussed'] },
+        { type: 'radio',    label: 'Timeline', required: true,
+          options: ['ASAP', 'Within 1 month', '1–3 months', 'Flexible'] },
+      ]},
+      { name: 'Final Details', fields: [
+        { type: 'radio',    label: 'Preferred Contact Method', options: ['Email', 'Phone', 'Video Call'] },
+        { type: 'textarea', label: 'Anything else we should know?', placeholder: 'Additional context, constraints, or questions…' },
+      ]},
+    ],
+  },
+  {
+    id: 'onboarding', name: 'Client Onboarding', icon: '⊕', color: '#e879f9',
+    desc: 'Gather essential information from new clients at the start of an engagement',
+    steps: [
+      { name: 'Business Info', fields: [
+        { type: 'text',    label: 'Business Name',  required: true },
+        { type: 'url',     label: 'Website',        placeholder: 'https://yoursite.com' },
+        { type: 'select',  label: 'Industry',       required: true, placeholder: 'Select your industry…',
+          options: ['Retail / E-commerce', 'Professional Services', 'Healthcare', 'Technology', 'Hospitality', 'Construction', 'Education', 'Non-profit', 'Other'] },
+        { type: 'radio',   label: 'Company Size',
+          options: ['Just me', '2–10 employees', '11–50 employees', '51–200 employees', '200+ employees'] },
+      ]},
+      { name: 'Primary Contact', fields: [
+        { type: 'text',  label: 'Contact Name',  required: true },
+        { type: 'text',  label: 'Job Title',     required: true },
+        { type: 'email', label: 'Email Address', required: true },
+        { type: 'phone', label: 'Phone Number',  required: true },
+      ]},
+      { name: 'Goals & Challenges', fields: [
+        { type: 'textarea', label: 'What are your main goals for working together?', required: true, placeholder: 'e.g. increase revenue, launch a new product…' },
+        { type: 'textarea', label: 'What challenges are you currently facing?',     placeholder: 'e.g. limited time, lack of expertise…' },
+        { type: 'radio',    label: 'How would you rate your current solution?',
+          options: ['No current solution', 'Poor', 'Fair', 'Good'] },
+      ]},
+      { name: 'Preferences', fields: [
+        { type: 'checkbox', label: 'Preferred Communication Channels',
+          options: ['Email', 'Phone', 'Video Call', 'Chat / Messaging'] },
+        { type: 'select',   label: 'Preferred Meeting Frequency',
+          options: ['Weekly', 'Bi-weekly', 'Monthly', 'As needed'] },
+        { type: 'textarea', label: 'Any other preferences or notes?', placeholder: 'Time zones, availability, specific requests…' },
+      ]},
+    ],
+  },
+  {
+    id: 'support', name: 'Support Ticket', icon: '◬', color: '#94a3b8',
+    desc: 'Let customers report issues and track support requests',
+    steps: [
+      { name: 'Your Info', fields: [
+        { type: 'text',  label: 'Full Name',              required: true },
+        { type: 'email', label: 'Email Address',          required: true },
+        { type: 'text',  label: 'Account or Order Number', placeholder: 'e.g. ORD-12345' },
+      ]},
+      { name: 'Issue Details', fields: [
+        { type: 'select',   label: 'Issue Category', required: true, placeholder: 'Select a category…',
+          options: ['Billing', 'Technical Issue', 'Account Access', 'Product Question', 'Refund / Return', 'Complaint', 'Other'] },
+        { type: 'radio',    label: 'Priority', required: true,
+          options: ['Low — minor inconvenience', 'Medium — affecting my work', 'High — urgent, blocking me'] },
+        { type: 'textarea', label: 'Describe the Issue', required: true, placeholder: 'What happened and what did you expect instead?' },
+        { type: 'file',     label: 'Attach a Screenshot (optional)' },
+      ]},
+    ],
+  },
+  {
+    id: 'newsletter', name: 'Newsletter Sign-up', icon: '◉', color: '#38bdf8',
+    desc: 'Build your mailing list with qualified, consenting subscribers',
+    steps: [
+      { name: 'About You', fields: [
+        { type: 'text',   label: 'First Name',    required: true,  placeholder: 'Jane' },
+        { type: 'email',  label: 'Email Address', required: true,  placeholder: 'jane@example.com' },
+        { type: 'text',   label: 'Company',       placeholder: 'Optional' },
+        { type: 'select', label: 'Industry',      placeholder: 'Select your industry…',
+          options: ['Retail', 'Technology', 'Marketing', 'Finance', 'Healthcare', 'Education', 'Other'] },
+      ]},
+      { name: 'Your Interests', fields: [
+        { type: 'checkbox', label: 'Topics You Care About', required: true,
+          options: ['Industry News', 'Tips & How-tos', 'Product Updates', 'Case Studies', 'Events & Webinars', 'Special Offers'] },
+        { type: 'radio',    label: 'How often do you want to hear from us?',
+          options: ['Weekly', 'Bi-weekly', 'Monthly'] },
+        { type: 'checkbox', label: 'Consent', required: true,
+          options: ['I agree to receive marketing emails and can unsubscribe at any time'] },
+      ]},
+    ],
+  },
+];
+
 /* ── State ── */
 const state = {
   steps: [],
@@ -102,6 +300,11 @@ const progressStyleGrid   = document.getElementById('progressStyleGrid');
 const formActionInput     = document.getElementById('formAction');
 const successMessageInput = document.getElementById('successMessage');
 const methodToggle        = document.getElementById('methodToggle');
+const templatesBtn        = document.getElementById('templatesBtn');
+const templatesModal      = document.getElementById('templatesModal');
+const templatesBackdrop   = document.getElementById('templatesBackdrop');
+const templatesClose      = document.getElementById('templatesClose');
+const templatesGrid       = document.getElementById('templatesGrid');
 
 let pendingAddFieldStepId = null;
 let statusTimeout = null;
@@ -140,6 +343,66 @@ function getFieldsBefore(targetFieldId) {
   }
   return result;
 }
+
+/* ── Templates ── */
+function buildTemplatesModal() {
+  templatesGrid.innerHTML = '';
+  TEMPLATES.forEach(tpl => {
+    const card = document.createElement('button');
+    card.className = 'template-card';
+    card.innerHTML = `
+      <span class="template-icon" style="color:${tpl.color}">${tpl.icon}</span>
+      <span class="template-name">${escHtml(tpl.name)}</span>
+      <span class="template-desc">${escHtml(tpl.desc)}</span>`;
+    card.addEventListener('click', () => loadTemplate(tpl));
+    templatesGrid.appendChild(card);
+  });
+}
+
+function openTemplatesModal() {
+  templatesModal.classList.remove('hidden');
+}
+
+function closeTemplatesModal() {
+  templatesModal.classList.add('hidden');
+}
+
+function loadTemplate(tpl) {
+  const hasContent = state.steps.some(s => s.fields.length > 0) || state.steps.length > 1;
+  if (hasContent && !confirm(`Load "${tpl.name}"? This will replace your current form.`)) return;
+
+  state.steps = [];
+  state.previewStep = 0;
+  state.mobileBuilderStep = 0;
+  state.nextStepId = 1;
+  state.nextFieldId = 1;
+
+  tpl.steps.forEach(stepDef => {
+    const stepId = state.nextStepId++;
+    const fields = (stepDef.fields || []).map(fDef => {
+      const defaults = FIELD_DEFAULTS[fDef.type] || {};
+      return {
+        id: state.nextFieldId++,
+        type: fDef.type,
+        label: fDef.label || '',
+        placeholder: fDef.placeholder || '',
+        required: fDef.required || false,
+        options: fDef.options ? [...fDef.options] : (defaults.options ? [...defaults.options] : []),
+        condition: null,
+      };
+    });
+    state.steps.push({ id: stepId, name: stepDef.name, collapsed: false, fields });
+  });
+
+  closeTemplatesModal();
+  renderBuilder();
+  renderPreview();
+  showStatus(`"${tpl.name}" loaded`);
+}
+
+templatesBtn.addEventListener('click', openTemplatesModal);
+templatesBackdrop.addEventListener('click', closeTemplatesModal);
+templatesClose.addEventListener('click', closeTemplatesModal);
 
 /* ── Field type picker modal (dynamically built from FIELD_TYPES) ── */
 function buildFieldTypeModal() {
@@ -202,7 +465,7 @@ function closeModal() {
 modalBackdrop.addEventListener('click', closeModal);
 modalClose.addEventListener('click', closeModal);
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeFieldEditor(); }
+  if (e.key === 'Escape') { closeModal(); closeFieldEditor(); closeTemplatesModal(); }
 });
 
 /* ── Step operations ── */
@@ -917,10 +1180,28 @@ function updatePreviewProgress(idx) {
 function renderPreview() {
   previewContainer.innerHTML = '';
 
-  if (state.steps.length === 0) {
+  const totalFields = state.steps.reduce((n, s) => n + s.fields.length, 0);
+
+  if (state.steps.length === 0 || totalFields === 0) {
     const empty = document.createElement('div');
     empty.className = 'preview-empty-state';
-    empty.innerHTML = '<p>Add a step in the builder to see a preview here.</p>';
+    empty.innerHTML = '<p>Add fields in the builder to see your form here.</p>';
+    const tplHint = document.createElement('div');
+    tplHint.className = 'preview-template-hint';
+    const hintLabel = document.createElement('p');
+    hintLabel.textContent = 'Or jump-start with a template:';
+    tplHint.appendChild(hintLabel);
+    const grid = document.createElement('div');
+    grid.className = 'preview-template-chips';
+    TEMPLATES.forEach(tpl => {
+      const chip = document.createElement('button');
+      chip.className = 'preview-template-chip';
+      chip.innerHTML = `<span style="color:${tpl.color}">${tpl.icon}</span> ${escHtml(tpl.name)}`;
+      chip.addEventListener('click', () => loadTemplate(tpl));
+      grid.appendChild(chip);
+    });
+    tplHint.appendChild(grid);
+    empty.appendChild(tplHint);
     previewContainer.appendChild(empty);
     return;
   }
@@ -1624,6 +1905,7 @@ mobileTabs.forEach(tab => {
 /* ── Init ── */
 previewContainer.addEventListener('change', evaluatePreviewConditions);
 previewContainer.addEventListener('input', evaluatePreviewConditions);
+buildTemplatesModal();
 buildFieldTypeModal();
 setMobileTab('builder');
 addStep();

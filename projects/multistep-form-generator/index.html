@@ -89,9 +89,23 @@
 
   <footer class="bottom-bar">
     <button class="btn btn-accent" id="copyHtmlBtn">Copy HTML</button>
+    <button class="btn btn-ghost" id="templatesBtn">Templates</button>
     <button class="btn btn-ghost" id="resetBtn">Reset</button>
     <span class="status-label" id="statusLabel"></span>
   </footer>
+
+  <!-- Templates picker -->
+  <div class="templates-modal hidden" id="templatesModal" role="dialog" aria-modal="true" aria-label="Choose a template">
+    <div class="modal-backdrop" id="templatesBackdrop"></div>
+    <div class="templates-modal-card">
+      <div class="modal-header">
+        <span class="modal-title">Start from a Template</span>
+        <button class="modal-close" id="templatesClose" aria-label="Close">✕</button>
+      </div>
+      <p class="templates-subtitle">Pick a starting point and customise it to fit your needs.</p>
+      <div class="templates-grid" id="templatesGrid"></div>
+    </div>
+  </div>
 
   <!-- Field type picker -->
   <div class="field-type-modal hidden" id="fieldTypeModal" role="dialog" aria-modal="true" aria-label="Choose field type">
