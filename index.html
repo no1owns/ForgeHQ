@@ -1,354 +1,156 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Filmmakers Therapy Couch</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon"> <!-- Favicon -->
-    <style>
-        /* Cookie Consent Banner Styles */
-        .cookie-consent-banner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            display: none;
-        }
-
-        .cookie-consent-banner p {
-            margin: 0;
-            font-size: 1em;
-        }
-
-        .cookie-consent-banner a {
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
-
-        .cookie-consent-button {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin-left: 20px;
-            cursor: pointer;
-            font-size: 1em;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .cookie-consent-button:hover {
-            background-color: darken(var(--accent-color), 10%);
-        }
-
-        /* Popup Styles */
-        .call-to-action-popup {
-            display: none; /* Hidden by default */
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: var(--secondary-color);
-            padding: 40px;
-            text-align: center;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            z-index: 1001; /* Ensure it sits above other content */
-        }
-
-        .call-to-action-popup.active {
-            display: block; /* Display when active */
-        }
-
-        .close-popup {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            font-size: 20px;
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            text-align: center;
-            line-height: 30px;
-            transition: background-color 0.3s ease;
-        }
-
-        .close-popup:hover {
-            background-color: darken(var(--accent-color), 10%);
-        }
-
-        .donate-button {
-            display: inline-block;
-            background-color: var(--accent-color);
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
-
-        .donate-button:hover {
-            background-color: darken(var(--accent-color), 10%);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ForgeHQ — Brand System Design &amp; Strategy</title>
+  <meta name="description" content="ForgeHQ builds design infrastructure that supports the growth of your company. Brand systems, identity, and strategy for growth-stage companies.">
+  <link rel="canonical" href="https://theforgehq.com/">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ForgeHQ">
+  <meta property="og:url" content="https://theforgehq.com/">
+  <meta property="og:title" content="ForgeHQ — Brand System Design & Strategy">
+  <meta property="og:description" content="We build design infrastructure that supports the growth of your company.">
+  <meta property="og:image" content="https://theforgehq.com/images/social_share.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ForgeHQ — Brand System Design & Strategy">
+  <meta name="twitter:description" content="We build design infrastructure that supports the growth of your company.">
+  <meta name="twitter:image" content="https://theforgehq.com/images/social_share.jpg">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- Cookie Consent Banner -->
-<div id="cookieConsent" class="cookie-consent-banner">
-    <p>This website uses cookies to ensure you get the best experience. <a href="privacy-policy.html">Learn more</a></p>
-    <button id="acceptCookies" class="cookie-consent-button">Accept</button>
-</div>
-
-<header class="site-header">
-    <div class="container">
-        <nav id="site-nav" class="site-nav">
-            <button class="nav-toggle" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
-            <ul class="nav-list">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="events.html">Events</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <div class="header-social">
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                </div>
-                <a href="index.html" class="branding">
-                    <img src="images/logo.jpg" alt="Filmmakers Therapy Couch Logo">
-                </a>                
-            </ul>
-        </nav>
-    </div>
+<!-- Nav -->
+<header class="top-nav">
+  <a href="#" class="nav-brand">
+    <img src="images/forgehq-logo.png" alt="ForgeHQ mark">
+    <span class="nav-wordmark">ForgeHQ</span>
+  </a>
+  <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Start a project</a></li>
+  </ul>
 </header>
 
+<!-- Hero -->
+<section class="hero">
+  <p class="hero-eyebrow reveal">Brand System Design &amp; Strategy</p>
+  <h1 class="hero-headline reveal">We build <em>design infrastructure</em> that supports the growth of your company.</h1>
+  <p class="hero-sub reveal">
+    Brand Systems <span>&middot;</span> Strategy <span>&middot;</span> Identity
+  </p>
+  <a href="#contact" class="btn-primary reveal">Start a project</a>
+</section>
 
-<main class="site-content">
-    <!-- About Us Section -->
-    <section id="about-us" class="about-us">
-        <div class="container">
-            <h2 class="section-title">About Us</h2>
-            <div class="grid about-us__content">
-                <div class="about-us__text">
-                    <p>Welcome to Filmmakers Therapy Couch! We're a community of filmmakers, creatives, entrepreneurs, and industry leaders who are dedicated to supporting each other's mental and emotional well-being.</p>
-                    <p>We offer a variety of services, including podcast production in our safe space studio, networking events, and training in DEIB storytelling and impact producing strategies.</p>
-                    <p>Browse our site to learn more about what we have to offer and join our community today!</p>
-                </div>
-                <div class="about-us__images">
-                    <img src="images/P1030573.JPG" alt="About Us Image 1" class="about-us__image">
-                    <img src="images/Screen Shot 2019-08-12 at 3.59.32 PM.png" alt="About Us Image 2" class="about-us__image">
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Clients ticker -->
+<div class="clients-band">
+  <span class="clients-label">Trusted by</span>
+  <div class="clients-ticker" aria-label="Clients">
+    <span>Lyft</span><span class="dot"></span>
+    <span>Guardant Health</span><span class="dot"></span>
+    <span>Elation Health</span><span class="dot"></span>
+    <span>Gong</span><span class="dot"></span>
+    <span>Ambient</span><span class="dot"></span>
+    <span>Lyft</span><span class="dot"></span>
+    <span>Guardant Health</span><span class="dot"></span>
+    <span>Elation Health</span><span class="dot"></span>
+    <span>Gong</span><span class="dot"></span>
+    <span>Ambient</span><span class="dot"></span>
+  </div>
+</div>
 
-    <!-- Projects Section -->
-    <section id="our-work" class="projects">
-        <div class="container">
-            <h2 class="section-title">Our Projects</h2>
-            <div class="grid projects__grid">
-                <div class="module">
-                    <img src="images/filmmakers_therapy_couch.png" alt="Little Scholars Cinema Train" class="module__image">
-                    <h3 class="module__title">Little Scholars Cinema Train</h3>
-                    <p class="module__description">Artist Development</p>
-                </div>
-                <div class="module">
-                    <img src="images/A Tea Room in the Hood_artwork.jpg" alt="The Tea Room Experience" class="module__image">
-                    <h3 class="module__title">The Tea Room Experience</h3>
-                    <p class="module__description">Film as Therapy</p>
-                </div>
-                <div class="module">
-                    <img src="images/P1030513.JPG" alt="The Last Poets at The Apollo" class="module__image">
-                    <h3 class="module__title">The Last Poets at The Apollo</h3>
-                    <p class="module__description">Events, Video & Photography</p>
-                </div>
-                <div class="module">
-                    <img src="images/ethical.png" alt="Ethical" class="module__image">
-                    <h3 class="module__title">Ethical</h3>
-                    <p class="module__description">Innovative Strategy</p>
-                </div>
-                <div class="module">
-                    <img src="images/Screen Shot 2019-08-12 at 3.59.32 PM.png" alt="Filmmakers Therapy Couch Talk Series" class="module__image">
-                    <h3 class="module__title">Filmmakers Therapy Couch Talk Series</h3>
-                    <p class="module__description">Original Content</p>
-                </div>
-                <div class="module">
-                    <img src="images/Screen Shot 2019-07-12 at 11.36.22 PM.png" alt="Filmmakers Therapy Couch Podcast" class="module__image">
-                    <h3 class="module__title">Filmmakers Therapy Couch Podcast</h3>
-                    <p class="module__description">Community</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Services -->
+<section id="services" class="services">
+  <p class="section-label reveal">What we do</p>
+  <h2 class="section-heading reveal">Design that compounds<br>in value over time.</h2>
 
-    <!-- Passion Section -->
-    <section id="passion" class="passion">
-        <div class="container">
-            <h2 class="section-title">Here’s what we are passionate about</h2>
-            <div class="grid passion__content">
-                <div class="passion__text">
-                    <p>Filmmakers Therapy Couch - Talk Series</p>
-                    <p>Quick tips and advice, as the finest filmmakers sit in the spotlight on 'Filmmakers Therapy Couch'. Best enjoyed with a cup of tea.</p>
-                </div>
-                <div class="passion__images">
-                    <img src="images/passion_image1.jpg" alt="Passion Image 1" class="passion__image">
-                    <img src="images/passion_image2.jpg" alt="Passion Image 2" class="passion__image">
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="services-grid">
 
-    <!-- Talk Series Section -->
-    <section id="video-gallery" class="video-gallery">
-        <div class="container">
-            <h2 class="section-title">Filmmakers Therapy Couch - Talk Series</h2>
-            <p class="section-description">
-                Quick tips and advice, as the finest filmmakers sit in the spotlight on 'Filmmakers Therapy Couch'. Best enjoyed with a cup of tea.
-            </p>
-            <div class="grid video-grid">
-                <iframe src="https://www.youtube.com/embed/veSsRC-Uu64" allowfullscreen></iframe>
-                <iframe src="https://www.youtube.com/embed/SzzdWrS5JTA" allowfullscreen></iframe>
-                <iframe src="https://www.youtube.com/embed/9aO3kzQQ8Dk" allowfullscreen></iframe>
-                <iframe src="https://www.youtube.com/embed/gogrhhQDZ_Y" allowfullscreen></iframe>
-                <iframe src="https://www.youtube.com/embed/bl6KRVbKPbU" allowfullscreen></iframe>
-                <iframe src="https://www.youtube.com/embed/PLkUV6JPtRc" allowfullscreen></iframe>
-            </div>
-        </div>
-    </section>
-    
-    
-
-    <!-- Artist Development Section -->
-    <section id="artist-development" class="artist-development">
-        <div class="container">
-            <h2 class="section-title">Artist Development + Training</h2>
-            <div class="grid artist-development__content">
-                <p>Join us on ‘Filmmakers Therapy Couch’ for quick tips film therapy from women, black women and people of colour. This talk series features insightful conversations with filmmakers and storytellers using their creative force to transform the media landscape.</p>
-                <p>Coming 2024: Filmmakers Therapy Couch has teamed up with schools for its Little Scholars Cinema Train program.</p>
-            </div>
-            <a href="artist-development.html" class="watch-button">Watch</a>
-        </div>
-    </section>
-
-    <!-- Empowering Storytellers Section -->
-    <section id="empowering-storytellers" class="highlight-section">
-        <div class="container">
-            <h2 class="section-title">Empowering storytellers to think big and take action</h2>
-            <p>We excel in creative work that creates deep and lasting impressions through story. We work with organizations, brands and creatives who share our passion for storytelling which shifts the narrative.</p>
-        </div>
-    </section>
-
-    <!-- Events Section -->
-    <section id="events" class="events">
-        <div class="container">
-            <h2 class="section-title">Events</h2>
-            <div class="grid events__content">
-                <div>
-                    <h3>Why You Should Attend:</h3>
-                    <ul>
-                        <li>High-Level Networking: Engage with established and emerging filmmakers, artists, and storytellers, expanding your professional network and collaborative opportunities.</li>
-                        <li>Creative Empowerment: Dive into activations designed to ignite your creativity, challenge your thinking, and elevate your projects.</li>
-                        <li>A Safe Space for Expression: The Filmmaker's Therapy Couch sessions offer a supportive environment to share experiences, discuss challenges, and uncover solutions through empathy and understanding.</li>
-                        <li>Compassion as a Pathway: Explore how compassion not only fosters forgiveness but also serves as a foundational element in storytelling, enriching narratives and deepening connections with audiences.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Special Features:</h3>
-                    <ul>
-                        <li>Screening of Thought-Provoking Films: Enjoy a curated selection of films that explore themes of mental health, resilience, and the human condition.</li>
-                        <li>Filmmaker's Therapy Couch Sessions: Participate in guided discussions in a supportive environment, where filmmakers and creatives share experiences, challenges, and insights.</li>
-                        <li>Networking with Purpose: Connect with individuals who are not just talented and creative but compassionate and empathetic, driven by a desire to impact the world positively.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action Popup -->
-    <div id="cta-popup" class="call-to-action-popup">
-        <button class="close-popup">&times;</button>
-        <h3>Support Our Mission</h3>
-        <p>Your support helps us continue our mission to empower storytellers and support mental wellness in the filmmaking community.</p>
-        <a href="donate.html" class="donate-button">Donate Now</a>
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <h3 class="service-name">Brand System Design</h3>
+      <p class="service-desc">Visual identity, design tokens, component libraries, and style guides built to scale. A cohesive system your team can use without losing the thread.</p>
     </div>
 
-</main>
-
-<footer class="site-footer">
-    <div class="container footer-container">
-        <p>&copy; 2024 Filmmakers Therapy Couch. All rights reserved.</p>
-        <nav class="footer-nav">
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="terms.html">Terms of Use</a></nav>
+    <div class="service-card reveal">
+      <div class="service-num">02</div>
+      <h3 class="service-name">Brand Strategy</h3>
+      <p class="service-desc">Positioning, narrative architecture, and the strategic framework to align your brand with your business goals — and keep them aligned as you grow.</p>
     </div>
+
+    <div class="service-card reveal">
+      <div class="service-num">03</div>
+      <h3 class="service-name">Identity &amp; Expression</h3>
+      <p class="service-desc">Logos, marks, typography, and the full visual language that makes your company instantly recognizable across every surface and touchpoint.</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-num">04</div>
+      <h3 class="service-name">Design Infrastructure</h3>
+      <p class="service-desc">Governance models, documentation, and team enablement that turn your brand system into a living asset — not a one-time deliverable.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- About / Approach -->
+<section id="about" class="approach">
+  <div class="approach-rule reveal"></div>
+  <p class="approach-statement reveal">"Great design systems don't just look good — they remove friction from every decision your team makes."</p>
+  <p class="approach-body reveal">ForgeHQ partners with growth-stage companies to create design infrastructure that compounds in value over time. We work upstream — at the level of systems, strategy, and structure — so your brand stays coherent no matter how fast you scale.</p>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="contact">
+  <h2 class="contact-heading reveal">Let's build<br>something <em>lasting.</em></h2>
+  <p class="contact-sub reveal">Tell us about your company and where you're headed. We'll take it from there.</p>
+  <a href="mailto:hello@theforgehq.com" class="contact-email reveal">hello@theforgehq.com</a>
+</section>
+
+<!-- Footer -->
+<footer>
+  <a href="#" class="footer-brand">
+    <img src="images/forgehq-logo.png" alt="ForgeHQ">
+    <span class="footer-wordmark">ForgeHQ</span>
+  </a>
+  <p class="footer-copy">&copy; 2025 ForgeHQ. All rights reserved.</p>
 </footer>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const cookieConsent = document.getElementById('cookieConsent');
-        const acceptCookies = document.getElementById('acceptCookies');
-        const closeButton = document.querySelector('.close-popup');
-        const popup = document.getElementById("cta-popup");
-    
-        // Show the cookie consent banner if not already accepted
-        if (cookieConsent && !localStorage.getItem('cookiesAccepted')) {
-            cookieConsent.style.display = 'block';
-        }
-    
-        // Hide the cookie consent banner when 'Accept' is clicked
-        if (acceptCookies) {
-            acceptCookies.addEventListener('click', function() {
-                localStorage.setItem('cookiesAccepted', 'true');
-                cookieConsent.style.display = 'none';
-            });
-        }
-    
-        // Close the popup when the close button is clicked
-        if (closeButton) {
-            closeButton.addEventListener('click', function() {
-                popup.classList.remove('active');
-                sessionStorage.setItem("popupDisplayed", "true");
-            });
-        }
-    
-        // Show the popup when scrolling past the 'our-work' section
-        window.addEventListener('scroll', function() {
-            var section = document.getElementById("our-work");
-            var sectionPosition = section.getBoundingClientRect().top;
-            var screenPosition = window.innerHeight;
-    
-            if (sectionPosition < screenPosition && !sessionStorage.getItem("popupDisplayed")) {
-                popup.classList.add("active");
-            }
-        });
+(function () {
+  var toggle = document.querySelector('.nav-toggle');
+  var links = document.querySelector('.nav-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', function () {
+      var open = links.classList.toggle('open');
+      toggle.classList.toggle('is-active');
+      toggle.setAttribute('aria-expanded', String(open));
     });
-    </script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const navToggle = document.querySelector('.nav-toggle');
-            const navList = document.querySelector('.nav-list');
-        
-            navToggle.addEventListener('click', function() {
-                navList.classList.toggle('active');
-            });
-        });
-        </script>
+    links.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        links.classList.remove('open');
+        toggle.classList.remove('is-active');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(function (el) { obs.observe(el); });
+})();
+</script>
 
 </body>
 </html>
