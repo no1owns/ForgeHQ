@@ -12,10 +12,13 @@
       <h1 class="app-title">Multistep Form Generator</h1>
       <p class="app-subtitle">Build, preview, and export clean multistep forms — no code required.</p>
     </div>
-    <div class="header-right">
-      <a href="https://theforgehq.com" target="_blank" rel="noopener" class="forge-credit">Forge HQ</a>
-    </div>
   </header>
+
+  <div class="mobile-tabs" id="mobileTabs">
+    <button class="mobile-tab active" data-target="builder">Builder</button>
+    <button class="mobile-tab" data-target="preview">Preview</button>
+    <button class="mobile-tab" data-target="settings">Settings</button>
+  </div>
 
   <main class="app-body">
     <section class="panel builder-panel" id="builderPanel">
@@ -23,13 +26,55 @@
         <span class="panel-label">Builder</span>
         <button class="btn btn-accent" id="addStepBtn">+ Add Step</button>
       </div>
+      <div class="step-tabs-bar" id="stepTabsBar"></div>
       <div class="steps-list" id="stepsList"></div>
       <div class="button-labels-section">
+        <div class="mobile-settings-header">Settings</div>
+
         <h3 class="section-title">Button Labels</h3>
         <div class="button-labels-grid">
           <label class="field-label-text">Next<input type="text" class="input" id="nextLabel" value="Next" /></label>
           <label class="field-label-text">Back<input type="text" class="input" id="backLabel" value="Back" /></label>
           <label class="field-label-text">Submit<input type="text" class="input" id="submitLabel" value="Submit" /></label>
+        </div>
+
+        <h3 class="section-title settings-section-gap">Progress Indicator</h3>
+        <div class="progress-style-grid" id="progressStyleGrid">
+          <button class="progress-style-btn active" data-style="dots">
+            <span class="progress-style-icon">• • •</span>
+            <span>Dots</span>
+          </button>
+          <button class="progress-style-btn" data-style="bar">
+            <span class="progress-style-icon">▬▬▬</span>
+            <span>Bar</span>
+          </button>
+          <button class="progress-style-btn" data-style="numbers">
+            <span class="progress-style-icon">1 / 3</span>
+            <span>Numbers</span>
+          </button>
+          <button class="progress-style-btn" data-style="none">
+            <span class="progress-style-icon">—</span>
+            <span>None</span>
+          </button>
+        </div>
+
+        <h3 class="section-title settings-section-gap">Submission</h3>
+        <div class="submission-settings">
+          <label class="field-label-text">
+            Action URL
+            <input type="url" class="input" id="formAction" placeholder="https://… (blank = demo mode)" />
+          </label>
+          <div class="submission-method-row">
+            <span class="field-label-text">Method</span>
+            <div class="method-toggle" id="methodToggle">
+              <button class="method-btn active" data-method="POST">POST</button>
+              <button class="method-btn" data-method="GET">GET</button>
+            </div>
+          </div>
+          <label class="field-label-text">
+            Success Message
+            <input type="text" class="input" id="successMessage" value="Thank you!" />
+          </label>
         </div>
       </div>
     </section>
@@ -44,10 +89,25 @@
 
   <footer class="bottom-bar">
     <button class="btn btn-accent" id="copyHtmlBtn">Copy HTML</button>
+    <button class="btn btn-ghost" id="templatesBtn">Templates</button>
     <button class="btn btn-ghost" id="resetBtn">Reset</button>
     <span class="status-label" id="statusLabel"></span>
   </footer>
 
+  <!-- Templates picker -->
+  <div class="templates-modal hidden" id="templatesModal" role="dialog" aria-modal="true" aria-label="Choose a template">
+    <div class="modal-backdrop" id="templatesBackdrop"></div>
+    <div class="templates-modal-card">
+      <div class="modal-header">
+        <span class="modal-title">Start from a Template</span>
+        <button class="modal-close" id="templatesClose" aria-label="Close">✕</button>
+      </div>
+      <p class="templates-subtitle">Pick a starting point and customise it to fit your needs.</p>
+      <div class="templates-grid" id="templatesGrid"></div>
+    </div>
+  </div>
+
+  <!-- Field type picker -->
   <div class="field-type-modal hidden" id="fieldTypeModal" role="dialog" aria-modal="true" aria-label="Choose field type">
     <div class="modal-backdrop" id="modalBackdrop"></div>
     <div class="modal-card">
@@ -55,36 +115,22 @@
         <span class="modal-title">Add a Field</span>
         <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
       </div>
-      <div class="field-type-grid">
-        <button class="field-type-btn" data-type="text">
-          <span class="field-type-icon">Aa</span>
-          <span>Text</span>
-        </button>
-        <button class="field-type-btn" data-type="email">
-          <span class="field-type-icon">@</span>
-          <span>Email</span>
-        </button>
-        <button class="field-type-btn" data-type="number">
-          <span class="field-type-icon">##</span>
-          <span>Number</span>
-        </button>
-        <button class="field-type-btn" data-type="textarea">
-          <span class="field-type-icon">¶</span>
-          <span>Textarea</span>
-        </button>
-        <button class="field-type-btn" data-type="select">
-          <span class="field-type-icon">▾</span>
-          <span>Select</span>
-        </button>
-        <button class="field-type-btn" data-type="radio">
-          <span class="field-type-icon">◉</span>
-          <span>Radio</span>
-        </button>
-        <button class="field-type-btn" data-type="checkbox">
-          <span class="field-type-icon">☑</span>
-          <span>Checkbox</span>
-        </button>
+      <div class="field-type-categories" id="fieldTypeCategories"></div>
+    </div>
+  </div>
+
+  <!-- Field editor sheet / modal -->
+  <div class="field-editor hidden" id="fieldEditor" role="dialog" aria-modal="true">
+    <div class="field-editor-backdrop" id="fieldEditorBackdrop"></div>
+    <div class="field-editor-panel">
+      <div class="field-editor-header">
+        <div class="field-editor-type-info">
+          <span class="field-editor-type-icon" id="editorTypeIcon"></span>
+          <span class="field-editor-type-name" id="editorTypeName"></span>
+        </div>
+        <button class="btn btn-accent btn-sm" id="fieldEditorDone">Done</button>
       </div>
+      <div class="field-editor-body" id="fieldEditorBody"></div>
     </div>
   </div>
 

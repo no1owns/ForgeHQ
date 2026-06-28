@@ -59,20 +59,6 @@ body {
   margin-top: 2px;
 }
 
-.forge-credit {
-  font-size: 12px;
-  color: var(--text-muted);
-  text-decoration: none;
-  border: 1px solid var(--border-subtle);
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
-  transition: color 0.15s, border-color 0.15s;
-}
-
-.forge-credit:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-}
 
 /* ── Main layout ── */
 .app-body {
@@ -310,7 +296,7 @@ body {
 .fields-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 10px;
   min-height: 4px;
 }
@@ -323,30 +309,29 @@ body {
   text-align: center;
 }
 
-/* ── Field row ── */
-.field-row {
+/* ── Field card (compact) ── */
+.field-card {
   background: var(--bg);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-input);
   padding: 8px 10px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 8px;
+  cursor: pointer;
   transition: border-color 0.15s;
 }
 
-.field-row.drag-over {
+.field-card:hover {
+  border-color: var(--border-hover);
+}
+
+.field-card.drag-over {
   border-color: var(--accent);
 }
 
-.field-row.dragging {
+.field-card.dragging {
   opacity: 0.4;
-}
-
-.field-row-top {
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 .field-drag-handle {
@@ -354,76 +339,87 @@ body {
   cursor: grab;
   font-size: 13px;
   flex-shrink: 0;
+  line-height: 1;
 }
 
 .field-drag-handle:active {
   cursor: grabbing;
 }
 
-.field-type-badge {
-  font-size: 10px;
+.field-type-pill {
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-muted);
   background: var(--card-bg);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: 2px 6px;
   flex-shrink: 0;
+  line-height: 1.5;
+  white-space: nowrap;
 }
 
-.field-label-input,
-.field-placeholder-input {
-  background: transparent;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
+.field-card-label {
+  flex: 1;
+  font-size: 13px;
   color: var(--text-primary);
-  font-family: var(--font);
-  font-size: 12px;
-  padding: 4px 8px;
-  outline: none;
-  transition: border-color 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   min-width: 0;
 }
 
-.field-label-input {
-  flex: 1.2;
+.field-card-req {
+  color: var(--danger);
 }
 
-.field-placeholder-input {
-  flex: 1;
-}
-
-.field-label-input:focus,
-.field-placeholder-input:focus {
-  border-color: var(--accent);
-}
-
-.field-label-input::placeholder,
-.field-placeholder-input::placeholder {
-  color: #555;
-}
-
-.required-toggle-wrap {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.field-edit-btn {
+  background: none;
+  border: none;
+  color: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s, background 0.15s;
   flex-shrink: 0;
 }
 
-.required-toggle-wrap label {
-  font-size: 11px;
+.field-card:hover .field-edit-btn {
   color: var(--text-muted);
-  cursor: pointer;
 }
 
+.field-edit-btn:hover {
+  color: var(--text-primary) !important;
+  background: rgba(255,255,255,0.06);
+}
+
+.delete-field-btn {
+  background: none;
+  border: none;
+  color: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 3px 5px;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.field-card:hover .delete-field-btn {
+  color: var(--danger);
+}
+
+.delete-field-btn:hover {
+  background: rgba(255, 85, 85, 0.1);
+}
+
+/* ── Toggle checkbox ── */
 .toggle-checkbox {
   appearance: none;
-  width: 28px;
-  height: 16px;
+  width: 32px;
+  height: 18px;
   background: var(--border-subtle);
-  border-radius: 8px;
+  border-radius: 9px;
   cursor: pointer;
   position: relative;
   transition: background 0.15s;
@@ -433,8 +429,8 @@ body {
 .toggle-checkbox::after {
   content: '';
   position: absolute;
-  top: 2px;
-  left: 2px;
+  top: 3px;
+  left: 3px;
   width: 12px;
   height: 12px;
   background: #666;
@@ -447,31 +443,11 @@ body {
 }
 
 .toggle-checkbox:checked::after {
-  transform: translateX(12px);
+  transform: translateX(14px);
   background: #0f0f0f;
 }
 
-.delete-field-btn {
-  background: none;
-  border: none;
-  color: transparent;
-  cursor: pointer;
-  font-size: 14px;
-  padding: 2px 5px;
-  border-radius: var(--radius-sm);
-  transition: color 0.15s;
-  flex-shrink: 0;
-}
-
-.field-row:hover .delete-field-btn {
-  color: var(--danger);
-}
-
-.delete-field-btn:hover {
-  background: rgba(255, 85, 85, 0.1);
-}
-
-/* ── Options editor ── */
+/* ── Options editor (in field editor) ── */
 .options-editor {
   border-top: 1px solid var(--border-subtle);
   padding-top: 8px;
@@ -546,11 +522,22 @@ body {
   color: var(--accent);
 }
 
+/* ── Step tabs bar (mobile only) ── */
+.step-tabs-bar {
+  display: none;
+}
+
 /* ── Button labels section ── */
 .button-labels-section {
   padding: 16px 20px;
   border-top: 1px solid var(--border-subtle);
   flex-shrink: 0;
+  overflow-y: auto;
+  max-height: 340px;
+}
+
+.settings-section-gap {
+  margin-top: 18px;
 }
 
 .section-title {
@@ -695,6 +682,109 @@ select.preview-input option {
   cursor: pointer;
 }
 
+/* ── Yes / No preview ── */
+.preview-yesno {
+  display: flex;
+  gap: 10px;
+}
+
+.preview-yesno-btn {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-input);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  text-align: center;
+}
+
+.preview-yesno-btn:hover {
+  border-color: var(--border-hover);
+  background: rgba(255,255,255,0.04);
+}
+
+.preview-yesno-btn.selected {
+  border-color: var(--accent);
+  background: rgba(232, 255, 71, 0.1);
+  color: var(--accent);
+}
+
+/* ── Rating preview ── */
+.preview-rating {
+  display: flex;
+  gap: 4px;
+}
+
+.preview-star {
+  font-size: 28px;
+  color: var(--border-hover);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+  transition: color 0.1s, transform 0.1s;
+}
+
+.preview-star:hover {
+  transform: scale(1.15);
+  color: #f5a623;
+}
+
+.preview-star.active {
+  color: #f5a623;
+}
+
+/* ── Opinion scale preview ── */
+.preview-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.preview-scale-slider {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+  height: 6px;
+}
+
+.preview-scale-numbers {
+  display: flex;
+  justify-content: space-between;
+}
+
+.preview-scale-numbers span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.preview-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+.preview-scale-labels span {
+  font-size: 12px;
+  color: #555;
+  font-style: italic;
+}
+
+/* ── Statement preview ── */
+.preview-statement {
+  padding: 4px 0 8px;
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* ── Preview nav ── */
 .preview-nav {
   display: flex;
   align-items: center;
@@ -794,7 +884,7 @@ select.preview-input option {
   opacity: 1;
 }
 
-/* ── Modal ── */
+/* ── Field type picker modal ── */
 .field-type-modal {
   position: fixed;
   inset: 0;
@@ -820,7 +910,10 @@ select.preview-input option {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-card);
   padding: 20px;
-  width: 340px;
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  max-height: 90vh;
+  overflow-y: auto;
   z-index: 1;
 }
 
@@ -851,10 +944,31 @@ select.preview-input option {
   color: var(--text-primary);
 }
 
+/* ── Field type categories ── */
+.field-type-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field-type-category {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ftc-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
 .field-type-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  gap: 6px;
 }
 
 .field-type-btn {
@@ -867,7 +981,7 @@ select.preview-input option {
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  padding: 12px 6px;
+  padding: 11px 6px;
   font-family: var(--font);
   font-size: 11px;
   font-weight: 500;
@@ -881,14 +995,142 @@ select.preview-input option {
 }
 
 .field-type-icon {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
-  color: var(--text-muted);
   line-height: 1;
 }
 
 .field-type-btn:hover .field-type-icon {
+  filter: brightness(1.25) saturate(1.1);
+}
+
+/* ── Progress style picker ── */
+.progress-style-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.progress-style-btn {
+  background: var(--bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-input);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 4px;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.progress-style-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.progress-style-btn.active {
+  border-color: var(--accent);
+  background: rgba(232, 255, 71, 0.08);
   color: var(--accent);
+}
+
+.progress-style-icon {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.03em;
+}
+
+/* ── Submission settings ── */
+.submission-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.submission-method-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.method-toggle {
+  display: flex;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-input);
+  overflow: hidden;
+}
+
+.method-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 14px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.method-btn.active {
+  background: var(--accent);
+  color: #0f0f0f;
+}
+
+.method-btn:not(.active):hover {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-primary);
+}
+
+/* ── Preview progress indicators ── */
+.preview-progress-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.preview-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border-hover);
+  transition: background 0.2s, transform 0.2s;
+  flex-shrink: 0;
+}
+
+.preview-dot.active {
+  background: var(--accent);
+  transform: scale(1.2);
+}
+
+.preview-progress-bar-wrap {
+  height: 3px;
+  background: var(--border-subtle);
+  border-radius: 2px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.preview-progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.preview-progress-numbers {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  font-weight: 500;
 }
 
 /* ── Add field button in step ── */
@@ -897,20 +1139,504 @@ select.preview-input option {
   justify-content: flex-start;
 }
 
+/* ── Field editor sheet / modal ── */
+.field-editor {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.field-editor.hidden {
+  display: none;
+}
+
+.field-editor-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+}
+
+.field-editor-panel {
+  position: relative;
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  width: 400px;
+  max-width: calc(100vw - 40px);
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.field-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.field-editor-type-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.field-editor-type-icon {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  line-height: 1;
+}
+
+.field-editor-type-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.field-editor-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field-editor-body::-webkit-scrollbar { width: 4px; }
+.field-editor-body::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 2px; }
+
+/* ── Editor form groups ── */
+.editor-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.editor-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.editor-toggle-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+
+.editor-toggle-row .editor-group-label {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-primary);
+}
+
+.editor-option-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Conditional logic (field editor) ── */
+.condition-section {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.condition-empty-msg {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.condition-rule {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ── Field card condition badge ── */
+.field-condition-badge {
+  font-size: 11px;
+  color: var(--accent);
+  flex-shrink: 0;
+  line-height: 1;
+  opacity: 0.85;
+}
+
+/* ── Templates modal ── */
+.templates-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.templates-modal.hidden {
+  display: none;
+}
+
+.templates-modal-card {
+  position: relative;
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  width: 620px;
+  max-width: calc(100vw - 32px);
+  max-height: 88vh;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.templates-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: -4px 0 20px;
+}
+
+.templates-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.template-card {
+  background: var(--bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font);
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.template-card:hover {
+  border-color: var(--accent);
+  background: rgba(232, 255, 71, 0.04);
+}
+
+.template-icon {
+  font-size: 20px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.template-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.template-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Empty state template chips ── */
+.preview-template-hint {
+  margin-top: 28px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 24px;
+  width: 100%;
+}
+
+.preview-template-hint > p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.preview-template-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preview-template-chip {
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.preview-template-chip:hover {
+  border-color: var(--accent);
+  background: rgba(232, 255, 71, 0.06);
+}
+
 /* ── Scrollbar global ── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 2px; }
 
+/* ── Mobile tabs ── */
+.mobile-tabs {
+  display: none;
+}
+
+.mobile-settings-header {
+  display: none;
+}
+
 /* ── Responsive ── */
 @media (max-width: 700px) {
+  .app-header {
+    padding: 12px 16px;
+  }
+
+  /* Tab bar */
+  .mobile-tabs {
+    display: flex;
+    flex-shrink: 0;
+    background: var(--panel-bg);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .mobile-tab {
+    flex: 1;
+    padding: 11px 8px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .mobile-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* Panel visibility — position absolute so panels fill exact app-body height,
+     giving steps-list a real boundary to scroll within */
   .app-body {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
+    position: relative;
   }
+
+  .panel {
+    display: none;
+  }
+
+  .panel.mobile-active {
+    display: flex;
+    position: absolute;
+    inset: 0;
+  }
+
   .builder-panel {
     border-right: none;
+  }
+
+  /* Builder tab: show steps, hide button labels */
+  body[data-mobile-tab="builder"] .button-labels-section {
+    display: none;
+  }
+
+  /* Settings tab: show button labels, hide everything else in builder */
+  body[data-mobile-tab="settings"] .panel-header,
+  body[data-mobile-tab="settings"] .steps-list {
+    display: none;
+  }
+
+  body[data-mobile-tab="settings"] .button-labels-section {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    border-top: none;
+  }
+
+  body[data-mobile-tab="settings"] .button-labels-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .mobile-settings-header {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  /* ── Step tabs (mobile only) ── */
+  .step-tabs-bar {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 10px 16px;
     border-bottom: 1px solid var(--border-subtle);
-    max-height: 60vh;
+    flex-shrink: 0;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .step-tabs-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .step-tab {
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    color: var(--text-muted);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .step-tab.active {
+    background: var(--accent);
+    color: #0f0f0f;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .step-tab-add {
+    border-style: dashed;
+  }
+
+  /* Step cards on mobile: hide all, show only the active one */
+  .step-card {
+    display: none;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .step-card.mobile-step-active {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Always show the active step's body even if it's collapsed */
+  .step-card.mobile-step-active .step-card-body {
+    display: flex !important;
+    flex-direction: column;
+    padding: 12px 0 0;
+  }
+
+  /* On mobile, drag handle and collapse btn aren't useful */
+  .step-card.mobile-step-active .drag-handle,
+  .step-card.mobile-step-active .collapse-btn {
+    display: none;
+  }
+
+  /* Remove "Add Step" from header on mobile (tabs bar has "+ Step") */
+  #addStepBtn {
+    display: none;
+  }
+
+  /* Field cards: always show edit button on touch devices */
+  .field-edit-btn {
+    opacity: 1;
+    color: var(--text-muted);
+  }
+
+  .field-card:hover .delete-field-btn {
+    color: var(--danger);
+  }
+
+  /* Settings: clear max-height so it scrolls naturally */
+  body[data-mobile-tab="settings"] .button-labels-section {
+    max-height: none;
+  }
+
+  /* Progress style: 2x2 on small screens */
+  .progress-style-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Field type modal and templates modal: narrower, bottom-friendly */
+  .modal-card,
+  .templates-modal-card {
+    width: calc(100vw - 24px);
+    max-height: 85vh;
+  }
+
+  .templates-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field-type-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+
+  .field-type-btn {
+    padding: 10px 4px;
+    font-size: 10px;
+  }
+
+  /* Field editor: bottom sheet on mobile */
+  .field-editor {
+    align-items: flex-end;
+  }
+
+  .field-editor-panel {
+    width: 100%;
+    max-width: 100%;
+    max-height: 88vh;
+    border-radius: 16px 16px 0 0;
+    border-bottom: none;
+  }
+
+  /* Step cards: slightly more breathing room */
+  .step-card-body {
+    padding: 0 10px 14px;
+  }
+
+  .fields-list {
+    gap: 8px;
   }
 }
