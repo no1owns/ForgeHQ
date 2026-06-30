@@ -36,6 +36,27 @@ const FIELD_DEFAULTS = {
   scale:    { options: ['1', '10', '', ''] },
 };
 
+const LANGUAGES = [
+  { code: 'en', name: 'English',           dir: 'ltr', next: 'Next',        back: 'Back',      submit: 'Submit',     success: 'Thank you!',             required: 'This field is required.',           selectOption: 'Select an option',        selectCountry: 'Select a country'       },
+  { code: 'es', name: 'Español',           dir: 'ltr', next: 'Siguiente',   back: 'Atrás',     submit: 'Enviar',     success: '¡Gracias!',              required: 'Este campo es obligatorio.',        selectOption: 'Selecciona una opción',   selectCountry: 'Selecciona un país'     },
+  { code: 'fr', name: 'Français',          dir: 'ltr', next: 'Suivant',     back: 'Retour',    submit: 'Envoyer',    success: 'Merci !',                required: 'Ce champ est obligatoire.',         selectOption: 'Sélectionner une option', selectCountry: 'Sélectionner un pays'   },
+  { code: 'de', name: 'Deutsch',           dir: 'ltr', next: 'Weiter',      back: 'Zurück',    submit: 'Senden',     success: 'Vielen Dank!',           required: 'Dieses Feld ist erforderlich.',     selectOption: 'Option auswählen',        selectCountry: 'Land auswählen'         },
+  { code: 'it', name: 'Italiano',          dir: 'ltr', next: 'Avanti',      back: 'Indietro',  submit: 'Invia',      success: 'Grazie!',                required: 'Questo campo è obbligatorio.',      selectOption: "Seleziona un'opzione",    selectCountry: 'Seleziona un paese'     },
+  { code: 'pt', name: 'Português',         dir: 'ltr', next: 'Próximo',     back: 'Voltar',    submit: 'Enviar',     success: 'Obrigado!',              required: 'Este campo é obrigatório.',         selectOption: 'Selecione uma opção',     selectCountry: 'Selecione um país'      },
+  { code: 'nl', name: 'Nederlands',        dir: 'ltr', next: 'Volgende',    back: 'Terug',     submit: 'Verzenden',  success: 'Dank je!',               required: 'Dit veld is verplicht.',            selectOption: 'Selecteer een optie',     selectCountry: 'Selecteer een land'     },
+  { code: 'sv', name: 'Svenska',           dir: 'ltr', next: 'Nästa',       back: 'Tillbaka',  submit: 'Skicka',     success: 'Tack!',                  required: 'Det här fältet är obligatoriskt.',  selectOption: 'Välj ett alternativ',     selectCountry: 'Välj land'              },
+  { code: 'pl', name: 'Polski',            dir: 'ltr', next: 'Dalej',       back: 'Wstecz',    submit: 'Wyślij',     success: 'Dziękujemy!',            required: 'To pole jest wymagane.',            selectOption: 'Wybierz opcję',           selectCountry: 'Wybierz kraj'           },
+  { code: 'ru', name: 'Русский',           dir: 'ltr', next: 'Далее',       back: 'Назад',     submit: 'Отправить',  success: 'Спасибо!',               required: 'Это поле обязательно.',            selectOption: 'Выберите вариант',        selectCountry: 'Выберите страну'        },
+  { code: 'tr', name: 'Türkçe',           dir: 'ltr', next: 'İleri',       back: 'Geri',      submit: 'Gönder',     success: 'Teşekkürler!',           required: 'Bu alan gereklidir.',               selectOption: 'Bir seçenek seçin',       selectCountry: 'Ülke seçin'            },
+  { code: 'id', name: 'Bahasa Indonesia',  dir: 'ltr', next: 'Berikutnya',  back: 'Kembali',   submit: 'Kirim',      success: 'Terima kasih!',          required: 'Kolom ini wajib diisi.',            selectOption: 'Pilih opsi',              selectCountry: 'Pilih negara'           },
+  { code: 'hi', name: 'हिन्दी',          dir: 'ltr', next: 'अगला',        back: 'पिछला',     submit: 'सबमिट करें', success: 'धन्यवाद!',               required: 'यह फ़ील्ड आवश्यक है।',           selectOption: 'एक विकल्प चुनें',        selectCountry: 'देश चुनें'              },
+  { code: 'ja', name: '日本語',            dir: 'ltr', next: '次へ',         back: '戻る',       submit: '送信',       success: 'ありがとうございます！',   required: 'このフィールドは必須です。',       selectOption: 'オプションを選択',        selectCountry: '国を選択'               },
+  { code: 'zh', name: '中文（简体）',       dir: 'ltr', next: '下一步',       back: '上一步',     submit: '提交',       success: '谢谢！',                  required: '此字段为必填项。',                 selectOption: '请选择选项',               selectCountry: '请选择国家'              },
+  { code: 'ko', name: '한국어',            dir: 'ltr', next: '다음',         back: '이전',       submit: '제출',       success: '감사합니다!',             required: '이 필드는 필수입니다.',            selectOption: '옵션 선택',               selectCountry: '국가 선택'              },
+  { code: 'ar', name: 'العربية',          dir: 'rtl', next: 'التالي',      back: 'السابق',    submit: 'إرسال',      success: 'شكراً!',                 required: 'هذا الحقل مطلوب.',                 selectOption: 'اختر خياراً',            selectCountry: 'اختر دولة'             },
+  { code: 'he', name: 'עברית',           dir: 'rtl', next: 'הבא',         back: 'חזרה',      submit: 'שלח',        success: 'תודה!',                  required: 'שדה זה הוא חובה.',                 selectOption: 'בחר אפשרות',             selectCountry: 'בחר מדינה'             },
+];
+
 const COUNTRY_LIST = [
   'Afghanistan','Albania','Algeria','Andorra','Angola','Antigua and Barbuda','Argentina','Armenia','Australia','Austria','Azerbaijan',
   'Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bhutan','Bolivia','Bosnia and Herzegovina','Botswana','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi',
@@ -391,6 +412,7 @@ const state = {
   mobileBuilderStep: 0,
   settings: {
     progressStyle: 'dots',
+    language: 'en',
     destination: 'demo',
     formspreeEndpoint: '',
     web3formsKey: '',
@@ -422,6 +444,7 @@ const fieldEditorBody     = document.getElementById('fieldEditorBody');
 const editorTypeIcon      = document.getElementById('editorTypeIcon');
 const editorTypeName      = document.getElementById('editorTypeName');
 const progressStyleGrid   = document.getElementById('progressStyleGrid');
+const formLanguageSelect   = document.getElementById('formLanguage');
 const successMessageInput  = document.getElementById('successMessage');
 const destinationPicker    = document.getElementById('destinationPicker');
 const destinationConfig    = document.getElementById('destinationConfig');
@@ -448,6 +471,10 @@ function escHtml(s) {
 }
 function typeDef(type) {
   return FIELD_TYPES[type] || { label: type, icon: '?', color: '#888', hasPlaceholder: true };
+}
+
+function getLang() {
+  return LANGUAGES.find(l => l.code === state.settings.language) || LANGUAGES[0];
 }
 
 function findFieldById(fieldId) {
@@ -1741,6 +1768,9 @@ function buildHtmlOutput() {
   const backLabel   = escHtml(backLabelInput.value || 'Back');
   const submitLabel = escHtml(submitLabelInput.value || 'Submit');
   const successMsg  = escHtml(state.settings.successMessage || 'Thank you!');
+  const lang        = getLang();
+  const requiredMsg = escHtml(lang.required);
+  const dirCss      = lang.dir === 'rtl' ? 'direction:rtl;text-align:right;' : '';
   const total       = state.steps.length;
 
   const stepsHtml = state.steps.map((step, idx) => {
@@ -1762,7 +1792,7 @@ ${idx < state.steps.length - 1
   const progressCss  = buildExportProgressCss();
 
   return `<style>
-  .mfg-wrap{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 0}
+  .mfg-wrap{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 0;${dirCss}}
   ${progressCss}
   .mfg-step{display:none}
   .mfg-step.active{display:block}
@@ -1802,7 +1832,7 @@ ${idx < state.steps.length - 1
   .mfg-success p{color:#666;font-size:15px}
 </style>
 
-<div class="mfg-wrap">
+<div class="mfg-wrap" lang="${lang.code}"${lang.dir === 'rtl' ? ' dir="rtl"' : ''}>
 ${progressHtml}
 ${buildExportFormTag()}
 ${buildExportHiddenFields()}${stepsHtml}
@@ -1851,7 +1881,7 @@ ${buildExportHiddenFields()}${stepsHtml}
       if(!el.value.trim()){
         el.classList.add('mfg-err');
         var m=document.createElement('div');
-        m.className='mfg-err-msg';m.textContent='This field is required.';
+        m.className='mfg-err-msg';m.textContent='${requiredMsg}';
         el.parentNode.insertBefore(m,el.nextSibling);ok=false;
       }
     });
@@ -1978,7 +2008,7 @@ function buildFieldHtml(field) {
     return `      <div class="mfg-field-group"${condAttr}${condStyle}>
         <label class="mfg-label" for="${fid}">${label}${star}</label>
         <select id="${fid}" class="mfg-input"${req}>
-          <option value="" disabled selected>${ph || 'Select an option'}</option>
+          <option value="" disabled selected>${ph || getLang().selectOption}</option>
 ${opts}
         </select>
       </div>`;
@@ -2062,7 +2092,7 @@ ${stars}
     return `      <div class="mfg-field-group"${condAttr}${condStyle}>
         <label class="mfg-label" for="${fid}">${label}${star}</label>
         <select id="${fid}" class="mfg-input"${req}>
-          <option value="" disabled selected>${ph || 'Select a country'}</option>
+          <option value="" disabled selected>${ph || getLang().selectCountry}</option>
 ${opts}
         </select>
       </div>`;
@@ -2097,6 +2127,31 @@ progressStyleGrid.querySelectorAll('.progress-style-btn').forEach(btn => {
 
 successMessageInput.addEventListener('input', e => { state.settings.successMessage = e.target.value; });
 
+function buildLanguageSelect() {
+  formLanguageSelect.innerHTML = '';
+  LANGUAGES.forEach(lang => {
+    const opt = document.createElement('option');
+    opt.value = lang.code;
+    opt.textContent = lang.name;
+    if (lang.code === state.settings.language) opt.selected = true;
+    formLanguageSelect.appendChild(opt);
+  });
+}
+
+function applyLanguage(code) {
+  const lang = LANGUAGES.find(l => l.code === code) || LANGUAGES[0];
+  state.settings.language = lang.code;
+  nextLabelInput.value    = lang.next;
+  backLabelInput.value    = lang.back;
+  submitLabelInput.value  = lang.submit;
+  successMessageInput.value         = lang.success;
+  state.settings.successMessage     = lang.success;
+  previewContainer.dir = lang.dir;
+  renderPreview();
+}
+
+formLanguageSelect.addEventListener('change', e => applyLanguage(e.target.value));
+
 /* ── Core event listeners ── */
 addStepBtn.addEventListener('click', addStep);
 
@@ -2126,6 +2181,7 @@ resetBtn.addEventListener('click', () => {
     state.nextFieldId = 1;
     state.settings = {
       progressStyle: 'dots',
+      language: 'en',
       destination: 'demo',
       formspreeEndpoint: '',
       web3formsKey: '',
@@ -2140,8 +2196,10 @@ resetBtn.addEventListener('click', () => {
     successMessageInput.value = 'Thank you!';
     progressStyleGrid.querySelectorAll('.progress-style-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.style === 'dots'));
+    buildLanguageSelect();
     buildDestinationPicker();
     buildDestinationConfig();
+    previewContainer.dir = 'ltr';
     addStep();
   }
 });
@@ -2167,6 +2225,7 @@ mobileTabs.forEach(tab => {
 /* ── Init ── */
 previewContainer.addEventListener('change', evaluatePreviewConditions);
 previewContainer.addEventListener('input', evaluatePreviewConditions);
+buildLanguageSelect();
 buildDestinationPicker();
 buildDestinationConfig();
 buildTemplatesModal();
