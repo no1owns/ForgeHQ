@@ -11,12 +11,21 @@ function defaultUi() {
   return { mode: 'Studio', section: 'All', context: 'Landing', compare: true, mobileVersion: 'Current', interactionMode: 'select' };
 }
 
+/** `initialSystem` is a frozen-in-spirit copy of a system as first built
+ * (from a seed, a migration, or a preset) — the reset target for
+ * RESET_TOKEN. It's set once here and never updated by ordinary edits, so
+ * "reset" always means "back to where this system started", not "back to
+ * its last save". */
+export function makeSystemEntry(label, system) {
+  return { label, system, initialSystem: structuredClone(system) };
+}
+
 export function emptyProjectDocument() {
   return {
     schemaVersion: PROJECT_SCHEMA_VERSION,
     systems: {
-      current: { label: 'Current exploration', system: buildSystem(SEED_PRESETS.editorial) },
-      baseline: { label: 'Saved direction', system: buildSystem(SEED_PRESETS.modern) },
+      current: makeSystemEntry('Current exploration', buildSystem(SEED_PRESETS.editorial)),
+      baseline: makeSystemEntry('Saved direction', buildSystem(SEED_PRESETS.modern)),
     },
     activeTheme: 'light',
     ui: defaultUi(),
@@ -67,8 +76,8 @@ export function migrateV1ToV2(v1) {
   return {
     schemaVersion: PROJECT_SCHEMA_VERSION,
     systems: {
-      current: { label: 'Current exploration', system: buildSystem(legacyFlatToSeed(v1.current)) },
-      baseline: { label: 'Saved direction', system: buildSystem(legacyFlatToSeed(v1.saved)) },
+      current: makeSystemEntry('Current exploration', buildSystem(legacyFlatToSeed(v1.current))),
+      baseline: makeSystemEntry('Saved direction', buildSystem(legacyFlatToSeed(v1.saved))),
     },
     activeTheme: 'light',
     ui: defaultUi(),
