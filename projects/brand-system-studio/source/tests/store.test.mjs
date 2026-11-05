@@ -118,3 +118,12 @@ test('EDIT_VALUE on semantic only changes the active theme, resolution reflects 
   const darkR = resolveToken('semantic.color.surface.default', s.present.systems.current.system, 'dark');
   assert.notEqual(darkR.terminalPath, 'primitive.color.brand.900', 'dark theme mapping must be untouched by a light-theme edit');
 });
+
+test('IMPORT_SYSTEM replaces only current, leaving baseline and snapshots untouched', () => {
+  const s0 = freshState();
+  const beforeBaseline = s0.present.systems.baseline.system;
+  const importedSystem = reducer(s0, { type: 'EDIT_VALUE', system: 'current', path: 'primitive.dimension.space.4', value: { value: 777, unit: 'px' }, commit: true }).present.systems.current.system;
+  const s1 = reducer(s0, { type: 'IMPORT_SYSTEM', system: importedSystem });
+  assert.equal(getAtPath(s1.present.systems.current.system.primitive, 'dimension.space.4').$value.value, 777);
+  assert.equal(s1.present.systems.baseline.system, beforeBaseline);
+});

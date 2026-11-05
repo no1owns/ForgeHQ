@@ -154,6 +154,13 @@ export function reducer(state, action) {
     case 'IMPORT_REPLACE': {
       return commitTo(state, action.project);
     }
+    case 'IMPORT_SYSTEM': {
+      // A DTCG token-file import (as opposed to a whole project import):
+      // replaces just `current`'s system with one already merged by
+      // tokens/importDTCG.js (selected groups applied, the rest carried
+      // over from what was there), not the whole project document.
+      return commitTo(state, withSystem(state.present, 'current', action.system));
+    }
     case 'IMPORT_MERGE': {
       // Merge only the named system(s) from the imported project into the
       // current one, leaving everything else (the other system, snapshots,
@@ -215,6 +222,7 @@ export function useProjectStore() {
     applyPreset: (seed) => dispatch({ type: 'APPLY_PRESET', seed }),
     applyTokenDiff: (edits) => dispatch({ type: 'APPLY_TOKEN_DIFF', edits }),
     importReplace: (project) => dispatch({ type: 'IMPORT_REPLACE', project }),
+    importSystem: (system) => dispatch({ type: 'IMPORT_SYSTEM', system }),
     importMerge: (project, systemKeys) => dispatch({ type: 'IMPORT_MERGE', project, systemKeys }),
     undo: () => dispatch({ type: 'UNDO' }),
     redo: () => dispatch({ type: 'REDO' }),
