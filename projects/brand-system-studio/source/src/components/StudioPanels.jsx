@@ -35,11 +35,28 @@ export function ColorPanel({ sysKey, system, theme, actions, locks, guided }) {
     { path: 'semantic.color.surface.raised', label: 'Surface — raised' },
     { path: 'semantic.color.border.subtle', label: 'Border — subtle' },
     { path: 'semantic.color.border.strong', label: 'Border — strong' },
+  ];
+  const statusRoles = [
     { path: 'semantic.color.status.success', label: 'Status — success' },
     { path: 'semantic.color.status.warning', label: 'Status — warning' },
     { path: 'semantic.color.status.error', label: 'Status — error' },
     { path: 'semantic.color.status.info', label: 'Status — info' },
   ];
+  const roleField = ({ path, label }) => {
+    const r = resolveToken(path, system, theme);
+    return (
+      <div className="alias-field" key={path}>
+        <span className="alias-field-label">{label}</span>
+        <span className="resolved-swatch" style={{ background: r.ok ? colorToCss(r.value) : 'transparent' }} />
+        <select
+          value={r.ok ? r.terminalPath : ''}
+          onChange={(e) => actions.editAlias(sysKey, path, e.target.value, { theme })}
+        >
+          {colorPaths.map((p) => <option key={p} value={p}>{p.replace('primitive.color.', '')}</option>)}
+        </select>
+      </div>
+    );
+  };
 
   const textPrimary = resolveToken('semantic.color.text.primary', system, theme);
   const surfaceDefault = resolveToken('semantic.color.surface.default', system, theme);
@@ -61,14 +78,16 @@ export function ColorPanel({ sysKey, system, theme, actions, locks, guided }) {
                 <Field key={path} sysKey={sysKey} path={path} theme={theme} actions={actions} locks={locks}>
                   {({ onReset, locked, onToggleLock }) => (
                     <div className="scale-swatch-field">
-                      <span className="scale-step-label">{step}{locked ? ' 🔒' : ''}</span>
+                      <span className="scale-step-label">{step}{locked ? ' (locked)' : ''}</span>
                       <input
                         type="color" value={node.$value.hex}
                         onInput={(e) => actions.editValueLive(sysKey, path, hexToColorValue(e.target.value), { theme })}
                         onChange={(e) => actions.editValue(sysKey, path, hexToColorValue(e.target.value), { theme })}
                       />
-                      <button type="button" className="icon-button" onClick={onToggleLock} aria-pressed={locked}>{locked ? 'Unlock' : 'Lock'}</button>
-                      <button type="button" className="icon-button" onClick={onReset}>Reset</button>
+                      <div className="scale-swatch-buttons">
+                        <button type="button" className={`icon-button${locked ? ' active' : ''}`} onClick={onToggleLock} aria-pressed={locked} title={locked ? 'Unlock (allow palette regeneration to change this)' : 'Lock (protect from palette regeneration)'}>{locked ? 'Unlock' : 'Lock'}</button>
+                        <button type="button" className="icon-button" onClick={onReset} title="Reset to its original value">Reset</button>
+                      </div>
                     </div>
                   )}
                 </Field>
@@ -85,21 +104,15 @@ export function ColorPanel({ sysKey, system, theme, actions, locks, guided }) {
       )}
 
       <h3 className="panel-subhead">{guided ? 'Colors' : 'Semantic roles'}</h3>
-      {roles.map(({ path, label }) => {
-        const r = resolveToken(path, system, theme);
-        return (
-          <div className="alias-field" key={path}>
-            <span className="alias-field-label">{label}</span>
-            <span className="resolved-swatch" style={{ background: r.ok ? colorToCss(r.value) : 'transparent' }} />
-            <select
-              value={r.ok ? r.terminalPath : ''}
-              onChange={(e) => actions.editAlias(sysKey, path, e.target.value, { theme })}
-            >
-              {colorPaths.map((p) => <option key={p} value={p}>{p.replace('primitive.color.', '')}</option>)}
-            </select>
-          </div>
-        );
-      })}
+      {roles.map(roleField)}
+
+      {!guided && (
+        <details className="control-disclosure">
+          <summary>Status colors ({statusRoles.length})</summary>
+          {statusRoles.map(roleField)}
+        </details>
+      )}
+      {guided && statusRoles.map(roleField)}
 
       <div className="contrast-note">
         Text / surface: {textPrimary.ok && surfaceDefault.ok ? contrastRatio(colorToCss(textPrimary.value), colorToCss(surfaceDefault.value)).toFixed(1) : '—'}:1
@@ -159,36 +172,40 @@ export function TypePanel({ sysKey, system, theme, actions, locks, guided }) {
 
       {!guided && (
         <>
-          <h3 className="panel-subhead">Size steps</h3>
-          <div className="size-steps-grid">
-            {SIZE_STEPS.map((step) => {
-              const path = `primitive.font.size.${step}`;
-              const node = getAtPath(system.primitive, `font.size.${step}`);
-              return (
-                <label key={step} className="size-step-field">
-                  <span>{step}</span>
-                  <input
-                    type="number" min={8} max={160} value={node.$value.value}
-                    onChange={(e) => actions.editValue(sysKey, path, { value: +e.target.value, unit: 'px' }, { theme })}
-                  />
-                </label>
-              );
-            })}
-          </div>
+          <details className="control-disclosure">
+            <summary>Size steps ({SIZE_STEPS.length})</summary>
+            <div className="size-steps-grid">
+              {SIZE_STEPS.map((step) => {
+                const path = `primitive.font.size.${step}`;
+                const node = getAtPath(system.primitive, `font.size.${step}`);
+                return (
+                  <label key={step} className="size-step-field">
+                    <span>{step}</span>
+                    <input
+                      type="number" min={8} max={160} value={node.$value.value}
+                      onChange={(e) => actions.editValue(sysKey, path, { value: +e.target.value, unit: 'px' }, { theme })}
+                    />
+                  </label>
+                );
+              })}
+            </div>
+          </details>
 
-          <h3 className="panel-subhead">Line height</h3>
-          {LH_STEPS.map((step) => (
-            <Field key={step} sysKey={sysKey} path={`primitive.font.lineHeight.${step}`} theme={theme} actions={actions} locks={locks}>
-              {({ onReset }) => (
-                <SliderField
-                  label={step} value={getAtPath(system.primitive, `font.lineHeight.${step}`).$value} min={1} max={2.2} step={0.05}
-                  onInput={(v) => actions.editValueLive(sysKey, `primitive.font.lineHeight.${step}`, v, { theme })}
-                  onCommit={(v) => actions.editValue(sysKey, `primitive.font.lineHeight.${step}`, v, { theme })}
-                  onReset={onReset}
-                />
-              )}
-            </Field>
-          ))}
+          <details className="control-disclosure">
+            <summary>Line height ({LH_STEPS.length})</summary>
+            {LH_STEPS.map((step) => (
+              <Field key={step} sysKey={sysKey} path={`primitive.font.lineHeight.${step}`} theme={theme} actions={actions} locks={locks}>
+                {({ onReset }) => (
+                  <SliderField
+                    label={step} value={getAtPath(system.primitive, `font.lineHeight.${step}`).$value} min={1} max={2.2} step={0.05}
+                    onInput={(v) => actions.editValueLive(sysKey, `primitive.font.lineHeight.${step}`, v, { theme })}
+                    onCommit={(v) => actions.editValue(sysKey, `primitive.font.lineHeight.${step}`, v, { theme })}
+                    onReset={onReset}
+                  />
+                )}
+              </Field>
+            ))}
+          </details>
         </>
       )}
     </section>
@@ -229,19 +246,6 @@ export function LayoutPanel({ sysKey, system, theme, actions, locks, guided }) {
 
       {!guided && (
         <>
-          <h3 className="panel-subhead">Spacing scale</h3>
-          <div className="size-steps-grid">
-            {spaceSteps.map((step) => {
-              const path = `primitive.dimension.space.${step}`;
-              const node = getAtPath(system.primitive, `dimension.space.${step}`);
-              return (
-                <label key={step} className="size-step-field">
-                  <span>{step}</span>
-                  <input type="number" min={0} max={200} value={node.$value.value} onChange={(e) => actions.editValue(sysKey, path, { value: +e.target.value, unit: 'px' }, { theme })} />
-                </label>
-              );
-            })}
-          </div>
           <div className="density-row">
             <span className="hint">Density (scales the whole spacing set):</span>
             {[['Compact', 0.75], ['Comfortable', 1], ['Spacious', 1.3]].map(([label, mult]) => (
@@ -253,6 +257,22 @@ export function LayoutPanel({ sysKey, system, theme, actions, locks, guided }) {
               }}>{label}</button>
             ))}
           </div>
+
+          <details className="control-disclosure">
+            <summary>Spacing scale ({spaceSteps.length})</summary>
+            <div className="size-steps-grid">
+              {spaceSteps.map((step) => {
+                const path = `primitive.dimension.space.${step}`;
+                const node = getAtPath(system.primitive, `dimension.space.${step}`);
+                return (
+                  <label key={step} className="size-step-field">
+                    <span>{step}</span>
+                    <input type="number" min={0} max={200} value={node.$value.value} onChange={(e) => actions.editValue(sysKey, path, { value: +e.target.value, unit: 'px' }, { theme })} />
+                  </label>
+                );
+              })}
+            </div>
+          </details>
 
           <h3 className="panel-subhead">Content</h3>
           <Field sysKey={sysKey} path="primitive.dimension.contentWidth" theme={theme} actions={actions} locks={locks}>

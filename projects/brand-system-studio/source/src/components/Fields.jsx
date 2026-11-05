@@ -6,25 +6,30 @@
  * store.editValue.
  */
 export function SliderField({ label, value, min, max, step = 1, unit = '', onInput, onCommit, onReset, locked, onToggleLock }) {
+  // The range track gets its own full-width row — sharing a flex row with
+  // the numeric field and lock/reset buttons left it only a few px wide
+  // (a number input's default intrinsic width out-competed the track for
+  // space), making it effectively unusable. The numeric field and buttons
+  // now sit on a second, secondary row below.
   return (
-    <label className="slider-field">
-      <span>
-        {label}
+    <div className="slider-field">
+      <div className="slider-field-head">
+        <span>{label}</span>
         <output>{value}{unit}</output>
-      </span>
-      <div className="slider-row">
+      </div>
+      <input
+        type="range" className="slider-track" min={min} max={max} step={step} value={value} aria-label={label}
+        onInput={(e) => onInput(+e.target.value)}
+        onChange={(e) => onCommit(+e.target.value)}
+      />
+      <div className="slider-controls">
         <input
-          type="range" min={min} max={max} step={step} value={value}
-          onInput={(e) => onInput(+e.target.value)}
-          onChange={(e) => onCommit(+e.target.value)}
-        />
-        <input
-          type="number" className="numeric-field" min={min} max={max} step={step} value={value}
+          type="number" className="numeric-field" min={min} max={max} step={step} value={value} aria-label={`${label} (exact value)`}
           onChange={(e) => onCommit(+e.target.value)}
         />
         <FieldButtons onReset={onReset} locked={locked} onToggleLock={onToggleLock} />
       </div>
-    </label>
+    </div>
   );
 }
 
