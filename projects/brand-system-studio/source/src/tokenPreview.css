@@ -1,0 +1,89 @@
+/* Component classes driven entirely by resolved-token CSS custom
+   properties (see TokenStyleSheet.jsx, which sets the actual values per
+   system+theme under a scope selector). These rules never change per
+   edit — only the custom property *values* do — so real :hover/:focus/
+   :disabled states work, which inline styles alone can't give us. */
+
+.token-preview { color: var(--semantic-color-text-primary); background: var(--semantic-color-surface-default); }
+
+.tp-nav { display: flex; align-items: center; justify-content: space-between; background: var(--component-nav-background); color: var(--component-nav-text); padding: 16px 20px; }
+.tp-nav .tp-nav-active { color: var(--component-nav-activeText); font-weight: 600; }
+
+.tp-heading-1, .tp-heading-2, .tp-heading-3 { margin: 0; color: var(--semantic-color-text-primary); }
+.tp-heading-1 { font-family: var(--semantic-typography-heading-1-fontFamily); font-size: var(--semantic-typography-heading-1-fontSize); font-weight: var(--semantic-typography-heading-1-fontWeight); line-height: var(--semantic-typography-heading-1-lineHeight); letter-spacing: var(--semantic-typography-heading-1-letterSpacing); }
+.tp-heading-2 { font-family: var(--semantic-typography-heading-2-fontFamily); font-size: var(--semantic-typography-heading-2-fontSize); font-weight: var(--semantic-typography-heading-2-fontWeight); line-height: var(--semantic-typography-heading-2-lineHeight); letter-spacing: var(--semantic-typography-heading-2-letterSpacing); }
+.tp-heading-3 { font-family: var(--semantic-typography-heading-3-fontFamily); font-size: var(--semantic-typography-heading-3-fontSize); font-weight: var(--semantic-typography-heading-3-fontWeight); line-height: var(--semantic-typography-heading-3-lineHeight); letter-spacing: var(--semantic-typography-heading-3-letterSpacing); }
+
+.tp-body, .tp-body-small { margin: 0; color: var(--semantic-color-text-primary); }
+.tp-body { font-family: var(--semantic-typography-body-default-fontFamily); font-size: var(--semantic-typography-body-default-fontSize); font-weight: var(--semantic-typography-body-default-fontWeight); line-height: var(--semantic-typography-body-default-lineHeight); letter-spacing: var(--semantic-typography-body-default-letterSpacing); }
+.tp-body-small { font-family: var(--semantic-typography-body-small-fontFamily); font-size: var(--semantic-typography-body-small-fontSize); font-weight: var(--semantic-typography-body-small-fontWeight); line-height: var(--semantic-typography-body-small-lineHeight); letter-spacing: var(--semantic-typography-body-small-letterSpacing); }
+
+.tp-text-primary { color: var(--semantic-color-text-primary); }
+.tp-text-muted { color: var(--semantic-color-text-muted); }
+.tp-text-inverse { color: var(--semantic-color-text-inverse); }
+.tp-surface { background: var(--semantic-color-surface-default); }
+.tp-surface-raised { background: var(--semantic-color-surface-raised); }
+
+.tp-btn-primary, .tp-btn-secondary {
+  font: inherit; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border-width: var(--component-button-primary-border-width); border-style: var(--component-button-primary-border-style);
+  padding: var(--component-button-primary-paddingY) var(--component-button-primary-paddingX);
+  border-radius: var(--component-button-primary-radius);
+  transition: background-color .12s ease, border-color .12s ease;
+}
+.tp-btn-primary { background: var(--component-button-primary-background); color: var(--component-button-primary-text); border-color: var(--component-button-primary-border-color); }
+.tp-btn-primary:hover:not(:disabled) { background: var(--component-button-primary-backgroundHover); }
+.tp-btn-secondary {
+  background: var(--component-button-secondary-background); color: var(--component-button-secondary-text);
+  border-color: var(--component-button-secondary-border-color); border-width: var(--component-button-secondary-border-width); border-style: var(--component-button-secondary-border-style);
+  padding: var(--component-button-secondary-paddingY) var(--component-button-secondary-paddingX);
+  border-radius: var(--component-button-secondary-radius);
+}
+.tp-btn-secondary:hover:not(:disabled) { background: var(--component-button-secondary-backgroundHover); }
+.tp-btn-primary:disabled, .tp-btn-secondary:disabled { opacity: .5; cursor: default; }
+.tp-btn-primary:focus-visible, .tp-btn-secondary:focus-visible { outline: 2px solid var(--semantic-color-action-primary); outline-offset: 2px; }
+
+.tp-input {
+  font: inherit; width: 100%;
+  background: var(--component-input-background); color: var(--component-input-text);
+  border-width: var(--component-input-border-width); border-style: var(--component-input-border-style); border-color: var(--component-input-border-color);
+  border-radius: var(--component-input-radius);
+  padding: var(--component-input-paddingY) var(--component-input-paddingX);
+}
+.tp-input::placeholder { color: var(--component-input-placeholder); }
+.tp-input:focus { outline: none; border-color: var(--component-input-borderFocus); }
+.tp-input.tp-input-error { border-color: var(--component-input-borderError); }
+
+.tp-card {
+  background: var(--component-card-background);
+  border-width: var(--component-card-border-width); border-style: var(--component-card-border-style); border-color: var(--component-card-border-color);
+  border-radius: var(--component-card-radius);
+  padding: var(--component-card-padding);
+  box-shadow: var(--component-card-shadow-offsetX) var(--component-card-shadow-offsetY) var(--component-card-shadow-blur) var(--component-card-shadow-spread) var(--component-card-shadow-color);
+}
+
+.tp-status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.tp-status-success { background: var(--semantic-color-status-success); }
+.tp-status-warning { background: var(--semantic-color-status-warning); }
+.tp-status-error { background: var(--semantic-color-status-error); }
+.tp-status-info { background: var(--semantic-color-status-info); }
+
+.tp-section { padding: 20px var(--primitive-dimension-gutter, 24px); }
+.tp-hero { position: relative; isolation: isolate; overflow: hidden; height: 360px; }
+.tp-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
+.tp-hero-copy { padding: 20px var(--primitive-dimension-gutter, 24px); width: 58%; height: 230px; }
+.tp-footer-row { display: flex; justify-content: space-between; padding: 12px var(--primitive-dimension-gutter, 24px); }
+.tp-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.tp-row { display: flex; gap: 14px; align-items: center; border-bottom: 1px solid var(--semantic-color-border-subtle); padding: 12px 0; }
+.tp-row > span:last-child { margin-left: auto; }
+.tp-field-label { display: grid; gap: 8px; margin: 14px 0; }
+.tp-spec-buttons { display: flex; gap: 10px; margin: 16px 0; flex-wrap: wrap; }
+.tp-swatch-row { display: flex; height: 70px; gap: 2px; margin: 14px 0; }
+.tp-swatch { flex: 1; border-radius: 4px; }
+.tp-components-gallery .tp-gallery-row { display: flex; gap: 12px; align-items: center; margin: 16px 0; flex-wrap: wrap; }
+.tp-components-gallery .tp-input { max-width: 220px; }
+
+/* Selection affordance for the inspector (select interaction mode only). */
+.tp-selectable { cursor: pointer; outline-offset: 2px; }
+.tp-selectable:hover { outline: 1.5px dashed var(--semantic-color-action-primary); }
+.tp-selectable.tp-selected { outline: 2px solid var(--semantic-color-action-primary); }

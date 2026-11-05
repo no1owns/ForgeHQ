@@ -34,7 +34,10 @@ function literalToCss(type, value) {
   }
 }
 
-function cssVarName(path, prefix) {
+// Exported so UI code (Preview/Inspector) can compute the exact same CSS
+// custom-property name a token path maps to, e.g. for a style={{...}}
+// lookup or a "this token backs that var" inspector link.
+export function cssVarName(path, prefix = '--') {
   return `${prefix}${path.replace(/\./g, '-')}`;
 }
 
@@ -63,7 +66,7 @@ export function toCSSVariables(flatMap, { selector = ':root', prefix = '--' } = 
 /** Composite tokens (typography, border, shadow) don't map to a single CSS
  * custom property; expand each into its constituent `--path-field` vars so
  * consumers can still compose them (e.g. font: var(--...weight) var(--...size) var(--...family)). */
-export function toCompositeCSSVariables(flatMap, { prefix = '--' } = {}) {
+export function toCompositeCSSVariables(flatMap, { prefix = '--', selector = ':root' } = {}) {
   const lines = [];
   for (const [path, entry] of flatMap) {
     if (!COMPOSITE_TYPES.has(entry.type)) continue;
@@ -79,7 +82,7 @@ export function toCompositeCSSVariables(flatMap, { prefix = '--' } = {}) {
       }
     }
   }
-  return lines.length ? `:root {\n${lines.join('\n')}\n}\n` : '';
+  return lines.length ? `${selector} {\n${lines.join('\n')}\n}\n` : '';
 }
 
 function inferLiteralType(raw) {
