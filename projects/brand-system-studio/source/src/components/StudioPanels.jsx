@@ -12,9 +12,9 @@ function tokensOfType(system, theme, type) {
   return [...flat.entries()].filter(([, e]) => e.type === type).map(([path]) => path);
 }
 
-function Field({ sysKey, path, theme, actions, locks, render }) {
+function Field({ sysKey, path, theme, actions, locks, children }) {
   const locked = !!locks[path];
-  return render({
+  return children({
     onReset: () => actions.resetToken(sysKey, path, theme),
     locked,
     onToggleLock: () => actions.toggleLock(path),
