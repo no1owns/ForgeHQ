@@ -21,6 +21,52 @@ export function validateSystem(system) {
   return byTheme;
 }
 
+export function validateProjectDocument(project) {
+  const errors = [];
+  if (!project || typeof project !== 'object' || Array.isArray(project)) {
+    errors.push({ code: 'invalid-project-shape', message: 'Project document is not an object.' });
+    return { ok: false, errors };
+  }
+  if (project.schemaVersion !== 2) {
+    errors.push({ code: 'invalid-schema-version', path: 'schemaVersion', message: `Expected schemaVersion 2, got ${String(project.schemaVersion)}.` });
+  }
+  if (!project.systems || typeof project.systems !== 'object') {
+    errors.push({ code: 'missing-systems', path: 'systems', message: 'Project is missing the systems object.' });
+    return { ok: errors.length === 0, errors };
+  }
+  for (const key of ['current', 'baseline']) {
+    const entry = project.systems[key];
+    if (!entry || typeof entry !== 'object') {
+      errors.push({ code: `missing-${key}-system`, path: `systems.${key}`, message: `Project is missing systems.${key}.` });
+      continue;
+    }
+    const system = entry.system;
+    if (!system || typeof system !== 'object' || !system.primitive || !system.semanticByTheme || !system.component) {
+      errors.push({ code: `invalid-${key}-system`, path: `systems.${key}.system`, message: `systems.${key}.system is missing a primitive/semantic/component structure.` });
+      continue;
+    }
+    const byTheme = validateSystem(system);
+    for (const [theme, result] of Object.entries(byTheme)) {
+      for (const err of result.errors) {
+        errors.push({ code: err.code, path: `${key}/${theme}/${err.path || ''}`.replace(/\/+$/, ''), message: `${err.message}` });
+      }
+    }
+  }
+  if (!project.ui || typeof project.ui !== 'object') {
+    errors.push({ code: 'missing-ui', path: 'ui', message: 'Project is missing the ui state.' });
+  }
+  if (!project.activeTheme || typeof project.activeTheme !== 'string') {
+    errors.push({ code: 'missing-active-theme', path: 'activeTheme', message: 'Project is missing activeTheme.' });
+  }
+  if (!Array.isArray(project.snapshots)) {
+    errors.push({ code: 'invalid-snapshots', path: 'snapshots', message: 'Project snapshots must be an array.' });
+  }
+  if (!project.locks || typeof project.locks !== 'object' || Array.isArray(project.locks)) {
+    errors.push({ code: 'invalid-locks', path: 'locks', message: 'Project locks must be an object.' });
+  }
+  return { ok: errors.length === 0, errors };
+}
+
 /** Resolve a token path to its display-ready literal, including composite
  * sub-fields. `theme` picks which semantic layer component tokens
  * (indirectly) resolve against. */
